@@ -6,11 +6,11 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{97B24C35-BE49-4978-9108-29D2CC2B5918}</ProjectGuid>
+    <ProjectGuid>{3EA739DA-5B2C-416B-A9BA-7DFD90213FDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CensusBlock.Tests</RootNamespace>
-    <AssemblyName>CensusBlock.Tests</AssemblyName>
+    <RootNamespace>ESRGC.Broadband.ETL.CensusBlock.Tests</RootNamespace>
+    <AssemblyName>ESRGC.Broadband.ETL.CensusBlock.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -105,6 +105,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ESRGC.Broadband.ETL.CensusBlock\ESRGC.Broadband.ETL.CensusBlock.csproj">
+      <Project>{BE89FAAE-0128-4275-A353-D87DAB937284}</Project>
+      <Name>ESRGC.Broadband.ETL.CensusBlock</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
