@@ -170,10 +170,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
+    <Compile Include="Infrastructure\Services.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\boostrap\css\bootstrap-responsive.css" />
+    <Content Include="Content\boostrap\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\boostrap\css\bootstrap.css" />
+    <Content Include="Content\boostrap\css\bootstrap.min.css" />
+    <Content Include="Content\boostrap\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\boostrap\img\glyphicons-halflings.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -230,18 +238,27 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.9.0-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.9.0.js" />
-    <Content Include="Scripts\jquery-1.9.0.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.20.js" />
-    <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\ESRGC\Application\application.js" />
+    <Content Include="Scripts\ESRGC\component.js" />
+    <Content Include="Scripts\ESRGC\Controller\base.js" />
+    <Content Include="Scripts\ESRGC\Model\base.js" />
+    <Content Include="Scripts\ESRGC\Script.js" />
+    <Content Include="Scripts\ESRGC\Store\base.js" />
+    <Content Include="Scripts\ESRGC\Store\mdImapGeocoder.js" />
+    <Content Include="Scripts\ESRGC\toolbar.js" />
+    <Content Include="Scripts\ESRGC\toolItem.js" />
+    <Content Include="Scripts\jquery\jquery-1.9.0-vsdoc.js" />
+    <Content Include="Scripts\jquery\jquery-1.9.0.js" />
+    <Content Include="Scripts\jquery\jquery-1.9.0.min.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery-ui-1.8.20.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery-ui-1.8.20.min.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate.min.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
@@ -287,13 +304,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Infrastructure\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\jquery-1.9.0.min.map" />
+    <None Include="Scripts\jquery\jquery-1.9.0.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -309,12 +325,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3240</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/CensusBlock</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

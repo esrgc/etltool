@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using ESRGC.Broadband.ETL.CensusBlock.Infrastructure;
 
 namespace ESRGC.Broadband.ETL.CensusBlock
 {
@@ -22,6 +23,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            //set ninject controller factory
+            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
         }
     }
 }
