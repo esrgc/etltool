@@ -1,0 +1,41 @@
+﻿ESRGC
+Feb 6th, 2013
+
+Project ETL Tool (Census block) Broadband data upload for census block
+
+Team members
+Tu Hoang
+Frank Rowe
+
+This documentation is to keep track of technical issues and project progress. 
+
+02/04/2013 to 02/08/2013
+Log
+1. First initial project is created, and made available through github (ESRGC/ETLTool).
+2. Added code base into CensusBlock project including Javascript libraries and infrastructure (Dependency injection for controller).
+3. Added twitter bootstrap CSS library.
+4. Added Domain, and test projects.
+5. Implemented initial model (code first) for business logic.
+6. Implemented repository object (generic). 
+
+Requirement Analysis
+Data Upload - to be implemented
+1. The app is responsible for data uploading in excel or csv format. Data file format is validated during upload.
+2. If data is not in the right format error will occur and the app will prompt to try again with valid file format.
+3. Data is uploaded when the file is in correct format.
+4. Data is parsed on the server and put in dymanic object. This object is used to redisplayed the data for verification.
+
+Data verification
+1. Redisplay the data uploaded for verification.
+2. Allow user to select the data fields (columns) that contains data required by NTIA.
+3. Verify selection on client side.
+4. Gather user selection and attempt to show preview dynamically.
+
+Data matching (server process)
+1. Attempt to match selection to NTIA data model.
+2. Check for errors and data mismatched. (loop through data for each column).
+3. Display error if occured.
+4. If no error occures starts looping through data and create NTIA data objects.
+5. After all data objects are created, redisplay to confirm that data is being submitted. 
+6. Confirm sucsessful upload. 
+
