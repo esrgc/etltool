@@ -1,4 +1,35 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
+@section header{
+    <div class="hero-unit">
+        <h1>Maryland Broadband</h1>
+        <p class="small">
+            Welcome to ETL tool for Census Block
+        </p>
+    </div>
+}
+<!--Content-->
+<div class="row-fluid">
+    <div class="well span12">
+        <h4>Instructions</h4>
+        <p>
+            asldkfj lfkjw rwoiyr aoihovnda nfeoina cvoihwnea oiadhf eoifha oh doaihefoaneo ahfuhebiwb abfiub v,wehoih
+            avoeih this veiand oeijar dkvha kiaer vkaheroi ivhoihc eihfhia fei f ivenvieoahdh ""feov
+        </p>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="well span12">
+        <h4>Upload data</4>
+        @using (Html.BeginForm("uploadFile", "Upload", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-inline" })) {
+            <input type="file" name="dataInput" id="dataInput" />
+            <input type="submit" class="btn btn-primary" />
+            
+        }
+    </div>
+</div>
+@section footer {
+    <div class="footer">
+    </div>
+}

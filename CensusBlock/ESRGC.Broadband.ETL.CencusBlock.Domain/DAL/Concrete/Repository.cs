@@ -11,33 +11,68 @@ namespace ESRGC.Broadband.ETL.CencusBlock.Domain.DAL.Concrete
 {
     public class Repository<TEntity>: IRepository<TEntity> where TEntity: class
     {
+        internal DbContext _context = null;
         internal IDbSet<TEntity> _dbSet;
-        public Repository(){
-            
+        public Repository(DbContext context){
+            _context = context;
+            _dbSet = _context.Set<TEntity>();
         }
 
+        public virtual IEnumerable<TEntity> Get(
+             Expression<Func<TEntity, bool>> filter = null,
+             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+             string includeProperties = "") {
+            IQueryable<TEntity> query = _dbSet;
+
+            if (filter != null) {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null) {
+                return orderBy(query).ToList();
+            }
+            else {
+                return query.ToList();
+            }
+        }
+
+        #region IRepository<TEntity> Members
+
         public IQueryable<TEntity> Entities {
-            get { throw new NotImplementedException(); }
+            get { return _dbSet; }
         }
 
         public TEntity GetEntityByID(object ID) {
-            throw new NotImplementedException();
+            return _dbSet.Find(ID);
         }
 
-        public void DeleteByID(object ID) {
-            throw new NotImplementedException();
-        }
 
         public void InsertEntity(TEntity entity) {
-            throw new NotImplementedException();
+            _dbSet.Add(entity);
         }
 
         public void UpdateEntity(TEntity entity) {
-            throw new NotImplementedException();
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void DeleteByID(object ID) {
+            var entityToDelete = _dbSet.Find(ID);
+            DeleteEntity(entityToDelete);
         }
 
         public void DeleteEntity(TEntity entity) {
-            throw new NotImplementedException();
+            if (_context.Entry(entity).State == EntityState.Detached) {
+                _dbSet.Attach(entity);
+            }
+            _dbSet.Remove(entity);
         }
+
+        #endregion
     }
 }
