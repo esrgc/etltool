@@ -49,7 +49,7 @@ Helper functions
 */
 //console log
 function log(msg) {
-    if (!$.browser.msie)
+    if (typeof console != 'undefined')
         console.log(msg);
 }
 //add days to Date object
@@ -108,7 +108,7 @@ var ESRGC = {
             var loadingHtml = [
                 '<div id="ajaxLoadingHtml" class="row-fluid">',
                     '<div style="width: 200px; margin:auto;">',
-                        '<span><img src="'+ url +'" style="padding: 10px;" />',
+                        '<span><img src="' + url + '" style="padding: 10px;" />',
                             '<strong>Loading! Please wait...</strong>',
                         '</span>',
                     '</div>',

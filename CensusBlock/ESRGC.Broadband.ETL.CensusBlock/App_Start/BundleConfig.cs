@@ -22,7 +22,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Styles/css").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/customCSS/style").Include("~/Content/customCSS/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
@@ -38,7 +38,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
 
-            bundles.Add(new StyleBundle("~/Styles/bootstrap").Include(
+            bundles.Add(new StyleBundle("~/Content/bootstrap/css/style").Include(
                 "~/Content/bootstrap/css/bootstrap.css",
                 "~/Content/bootstrap/css/bootstrap-responsive.css"));
 

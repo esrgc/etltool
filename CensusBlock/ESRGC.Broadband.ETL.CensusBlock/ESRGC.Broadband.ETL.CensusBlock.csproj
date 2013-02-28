@@ -201,7 +201,8 @@
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
-    <Content Include="Content\site.css" />
+    <Content Include="Content\images\esrgclogo.jpg" />
+    <Content Include="Content\customCSS\site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -283,6 +284,8 @@
     <Content Include="Scripts\jqueryPlugins\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jqueryPlugins\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Upload\app.js" />
+    <Content Include="Upload\app\controller\upload.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -332,6 +335,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery\jquery-1.9.0.min.map" />
+    <Content Include="Views\Upload\Index.cshtml" />
+    <Content Include="Views\Upload\UploadFile.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

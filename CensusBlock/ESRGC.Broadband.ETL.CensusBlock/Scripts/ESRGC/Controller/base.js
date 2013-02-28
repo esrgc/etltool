@@ -42,7 +42,7 @@ ESRGC.Controller.Base = ESRGC.Class({
                     for (var event in events) {
                         //get event handler reference
                         var handler = this[events[event]];
-                        $(this.refs[ref]).live(event, { scope: this, handler: handler }, function (event) {
+                        $(document).on(event, this.refs[ref], { scope: this, handler: handler }, function (event) {
                             var scope = event.data.scope; //controller scope 
                             var handler = event.data.handler; //event handler to be called in controller context
                             if (typeof handler == 'undefined')

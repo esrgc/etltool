@@ -11,9 +11,23 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
     public class UploadController : BaseController
     {
-        public ActionResult uploadFile(HttpPostedFileBase dataInput, int? previewCount) {
+        /// <summary>
+        /// provides upload form
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index() {
+            return View();
+        }
+        /// <summary>
+        /// Handle data upload 
+        /// </summary>
+        /// <param name="dataInput">Excel uploaded data</param>
+        /// <param name="previewCount">Number of rows for previewing</param>
+        /// <returns>View that allows user to preview their uploaded data</returns>
+        public ActionResult UploadFile(HttpPostedFileBase dataInput, int? previewCount) {
             if (dataInput == null) {
-                return Json(new { Status = "No valid data input" }, JsonRequestBehavior.AllowGet);
+                ModelState.AddModelError("", "No data input. Please select a an excel file to upload");
+                return View("Index");
             }
 
             var binaryData = new byte[dataInput.ContentLength];
@@ -31,22 +45,29 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     fileStream.Write(binaryData, 0, dataInput.ContentLength);
                     fileStream.Close();
                 }
-
+                
                 //read excel content
-                //var json = parseToJson(filePath);
-                //return Content(json, "application/json");
                 var data = parseToDictionary(filePath);
-                if (previewCount.HasValue) { 
+                Session["data"] = data;//store in session
+                if (previewCount.HasValue) {
                     var result = data.Take(previewCount.Value);
-                    return Content(result.ToJSon(), "application/json");
+                    return View(result);
                 }
-                else return Content(data.ToJSon(), "application/json");
+                else return View(data);
             }
             catch (Exception ex) {
-                return Json(new { status = "Failed", message = ex.Message });
+                ModelState.AddModelError("", ex.Message);
+                return View("Index");
             }
         }
 
+        public ActionResult MapData() {
+            return View();
+        }
+
+        #region Private function
+        
+        /*----------------Private functions-----------------*/
         private string parseToJson(string filePath) {
             var excel = new ExcelQueryFactory(filePath);
             var worksheets = excel.GetWorksheetNames();
@@ -96,5 +117,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             }
             return dataList;
         }
+
+        #endregion
     }
 }

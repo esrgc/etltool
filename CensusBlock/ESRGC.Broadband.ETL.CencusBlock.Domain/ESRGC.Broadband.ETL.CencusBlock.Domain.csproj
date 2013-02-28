@@ -49,7 +49,7 @@
     <Compile Include="DAL\Concrete\Repository.cs" />
     <Compile Include="DAL\DomainDataContext.cs" />
     <Compile Include="Model\CensusBlock.cs" />
-    <Compile Include="Model\MappingModel.cs" />
+    <Compile Include="Model\ColumnMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -5,25 +5,25 @@
     <title>Maryland Broadband - ETL Tool</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
-    @Styles.Render("~/Styles/css", "~/Styles/bootstrap")
+    @Styles.Render("~/Content/customCSS/style", "~/Content/bootstrap/css/style")
     @Scripts.Render("~/bundles/modernizr")
     
 </head>
 <body>
     <div id="body" class="container-fluid">
-        <div class="navbar navbar-fixed-top">
+        <div class="navbar ">
             <div class="navbar-inner">
                 <div class="container">
-                    @*<a class="brand" href="#">Data Upload</a>*@
+                    <a class="brand" href="#">ETL Tool</a>
                     <ul class="nav">
-                        <li class=""><a href="#">Home</a></li>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li class=""><a href="@Url.Action("Index", "Home")"><i class="icon-home"></i> Home</a></li>
+                        <li><a href="#"><i class="icon-question-sign"></i> Help</a></li>
+                        <li><a href="#"><i class="icon-user"></i> Contact</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <header>
+        <header class="page-header">
             @RenderSection("header", required: false)
         </header>
         @RenderSection("featured", required: false)
@@ -31,9 +31,7 @@
             @RenderBody()
         </section>
         <footer>
-            <div>
-                @RenderSection("footer", required: false)
-            </div>
+            <!--Put something in here for footer-->
         </footer>
     </div>
     @Scripts.Render("~/bundles/jquery")

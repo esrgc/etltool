@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ESRGC.Broadband.ETL.CencusBlock.Domain.Model
 {
-    public class MappingModel
+    public class ColumnMapping
     {
         public string PPROVNAMEColumn { get; set; }
         public string DBANAMEColumn { get; set; }
