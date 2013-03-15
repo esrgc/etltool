@@ -1,12 +1,32 @@
-﻿@model IEnumerable<IDictionary<string, object>>
-@{
-    ViewBag.Title = "Data Preview";
+﻿@{
+    ViewBag.Title = "Upload";
+}
+@section scripts{
+    <!--App script--to be packed into bundle-->
+    <!--base app structure code-->
+    <script src="@Url.Content("~/Scripts/ESRGC/Script.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ESRGC/component.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ESRGC/Application/application.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ESRGC/Controller/base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ESRGC/Model/base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ESRGC/Store/base.js")" type="text/javascript"></script>
+    <!--Custom app code-->
+    <script src="@Url.Content("~/Upload/app.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Upload/app/controller/upload.js")" type="text/javascript"></script>
+    <!--Start up code-->
+    <script type="text/javascript">
+        $(function () {
+            new ESRGC.App();
+        });
+    </script>
 }
 @section header{
-    <h3>@ViewBag.Title</h3>
+    <h3>@ViewBag.Title <i class="icon-upload"></i>
+    </h3>
     <ul class="breadcrumb">
-        <li><a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
-        <li><a href="@Url.Action("index", "Upload")">Upload</a><span class="divider">/</span></li>
+        <li>
+            <a href="@Url.Action("index", "Home")">
+                Home</a><span class="divider">/</span></li>
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
@@ -16,45 +36,56 @@
         <h4>Instructions</h4>
         <ol>
             <li>
-                Instruction for this step ---> preview data asldkfj lfkjw rwoiyr aoihovnda nfeoina
-                cvoihwnea oiadhf eoifha oh doaihefoaneo ahfuhebiwb abfiub v,wehoih avoeih this veiand
-                oeijar dkvha kiaer vkaheroi ivhoihc eihfhia fei f ivenvieoahdh feov
+                Click "Browse" to attach a file on your local storage for upload. 
+                Note that you have to select an <strong>Excel</strong> file (xls or xlsx extensions).
+                You can not proceed to the next step if the file format is not Excel format.
             </li>
+            <li>Verify the file name shown in green box. If not correct go back to step 1.</li>
             <li>
-                baldef daief lakhfi alkfeoih adkhf lalifne 
+                Click "Upload" to upload the file to server.
             </li>
         </ol>
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span12">
-        <h4>Uploaded data</h4>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    @foreach (var key in Model.First().Keys) { 
-                        <th>@key</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model) { 
-                    <tr>
-                        @foreach (var key in row.Keys) { 
-                            <td>@row[key]</td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <div class="well span12">
+        <h4>Upload data</h4>
+        <form action="@Url.Action("UploadFile")" method="post" class="form-horizontal" enctype="multipart/form-data">
+        @Html.ValidationSummary(true)
+        <div class="control-group">
+            <label class="control-label" for="previewCount" style="display: block;">
+                Preview rows</label>
+            <div class="controls">
+                <select name="previewCount">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option>All</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">
+                Data file</label>
+            <div class="controls">
+                <div id="uploadDiv" class="btn btn-success">
+                    <div>
+                        <i class="icon-white icon-folder-open"></i> Browse</div>
+                </div>
+                <input type="file" name="dataInput" id="dataInput" />
+                <label class="label label-important">Excel file format only (.xlsx or .xls)</label>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <span class="alert alert-success" id="fileName">
+                </span>
+            </div>
+        </div>
+        <div class="form-actions">
+            <input title="Upload" value="Upload" type="submit" class="btn btn-primary" />
+        </div>
+        </form>
     </div>
 </div>
-
-<div class="row-fluid">
-    <div class="span12 form-actions">
-        <a href="@Url.Content("~/Upload/index")" class="btn">Back</a>
-        <a href="@Url.Content("~/Upload/MapData")" class="btn btn-primary">Next</a>
-    </div>
-</div>
-
-

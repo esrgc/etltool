@@ -15,8 +15,15 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         /// provides upload form
         /// </summary>
         /// <returns></returns>
-        public ActionResult Index() {
-            return View();
+        public ActionResult UploadFile(bool? newUpload) {
+            bool discard = newUpload.HasValue ? newUpload.Value : false;
+            if (Session["data"] == null || discard) {
+                return View();
+            }
+            else {
+                return RedirectToAction("PreviewData");
+            }
+
         }
         /// <summary>
         /// Handle data upload 
@@ -24,10 +31,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         /// <param name="dataInput">Excel uploaded data</param>
         /// <param name="previewCount">Number of rows for previewing</param>
         /// <returns>View that allows user to preview their uploaded data</returns>
+        [HttpPost]
         public ActionResult UploadFile(HttpPostedFileBase dataInput, int? previewCount) {
             if (dataInput == null) {
                 ModelState.AddModelError("", "No data input. Please select a an excel file to upload");
-                return View("Index");
+                return View();
             }
 
             var binaryData = new byte[dataInput.ContentLength];
@@ -45,28 +53,33 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     fileStream.Write(binaryData, 0, dataInput.ContentLength);
                     fileStream.Close();
                 }
-                
+
                 //read excel content
                 var data = parseToDictionary(filePath);
-                Session["data"] = data;//store in session
-                if (previewCount.HasValue) {
-                    var result = data.Take(previewCount.Value);
-                    return View(result);
-                }
-                else return View(data);
+
+                var rowCount = previewCount.HasValue ? previewCount.Value : 10;
+                Session["data"] = new { data = data, rows = rowCount };//store in session
+                return RedirectToAction("PreviewData", new { rows = rowCount });
             }
             catch (Exception ex) {
                 ModelState.AddModelError("", ex.Message);
-                return View("Index");
+                return View();
             }
         }
-
-        public ActionResult MapData() {
-            return View();
+        public ActionResult PreviewData(int rows = 10) {
+            if (Session["data"] != null) {
+                var obj = Session["data"] as dynamic;
+                var data = obj.data as IEnumerable<IDictionary<string, object>>;
+                var result = data.Take(rows);
+                return View(result);
+            }
+            else
+                return RedirectToAction("UploadFile");
         }
+        
 
         #region Private function
-        
+
         /*----------------Private functions-----------------*/
         private string parseToJson(string filePath) {
             var excel = new ExcelQueryFactory(filePath);

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ESRGC.Broadband.ETL.CencusBlock.Domain.Model
+namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 {
     public class CensusBlock
     {

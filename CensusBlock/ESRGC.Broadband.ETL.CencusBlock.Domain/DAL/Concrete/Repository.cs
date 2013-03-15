@@ -5,9 +5,9 @@ using System.Text;
 using System.Data;
 using System.Data.Entity;
 using System.Linq.Expressions;
-using ESRGC.Broadband.ETL.CencusBlock.Domain.DAL.Abstract;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 
-namespace ESRGC.Broadband.ETL.CencusBlock.Domain.DAL.Concrete
+namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
 {
     public class Repository<TEntity>: IRepository<TEntity> where TEntity: class
     {

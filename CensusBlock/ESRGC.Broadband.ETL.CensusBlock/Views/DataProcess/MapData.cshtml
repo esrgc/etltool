@@ -1,0 +1,195 @@
+﻿@model ESRGC.Broadband.ETL.CensusBlock.Models.DataMappingModel
+@{
+    ViewBag.Title = "Field Mapping";
+}
+@section header{
+    <h3>@ViewBag.Title</h3>
+    <ul class="breadcrumb">
+        <li>
+            <a href="@Url.Action("index", "Home")">
+                Home</a><span class="divider">/</span></li>
+        <li>
+            <a href="@Url.Action("UploadFile", "Upload")">
+                Upload</a><span class="divider">/</span></li>
+        <li>
+            <a href="@Url.Action("PreviewData", "Upload")">
+                Data Preview</a><span class="divider">/</span></li>
+        <li class="active">@ViewBag.Title</li>
+    </ul>
+}
+<!--Content-->
+<div class="row-fluid">
+    <div class="well span12">
+        <h4>
+            Instructions</h4>
+        <ol>
+            <li>
+                Match each field/column with NTIA model field.
+            </li>
+            <li>
+            </li>
+            <li>
+            </li>
+            <li>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="well span12">
+        <h4>Map uploaded data to NTIA data model</h4>
+        <form class="form-horizontal" action="MapData" method="post">
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.PPROVNAMEColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.PPROVNAMEColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.DBANAMEColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.DBANAMEColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.Provider_typeColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.Provider_typeColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.FRNColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.FRNColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.STATEFIPSColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.STATEFIPSColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.COUNTYFIPSColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.COUNTYFIPSColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.TRACTColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.TRACTColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.BLOCKIDColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.BLOCKIDColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.BLOCKSUBGROUPColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.BLOCKSUBGROUPColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.FULLFIPSIDColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.FULLFIPSIDColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.TRANSTECHColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.TRANSTECHColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.MAXADDOWNColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.MAXADDOWNColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.MAXADUPColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.MAXADUPColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.TYPICDOWNColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.TYPICDOWNColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MappingObject.TYPICUPColumn, new { @class="control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(
+                        x => x.MappingObject.TYPICUPColumn,
+                        new SelectList(Model.UploadData.First().Keys),
+                        "--select a column--"
+                        )
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

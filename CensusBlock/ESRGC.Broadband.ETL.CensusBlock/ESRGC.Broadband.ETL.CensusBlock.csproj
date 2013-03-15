@@ -182,6 +182,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DataProcessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Extension\ListToJson.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Infrastructure\Services.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\DataMappingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -335,8 +337,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery\jquery-1.9.0.min.map" />
-    <Content Include="Views\Upload\Index.cshtml" />
     <Content Include="Views\Upload\UploadFile.cshtml" />
+    <Content Include="Views\Upload\PreviewData.cshtml" />
+    <Content Include="Views\DataProcess\MapData.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">
+      <Project>{6DF8FE5F-3672-4040-A2E4-4EBB9EA01AE8}</Project>
+      <Name>ESRGC.Broadband.ETL.CensusBlock.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

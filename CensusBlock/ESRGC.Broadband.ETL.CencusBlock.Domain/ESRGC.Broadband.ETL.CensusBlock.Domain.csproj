@@ -8,8 +8,8 @@
     <ProjectGuid>{6DF8FE5F-3672-4040-A2E4-4EBB9EA01AE8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ESRGC.Broadband.ETL.CencusBlock.Domain</RootNamespace>
-    <AssemblyName>ESRGC.Broadband.ETL.CencusBlock.Domain</AssemblyName>
+    <RootNamespace>ESRGC.Broadband.ETL.CensusBlock.Domain</RootNamespace>
+    <AssemblyName>ESRGC.Broadband.ETL.CensusBlock.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

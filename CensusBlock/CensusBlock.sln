@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESRGC.Broadband.ETL.CensusB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESRGC.Broadband.ETL.CensusBlock.Tests", "ESRGC.Broadband.ETL.CensusBlock.Tests\ESRGC.Broadband.ETL.CensusBlock.Tests.csproj", "{3EA739DA-5B2C-416B-A9BA-7DFD90213FDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESRGC.Broadband.ETL.CencusBlock.Domain", "ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CencusBlock.Domain.csproj", "{6DF8FE5F-3672-4040-A2E4-4EBB9EA01AE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESRGC.Broadband.ETL.CensusBlock.Domain", "ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj", "{6DF8FE5F-3672-4040-A2E4-4EBB9EA01AE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Infrastructure;
 
-namespace ESRGC.Broadband.ETL.CencusBlock.Domain.DAL
+namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL
 {
     public class DomainDataContext: DbContext
     {
