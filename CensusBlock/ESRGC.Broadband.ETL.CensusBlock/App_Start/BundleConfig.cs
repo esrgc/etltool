@@ -22,7 +22,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/customCSS/style").Include("~/Content/customCSS/site.css"));
+            bundles.Add(new StyleBundle("~/Content/customCSS/style").Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

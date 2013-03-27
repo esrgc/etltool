@@ -9,7 +9,7 @@ using ESRGC.Broadband.ETL.CensusBlock.Extension;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
-    public class UploadController : BaseController
+    public class UploadController : Controller
     {
         /// <summary>
         /// provides upload form

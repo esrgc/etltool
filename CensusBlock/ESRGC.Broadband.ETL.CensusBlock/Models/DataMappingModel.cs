@@ -8,7 +8,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Models
 {
     public class DataMappingModel
     {
-        public IEnumerable<IDictionary<string, object>> UploadData { get; set; }
+        public IEnumerable<string> UploadDataColumns { get; set; }
         public ColumnMapping MappingObject { get; set; }
     }
 }

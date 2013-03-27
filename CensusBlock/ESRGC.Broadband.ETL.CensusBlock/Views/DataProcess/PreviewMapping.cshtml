@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Preview Mapping";
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $('form').validate({
+            debug: true,
+            highlight: function (label) {
+                $(label).closest('.control-group').addClass('error');
+                $(label).closest('.control-group').removeClass('success');
+            },
+            success: function (label) {
+                label.text('OK!').addClass('valid')
+                    .closest('.control-group').addClass('success');
+            }
+        });
+    </script>
+}
+@section header{
+    <h3>@ViewBag.Title</h3>
+    <ul class="breadcrumb">
+        <li>
+            <a href="@Url.Action("index", "Home")">
+                Home</a><span class="divider">/</span>
+        </li>
+        <li>
+            <a href="@Url.Action("UploadFile", "Upload")">
+                Upload</a><span class="divider">/</span>
+        </li>
+        <li>
+            <a href="@Url.Action("PreviewData", "Upload")">
+                Data Preview</a><span class="divider">/</span>
+        </li>
+        <li class="active">@ViewBag.Title</li>
+    </ul>
+}

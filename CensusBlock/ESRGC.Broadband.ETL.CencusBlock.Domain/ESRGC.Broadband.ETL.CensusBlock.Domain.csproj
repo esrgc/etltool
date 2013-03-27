@@ -46,9 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\Abstract\IRepository.cs" />
+    <Compile Include="DAL\Abstract\IUnitOfWork.cs" />
+    <Compile Include="DAL\Concrete\DomainWorkUnit.cs" />
     <Compile Include="DAL\Concrete\Repository.cs" />
     <Compile Include="DAL\DomainDataContext.cs" />
-    <Compile Include="Model\CensusBlock.cs" />
+    <Compile Include="Model\ServiceCensusBlock.cs" />
     <Compile Include="Model\ColumnMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

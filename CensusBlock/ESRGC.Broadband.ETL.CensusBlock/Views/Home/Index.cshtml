@@ -4,31 +4,39 @@
 
 @section header{
     <div class="hero-unit">
-        <h1>
-            Maryland Broadband</h1>
+        <h1>Maryland Broadband</h1>
         <p>
             ETL Data Upload Tool for Census Block
         </p>
-        <p><small>some more description goes here</small></p>
+        <p><small>Upload broadband service data for Census block with excel files.</small></p>
     </div>
 }
 <!--Content-->
 <div class="row-fluid">
     <div class="well span12">
-        <h4>Instructions</h4>
-        <ol>
+        <strong>Before uploading your data, please note that: </strong>
+        <ul>
             <li>
-                asldkfj lfkjw rwoiyr aoihovnda nfeoina cvoihwnea oiadhf eoifha oh doaihefoaneo ahfuhebiwb
-                abfiub v,wehoih avoeih this veiand oeijar dkvha kiaer vkaheroi ivhoihc eihfhia fei
-                f ivenvieoahdh feov
+                Uploading file is in excel format (xls or xlsx).
             </li>
             <li>
-                Some more instruction and steps
+                Data must meet NTIA data requirements. See this 
+                <a target="_blank" href="http://www.broadbandmap.gov/blog/wp-content/uploads/2011/02/Transfer_Model_Tech_Spec.html#FeatureClassBB_Service_CensusBlock">
+                    link.
+                </a>                
             </li>
             <li>
-                Someone just needs to put something here to instruct people
+                Your data must have the same number of columns/fields as the NTIA data model.
             </li>
-        </ol>
+            <li>
+                Column/field names can differ from NTIA model. Data fields are mappable after a data file is uploaded.
+            </li>
+        </ul>
+        <p>
+            The app will allow column mapping once data is uploaded. 
+            It then verifies your data based on NTIA data requirements. 
+            If any error occurs during data mapping process you must fix the error and upload a new file.
+        </p>
     </div>
 </div>
 <div class="row-fluid">

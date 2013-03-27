@@ -1,0 +1,40 @@
+﻿header {
+    margin-top: 60px;
+}
+
+/*IDs*/
+input#dataInput {
+    opacity: 0;
+    filter: alpha(opacity = 0);
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    width: 0;
+    height: 0;
+}
+
+
+/*classes*/
+.validation-summary-errors {
+    color: Red;
+}
+/*validation*/
+label.valid {
+    width: 24px;
+    height: 24px;
+    background: url(images/valid.png) center center no-repeat;
+    display: inline-block;
+    text-indent: -9999px;
+}
+label.error {
+    font-weight: bold;
+    color: red;
+    padding: 2px 8px;
+    margin-top: 2px;
+}
+label.field-required:before {
+    color: red;
+    content: "*";
+}

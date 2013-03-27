@@ -204,7 +204,8 @@
     <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Content\images\esrgclogo.jpg" />
-    <Content Include="Content\customCSS\site.css" />
+    <Content Include="Content\site.css" />
+    <Content Include="Content\images\valid.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -273,18 +274,18 @@
     <Content Include="Scripts\ESRGC\Store\mdImapGeocoder.js" />
     <Content Include="Scripts\ESRGC\toolbar.js" />
     <Content Include="Scripts\ESRGC\toolItem.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate.js" />
+    <Content Include="Scripts\jqueryPlugins\jquery.validate.min.js" />
     <Content Include="Scripts\jquery\jquery-1.9.0-vsdoc.js" />
     <Content Include="Scripts\jquery\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery\jquery-1.9.0.min.js" />
     <Content Include="Scripts\jqueryPlugins\jquery-ui-1.8.20.js" />
     <Content Include="Scripts\jqueryPlugins\jquery-ui-1.8.20.min.js" />
-    <Content Include="Scripts\jqueryPlugins\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jqueryPlugins\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jqueryPlugins\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jqueryPlugins\jquery.validate.js" />
-    <Content Include="Scripts\jqueryPlugins\jquery.validate.min.js" />
-    <Content Include="Scripts\jqueryPlugins\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jqueryPlugins\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Upload\app.js" />
     <Content Include="Upload\app\controller\upload.js" />
@@ -340,6 +341,7 @@
     <Content Include="Views\Upload\UploadFile.cshtml" />
     <Content Include="Views\Upload\PreviewData.cshtml" />
     <Content Include="Views\DataProcess\MapData.cshtml" />
+    <Content Include="Views\DataProcess\PreviewMapping.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">
