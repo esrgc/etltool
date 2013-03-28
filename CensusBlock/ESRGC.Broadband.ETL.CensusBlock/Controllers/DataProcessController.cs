@@ -114,8 +114,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         }
                         else {
                             //redirect to report errors
-                            errorList.Add(count, dataEntry);
-                            
+                            errorList.Add(count, dataEntry);                            
                         }
                         
                     }
@@ -126,7 +125,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     count++;//increase count
                 }
                 _workUnit.SaveChanges();//push data to database
-                return RedirectToAction("index");
+                return RedirectToAction("PreviewMapping");
             }
             //error has occured
             else {
