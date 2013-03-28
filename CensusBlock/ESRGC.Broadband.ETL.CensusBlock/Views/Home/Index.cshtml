@@ -4,17 +4,15 @@
 
 @section header{
     <div class="hero-unit">
-        <h1>Maryland Broadband</h1>
-        <p>
-            ETL Data Upload Tool for Census Block
-        </p>
-        <p><small>Upload broadband service data for Census block with excel files.</small></p>
+        <h2>Maryland Broadband</h2>
+        <p>ETL Data Upload Tool</p>
+        <small>Upload broadband service data for Census Block with excel files.</small>
     </div>
 }
 <!--Content-->
 <div class="row-fluid">
     <div class="well span12">
-        <strong>Before uploading your data, please note that: </strong>
+        <h4><strong>Before uploading your data, please read the important notes below: </strong></h4>
         <ul>
             <li>
                 Uploading file is in excel format (xls or xlsx).
@@ -25,18 +23,16 @@
                     link.
                 </a>                
             </li>
-            <li>
-                Your data must have the same number of columns/fields as the NTIA data model.
-            </li>
-            <li>
-                Column/field names can differ from NTIA model. Data fields are mappable after a data file is uploaded.
-            </li>
+            <li>Your data must have the same number of columns/fields as the NTIA data model.</li>
+            <li>Column/field names can differ from NTIA model.</li>
+            <li>Data fields are mappable after a data file is uploaded.</li>
         </ul>
-        <p>
+        <div class="alert alert-info">
+            <strong>Warning!</strong>
             The app will allow column mapping once data is uploaded. 
             It then verifies your data based on NTIA data requirements. 
-            If any error occurs during data mapping process you must fix the error and upload a new file.
-        </p>
+            If any error occurs during data mapping process you must fix the error(s) and upload a new file.
+        </div>
     </div>
 </div>
 <div class="row-fluid">

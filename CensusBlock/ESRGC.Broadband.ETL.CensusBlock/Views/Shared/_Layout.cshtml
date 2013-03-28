@@ -31,8 +31,19 @@
         <section>
             @RenderBody()
         </section>
+        <hr />
         <footer>
             <!--Put something in here for footer-->
+            <div class="row-fluid">
+                <ul class="thumbnails">
+                    <li class="span1 offset3"><img src="@Url.Content("~/Content/images/recoveryGov.jpg")" /></li>
+                    <li class="span1"><img src="@Url.Content("~/Content/images/MDBC.jpg")" /></li>
+                    <li class="span1"><img src="@Url.Content("~/Content/images/ntia_logo.png")" /></li>
+                    <li class="span1"><img src="@Url.Content("~/Content/images/MDlogo.gif")" /></li>
+                    <li class="span1"><img src="@Url.Content("~/Content/images/SuLogo.jpg")" /></li>
+                    <li class="span1"><img src="@Url.Content("~/Content/images/towson.gif")" /></li>
+                </ul>
+            </div>
         </footer>
     </div>   
     @RenderSection("scripts", required: false)

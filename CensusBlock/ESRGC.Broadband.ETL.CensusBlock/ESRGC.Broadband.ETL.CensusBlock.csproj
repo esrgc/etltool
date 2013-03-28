@@ -204,6 +204,12 @@
     <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Content\images\esrgclogo.jpg" />
+    <Content Include="Content\images\SuLogo.jpg" />
+    <Content Include="Content\images\towson.gif" />
+    <Content Include="Content\images\MDBC.jpg" />
+    <Content Include="Content\images\MDlogo.gif" />
+    <Content Include="Content\images\ntia_logo.png" />
+    <Content Include="Content\images\recoveryGov.jpg" />
     <Content Include="Content\site.css" />
     <Content Include="Content\images\valid.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -342,6 +348,7 @@
     <Content Include="Views\Upload\PreviewData.cshtml" />
     <Content Include="Views\DataProcess\MapData.cshtml" />
     <Content Include="Views\DataProcess\PreviewMapping.cshtml" />
+    <Content Include="Views\DataProcess\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">

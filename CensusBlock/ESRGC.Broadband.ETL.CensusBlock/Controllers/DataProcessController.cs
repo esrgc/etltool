@@ -43,29 +43,35 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var data = obj.data as IEnumerable<IDictionary<string, object>>;
             //data to be stored
             IList<ServiceCensusBlock> dataList = new List<ServiceCensusBlock>();
+            IDictionary<int, object> errorList = new Dictionary<int, object>();
             DateTime timeSubmitted = DateTime.Now;
             if (ModelState.IsValid) {
+                ModelState.Clear();//clear model state to validate transfer data
+                int count = 1;//start at line 1
                 foreach (var entry in data) {
                     short tempShort;
                     object tempValue;
                     try {
+
+                        #region data transfer
                         var dataEntry = new ServiceCensusBlock();
+
                         tempValue = entry[columns.PPROVNAMEColumn];
                         dataEntry.PROVNAME = tempValue != null ? tempValue.ToString() : string.Empty;
-                        
+
                         tempValue = entry[columns.DBANAMEColumn];
                         dataEntry.DBANAME = tempValue != null ? tempValue.ToString() : dataEntry.DBANAME;
-                        
+
                         dataEntry.Provider_Type =
                             short.TryParse(entry[columns.Provider_typeColumn].ToString(), out tempShort) ?
                             tempShort : (short)-9999;
-                        
+
                         tempValue = entry[columns.FRNColumn];
                         dataEntry.FRN = tempValue != null ? tempValue.ToString() : dataEntry.FRN;
-                        
+
                         tempValue = entry[columns.STATEFIPSColumn];
                         dataEntry.STATEFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
-                        
+
                         tempValue = entry[columns.COUNTYFIPSColumn];
                         dataEntry.COUNTYFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
 
@@ -97,7 +103,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         tempValue = entry[columns.TYPICUPColumn];
                         dataEntry.TYPICUP = tempValue != null ? tempValue.ToString() : dataEntry.TYPICUP;
 
-                        dataEntry.TimeStamp = timeSubmitted;
+                        dataEntry.TimeStamp = timeSubmitted; 
+                        #endregion
 
                         //validate data for each entry
                         TryValidateModel(dataEntry);
@@ -107,12 +114,16 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         }
                         else {
                             //redirect to report errors
+                            errorList.Add(count, dataEntry);
+                            
                         }
+                        
                     }
                     catch (Exception ex) {
                         ModelState.AddModelError("", "An error has occured. " + ex.Message);
-                        return View();
+                        return View("Error");
                     }
+                    count++;//increase count
                 }
                 _workUnit.SaveChanges();//push data to database
                 return RedirectToAction("index");
