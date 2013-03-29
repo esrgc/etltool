@@ -63,13 +63,14 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="well span12">
+    <div class="well span6">
         <h4>NTIA Data Mapping <span class="label label-important">
             ( * ) fields are required
         </span></h4>
         <br />
         <form class="form-horizontal" action="MapData" method="post">
         @Html.ValidationSummary(true)
+        
         <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.PPROVNAMEColumn, new { @class = "control-label field-required" })
             <div class="controls">
@@ -131,7 +132,7 @@
                 )
             </div>
         </div>
-        <div class="control-group">
+       @*<div class="control-group">
             @Html.LabelFor(x => x.MappingObject.STATEFIPSColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -205,7 +206,7 @@
                         }       
                 )
             </div>
-        </div>
+        </div>*@
         <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.FULLFIPSIDColumn, new { @class = "control-label field-required" })
             <div class="controls">
@@ -237,14 +238,14 @@
             </div>
         </div>
         <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.MAXADDOWNColumn, new { @class = "control-label" })
+            @Html.LabelFor(x => x.MappingObject.MAXADDOWNColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
                         x => x.MappingObject.MAXADDOWNColumn,
                         new SelectList(Model.UploadDataColumns),
                         "--select a column--",
                         new { 
-                            @class = "input-large",
+                            @class = "input-large required",
                             Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                 model => model.MappingObject.MAXADDOWNColumn, ViewData).Description
                         }       
@@ -252,14 +253,14 @@
             </div>
         </div>
         <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.MAXADUPColumn, new { @class = "control-label" })
+            @Html.LabelFor(x => x.MappingObject.MAXADUPColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
                         x => x.MappingObject.MAXADUPColumn,
                         new SelectList(Model.UploadDataColumns),
                         "--select a column--",
                         new { 
-                            @class = "input-large",
+                            @class = "input-large required",
                             Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                 model => model.MappingObject.MAXADUPColumn, ViewData).Description
                         }       
@@ -301,6 +302,9 @@
             <input type="reset" class="btn" />
         </div>
         </form>
+    </div>
+    <div class="well span6">
+        <h4>Previews</h4>
     </div>
 </div>
 

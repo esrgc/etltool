@@ -69,20 +69,20 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         tempValue = entry[columns.FRNColumn];
                         dataEntry.FRN = tempValue != null ? tempValue.ToString() : dataEntry.FRN;
 
-                        tempValue = entry[columns.STATEFIPSColumn];
-                        dataEntry.STATEFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
+                        //tempValue = entry[columns.STATEFIPSColumn];
+                        //dataEntry.STATEFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
 
-                        tempValue = entry[columns.COUNTYFIPSColumn];
-                        dataEntry.COUNTYFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
+                        //tempValue = entry[columns.COUNTYFIPSColumn];
+                        //dataEntry.COUNTYFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
 
-                        tempValue = entry[columns.TRACTColumn];
-                        dataEntry.TRACT = tempValue != null ? tempValue.ToString() : string.Empty;
+                        //tempValue = entry[columns.TRACTColumn];
+                        //dataEntry.TRACT = tempValue != null ? tempValue.ToString() : string.Empty;
 
-                        tempValue = entry[columns.BLOCKIDColumn];
-                        dataEntry.BLOCKID = tempValue != null ? tempValue.ToString() : string.Empty;
+                        //tempValue = entry[columns.BLOCKIDColumn];
+                        //dataEntry.BLOCKID = tempValue != null ? tempValue.ToString() : string.Empty;
 
-                        tempValue = entry[columns.BLOCKSUBGROUPColumn];
-                        dataEntry.BLOCKSUBGROUP = tempValue != null ? tempValue.ToString() : string.Empty;
+                        //tempValue = entry[columns.BLOCKSUBGROUPColumn];
+                        //dataEntry.BLOCKSUBGROUP = tempValue != null ? tempValue.ToString() : string.Empty;
 
                         tempValue = entry[columns.FULLFIPSIDColumn];
                         dataEntry.FULLFIPSID = tempValue != null ? tempValue.ToString() : dataEntry.FULLFIPSID;
@@ -103,7 +103,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         tempValue = entry[columns.TYPICUPColumn];
                         dataEntry.TYPICUP = tempValue != null ? tempValue.ToString() : dataEntry.TYPICUP;
 
-                        dataEntry.TimeStamp = timeSubmitted; 
+                        dataEntry.TimeStamp = timeSubmitted;
                         #endregion
 
                         //validate data for each entry
@@ -114,9 +114,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         }
                         else {
                             //redirect to report errors
-                            errorList.Add(count, dataEntry);                            
+                            errorList.Add(count, dataEntry);
                         }
-                        
                     }
                     catch (Exception ex) {
                         ModelState.AddModelError("", "An error has occured. " + ex.Message);
@@ -124,17 +123,15 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     }
                     count++;//increase count
                 }
-                _workUnit.SaveChanges();//push data to database
-                return RedirectToAction("PreviewMapping");
+                //_workUnit.SaveChanges();//push data to database
+                return View("PreviewMapping");
             }
             //error has occured
             else {
-                return View();
+                return View(mappingModel);
             }
         }
 
-        public ActionResult PreviewMapping(IEnumerable<ServiceCensusBlock> data) {
-            return View();
-        }
+
     }
 }

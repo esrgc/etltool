@@ -5,6 +5,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 {
     public class ServiceCensusBlock
     {
+        private string _fullFipsID;
         public ServiceCensusBlock() {
             DBANAME = "N/A";
             FRN = "9999";
@@ -46,15 +47,27 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         public string TRACT { get; set; }
         [Required]
         [StringLength(4)]
-        [Display(Description = "Census Block Full ID")]
+        [Display(Description = "Census Block ID")]
         public string BLOCKID { get; set; }
-        [StringLength(1)]
-        [Display(Description = "Block Subgroup")]
-        public string BLOCKSUBGROUP { get; set; }
+        //[StringLength(1)]
+        //[Display(Description = "Block Subgroup")]
+        //public string BLOCKSUBGROUP { get; set; }
         [Required]
-        [StringLength(16)]
+        [StringLength(15)]
         [Display(Name = "FULL CENSUS BLOCK ID", Description = "Current block identifier; a concatenation of Census 2000 state Federal Information Processing Standards (FIPS) code, Census 2000 county FIPS code, Census 2000 census tract code, Census 2000 tabulation block number, and current block suffix 1")]
-        public string FULLFIPSID { get; set; }
+        public string FULLFIPSID {
+            get { return _fullFipsID; }
+            set {
+                _fullFipsID = value;
+                if (value.Length == 15) {
+                    //set State fips, county fips, Tract, and block ID
+                    STATEFIPS = _fullFipsID.Substring(0, 2);
+                    COUNTYFIPS = _fullFipsID.Substring(2, 3);
+                    TRACT = _fullFipsID.Substring(5, 6);
+                    BLOCKID = _fullFipsID.Substring(11, 4); 
+                }
+            }
+        }
         [Required]
         [Display(Name = "Technology of Transmission")]
         public short TRANSTECH { get; set; }
