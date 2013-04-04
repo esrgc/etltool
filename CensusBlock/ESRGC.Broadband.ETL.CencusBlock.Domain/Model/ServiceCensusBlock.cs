@@ -59,7 +59,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
             get { return _fullFipsID; }
             set {
                 _fullFipsID = value;
-                if (value.Length == 15) {
+                if (value.Length == 15 && value != "9999") {
                     //set State fips, county fips, Tract, and block ID
                     STATEFIPS = _fullFipsID.Substring(0, 2);
                     COUNTYFIPS = _fullFipsID.Substring(2, 3);

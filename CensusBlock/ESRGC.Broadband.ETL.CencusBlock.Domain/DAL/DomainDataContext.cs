@@ -11,7 +11,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL
 {
     public class DomainDataContext: DbContext
     {
-        public DomainDataContext():base("DomainDataContext") { 
+        public DomainDataContext():base("name=ETL") { 
         
         }
 

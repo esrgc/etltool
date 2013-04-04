@@ -13,7 +13,7 @@
                 $(label).closest('.control-group').removeClass('success');
             },
             success: function (label) {
-                label.text('OK!').addClass('valid')
+                $(label).text('OK!').addClass('valid')
                     .closest('.control-group').addClass('success');
             }
         });
@@ -68,10 +68,10 @@
             ( * ) fields are required
         </span></h4>
         <br />
-        <form class="form-horizontal" action="MapData" method="post">
+        <form class="form-horizontal" action="@Url.Action("MapData")" method="post">
         @Html.ValidationSummary(true)
         
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.PPROVNAMEColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -87,7 +87,7 @@
                 @Html.ValidationMessageFor(x => x.MappingObject.PPROVNAMEColumn)
             </div>
         </div>
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.DBANAMEColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -102,7 +102,7 @@
                 )
             </div>
         </div>
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.Provider_typeColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -117,7 +117,7 @@
                 )
             </div>
         </div>
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.FRNColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -132,82 +132,7 @@
                 )
             </div>
         </div>
-       @*<div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.STATEFIPSColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.STATEFIPSColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.STATEFIPSColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.COUNTYFIPSColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.COUNTYFIPSColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.COUNTYFIPSColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.TRACTColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.TRACTColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.TRACTColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.BLOCKIDColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.BLOCKIDColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.BLOCKIDColumn, ViewData).DisplayName
-                        }       
-                )
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.BLOCKSUBGROUPColumn, new { @class = "control-label" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.BLOCKSUBGROUPColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.BLOCKSUBGROUPColumn, ViewData).DisplayName
-                        }       
-                )
-            </div>
-        </div>*@
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.FULLFIPSIDColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -222,7 +147,7 @@
                 )
             </div>
         </div>
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.TRANSTECHColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -237,7 +162,7 @@
                 )
             </div>
         </div>
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.MAXADDOWNColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -252,7 +177,7 @@
                 )
             </div>
         </div>
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.MAXADUPColumn, new { @class = "control-label field-required" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -267,7 +192,7 @@
                 )
             </div>
         </div>
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.TYPICDOWNColumn, new { @class = "control-label" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -282,7 +207,7 @@
                 )
             </div>
         </div>
-        <div class="control-group">
+            <div class="control-group">
             @Html.LabelFor(x => x.MappingObject.TYPICUPColumn, new { @class = "control-label" })
             <div class="controls">
                 @Html.DropDownListFor(
@@ -297,10 +222,10 @@
                 )
             </div>
         </div>
-        <div class="form-actions">
-            <input type="submit" class="btn btn-primary" />
-            <input type="reset" class="btn" />
-        </div>
+            <div class="form-actions">
+                <input type="submit" class="btn btn-primary" />
+                <input type="reset" class="btn" />
+            </div>
         </form>
     </div>
     <div class="well span6">

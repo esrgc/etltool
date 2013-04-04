@@ -46,13 +46,12 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             IDictionary<int, object> errorList = new Dictionary<int, object>();
             DateTime timeSubmitted = DateTime.Now;
             if (ModelState.IsValid) {
-                ModelState.Clear();//clear model state to validate transfer data
                 int count = 1;//start at line 1
                 foreach (var entry in data) {
                     short tempShort;
                     object tempValue;
                     try {
-
+                        ModelState.Clear();//clear model state to validate transfer data
                         #region data transfer
                         var dataEntry = new ServiceCensusBlock();
 
@@ -67,22 +66,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                             tempShort : (short)-9999;
 
                         tempValue = entry[columns.FRNColumn];
-                        dataEntry.FRN = tempValue != null ? tempValue.ToString() : dataEntry.FRN;
-
-                        //tempValue = entry[columns.STATEFIPSColumn];
-                        //dataEntry.STATEFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
-
-                        //tempValue = entry[columns.COUNTYFIPSColumn];
-                        //dataEntry.COUNTYFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
-
-                        //tempValue = entry[columns.TRACTColumn];
-                        //dataEntry.TRACT = tempValue != null ? tempValue.ToString() : string.Empty;
-
-                        //tempValue = entry[columns.BLOCKIDColumn];
-                        //dataEntry.BLOCKID = tempValue != null ? tempValue.ToString() : string.Empty;
-
-                        //tempValue = entry[columns.BLOCKSUBGROUPColumn];
-                        //dataEntry.BLOCKSUBGROUP = tempValue != null ? tempValue.ToString() : string.Empty;
+                        dataEntry.FRN = tempValue != null ? tempValue.ToString().Replace("-", "") : dataEntry.FRN;
 
                         tempValue = entry[columns.FULLFIPSIDColumn];
                         dataEntry.FULLFIPSID = tempValue != null ? tempValue.ToString() : dataEntry.FULLFIPSID;
@@ -97,15 +81,25 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         tempValue = entry[columns.MAXADUPColumn];
                         dataEntry.MAXADUP = tempValue != null ? tempValue.ToString() : dataEntry.MAXADUP;
 
-                        tempValue = entry[columns.TYPICDOWNColumn];
-                        dataEntry.TYPICDOWN = tempValue != null ? tempValue.ToString() : dataEntry.TYPICDOWN;
+                        try {
+                            tempValue = entry[columns.TYPICDOWNColumn];
+                            dataEntry.TYPICDOWN = tempValue != null ? tempValue.ToString() : dataEntry.TYPICDOWN;
+                        }
+                        catch {
+                            //reserve default value if error occurs
+                        }
 
-                        tempValue = entry[columns.TYPICUPColumn];
-                        dataEntry.TYPICUP = tempValue != null ? tempValue.ToString() : dataEntry.TYPICUP;
+                        try {
+                            tempValue = entry[columns.TYPICUPColumn];
+                            dataEntry.TYPICUP = tempValue != null ? tempValue.ToString() : dataEntry.TYPICUP;
+                        }
+                        catch {
+                            //reserve default value if error occurs
+                        }
 
                         dataEntry.TimeStamp = timeSubmitted;
                         #endregion
-
+                        
                         //validate data for each entry
                         TryValidateModel(dataEntry);
                         if (ModelState.IsValid) {
@@ -123,7 +117,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     }
                     count++;//increase count
                 }
-                //_workUnit.SaveChanges();//push data to database
+                _workUnit.SaveChanges();//push data to database
                 return View("PreviewMapping");
             }
             //error has occured
