@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ESRGC.Broadband.ETL.CensusBlock.Models;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
+using ESRGC.Broadband.ETL.CensusBlock.Extension;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
@@ -22,7 +23,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     MappingObject = new ColumnMapping(),
                     UploadDataColumns = data.First().Keys
                 };
-
+                ViewBag.dataFirstRow = data.First().ToJSon();
                 return View(model);
             }
             else {

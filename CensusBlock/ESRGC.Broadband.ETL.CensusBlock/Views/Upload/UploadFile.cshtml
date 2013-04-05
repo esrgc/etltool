@@ -4,15 +4,9 @@
 @section scripts{
     <!--App script--to be packed into bundle-->
     <!--base app structure code-->
-    <script src="@Url.Content("~/Scripts/ESRGC/Script.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/ESRGC/component.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/ESRGC/Application/application.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/ESRGC/Controller/base.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/ESRGC/Model/base.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/ESRGC/Store/base.js")" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/appBase")
     <!--Custom app code-->
-    <script src="@Url.Content("~/Upload/app.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Upload/app/controller/upload.js")" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/uploadApp")
     <!--Start up code-->
     <script type="text/javascript">
         $(function () {

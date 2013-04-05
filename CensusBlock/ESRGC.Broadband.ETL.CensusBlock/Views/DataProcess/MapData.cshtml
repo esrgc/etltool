@@ -4,23 +4,14 @@
     ViewBag.Title = "Field Mapping";
 }
 @section scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render(
+        "~/bundles/jqueryval",
+        "~/bundles/appBase",
+        "~/bundles/mapDataApp"
+    )
     <script type="text/javascript">
-        $('form').validate({
-            debug: true,
-            highlight: function (label) {
-                $(label).closest('.control-group').addClass('error');
-                $(label).closest('.control-group').removeClass('success');
-            },
-            success: function (label) {
-                $(label).text('OK!').addClass('valid')
-                    .closest('.control-group').addClass('success');
-            }
-        });
-
-        $('select').tooltip({
-            toggle: "tooltip",
-            placement: "right"
+        $(function () {
+            new ESRGC.App();
         });
     </script>
 }
