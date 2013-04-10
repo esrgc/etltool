@@ -2,4 +2,30 @@
     ViewBag.Title = "Error";
 }
 
+@section header{
+    <h3>@ViewBag.Title</h3>
+    <ul class="breadcrumb">
+        <li>
+            <a href="@Url.Action("index", "Home")">
+                Home</a><span class="divider">/</span>
+        </li>
+        <li>
+            <a href="@Url.Action("UploadFile", "Upload")">
+                Upload</a><span class="divider">/</span>
+        </li>
+        <li>
+            <a href="@Url.Action("PreviewData", "Upload")">
+                Data Preview</a><span class="divider">/</span>
+        </li>
+        <li class="active">@ViewBag.Title</li>
+    </ul>
+}
 
+<div class="row-fluid">
+    <div class="span12">
+        <div class="alert alert-danger">
+            <strong>An error has occured! </strong>
+            @ViewBag.errorMsg
+        </div>
+    </div>
+</div>

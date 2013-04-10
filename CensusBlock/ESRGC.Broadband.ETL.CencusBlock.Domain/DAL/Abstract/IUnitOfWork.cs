@@ -8,8 +8,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract
 {
     public interface IUnitOfWork
     {
+        IRepository<Submission> SubmissionRepository { get; }
         IRepository<ServiceCensusBlock> ServiceCensusRepository { get; }
-
         void SaveChanges();
     }
 }

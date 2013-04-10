@@ -23,7 +23,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     MappingObject = new ColumnMapping(),
                     UploadDataColumns = data.First().Keys
                 };
-                ViewBag.dataFirstRow = data.First().ToJSon();
+                ViewBag.firstRowData = data.First().ToJSon();
                 return View(model);
             }
             else {
@@ -45,7 +45,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             //data to be stored
             IList<ServiceCensusBlock> dataList = new List<ServiceCensusBlock>();
             IDictionary<int, object> errorList = new Dictionary<int, object>();
-            DateTime timeSubmitted = DateTime.Now;
+            Submission submission = new Submission();
+            _workUnit.SubmissionRepository.InsertEntity(submission);
+            _workUnit.SaveChanges();
             if (ModelState.IsValid) {
                 int count = 1;//start at line 1
                 foreach (var entry in data) {
@@ -56,7 +58,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         #region data transfer
                         var dataEntry = new ServiceCensusBlock();
 
-                        tempValue = entry[columns.PPROVNAMEColumn];
+                        tempValue = entry[columns.PROVNAMEColumn];
                         dataEntry.PROVNAME = tempValue != null ? tempValue.ToString() : string.Empty;
 
                         tempValue = entry[columns.DBANAMEColumn];
@@ -98,7 +100,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                             //reserve default value if error occurs
                         }
 
-                        dataEntry.TimeStamp = timeSubmitted;
+                        dataEntry.SubmissionID = submission.SubmissionID;
                         #endregion
                         
                         //validate data for each entry
@@ -113,13 +115,18 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         }
                     }
                     catch (Exception ex) {
-                        ModelState.AddModelError("", "An error has occured. " + ex.Message);
+                        ViewBag.errorMsg = "Error processing submitted data. " + ex.Message;
                         return View("Error");
                     }
                     count++;//increase count
                 }
                 _workUnit.SaveChanges();//push data to database
-                return View("PreviewMapping");
+                Session["data"] = null;//discard session data
+                var previewData = new PreviewMappingModel();
+                previewData.SuccessCount = dataList.Count();
+                previewData.ErrorList = errorList;
+                previewData.Data = dataList.Take(25).ToList();
+                return View("PreviewMapping", previewData);
             }
             //error has occured
             else {

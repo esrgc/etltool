@@ -11,7 +11,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
     {
         [Required]
         [DisplayName("Provider Name")]
-        public string PPROVNAMEColumn { get; set; }
+        public string PROVNAMEColumn { get; set; }
         [Required]
         [Display(Name = "DBA Name", Description = "Doing-Business As Name")]
         public string DBANAMEColumn { get; set; }

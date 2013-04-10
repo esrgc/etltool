@@ -84,6 +84,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         [Display(Name = "Typical Upstream Speed")]
         public string TYPICUP { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public int SubmissionID { get; set; }
+        public Submission Submission { get; set; }
     }
 }

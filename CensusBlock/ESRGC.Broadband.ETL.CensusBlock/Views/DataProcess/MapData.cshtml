@@ -16,7 +16,7 @@
     </script>
 }
 @section header{
-    <h3>@ViewBag.Title</h3>
+    <h3>@ViewBag.Title <i class="icon-resize-horizontal"></i></h3>
     <ul class="breadcrumb">
         <li>
             <a href="@Url.Action("index", "Home")">
@@ -39,16 +39,30 @@
         <h4>Instructions</h4>
         <ol>
             <li>
-                Match each field/column with NTIA model field.
+                Match each field/column with NTIA model field using the form below on the left.
             </li>
             <li>
-                Each field must be mapped to an uploaded data field.
+                Each required (*) field must be mapped to an uploaded data field.
             </li>
             <li>
-                If the number of fields are not matched you must check your data and upload a new file.
+                If all the required fields are not mapped you must check your data and upload a new file.
             </li>
             <li>
-                Click submit after all fields are mapped.
+                Preview data is automatically updated once a field/column is mapped.
+                Make sure the data is valid for the mapping field/column.
+                If data for the field is empty or unavailable the data will be labeled as "Not available".
+                In that case, please check your data and upload a new file.            
+            </li>
+            <li>
+                Non-required fields are assigned with default value, specified by the NTIA model.
+                These fields can be left unmapped.
+            </li>
+            <li>
+                <strong>Important note</strong> [STATE FIPS], [COUNTY FIPS], and [TRACT] fields
+                are parsed from [FULL CENSUS BLOCK ID] field. They are obscured from the form for this reason.
+            </li>
+            <li>
+                After all required fields are mapped. Click submit to proceed.                
             </li>
         </ol>
     </div>
@@ -56,171 +70,228 @@
 <div class="row-fluid">
     <div class="well span6">
         <h4>NTIA Data Mapping <span class="label label-important">
-            ( * ) fields are required
+            ( * ) Required fields 
         </span></h4>
         <br />
-        <form class="form-horizontal" action="@Url.Action("MapData")" method="post">
-        @Html.ValidationSummary(true)
-        
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.PPROVNAMEColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.PPROVNAMEColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.PPROVNAMEColumn, ViewData).DisplayName
-                        }
-                )
-                @Html.ValidationMessageFor(x => x.MappingObject.PPROVNAMEColumn)
-            </div>
+        <div>   
+            @Html.Hidden("firstRowData", ViewBag.firstRowData as string, new { name = "firstRowdata"})
+            <form class="form-horizontal" action="@Url.Action("MapData")" method="post">
+                @Html.ValidationSummary(true)
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.PROVNAMEColumn, new { @class = "control-label field-required" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                            x => x.MappingObject.PROVNAMEColumn,
+                            new SelectList(Model.UploadDataColumns),
+                            "--select a column--",
+                            new { 
+                                @class = "input-large required",
+                                Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                    model => model.MappingObject.PROVNAMEColumn, ViewData).DisplayName
+                            }
+                        )
+                        @Html.ValidationMessageFor(x => x.MappingObject.PROVNAMEColumn)
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.DBANAMEColumn, new { @class = "control-label field-required" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.DBANAMEColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large required",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.DBANAMEColumn, ViewData).Description
+                                }
+                        )
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.Provider_typeColumn, new { @class = "control-label field-required" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.Provider_typeColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large required",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.Provider_typeColumn, ViewData).DisplayName
+                                }
+                        )
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.FRNColumn, new { @class = "control-label field-required" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.FRNColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large required",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.FRNColumn, ViewData).Description
+                                }
+                        )
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.FULLFIPSIDColumn, new { @class = "control-label field-required" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.FULLFIPSIDColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large required",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.FULLFIPSIDColumn, ViewData).Description
+                                }       
+                        )
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.TRANSTECHColumn, new { @class = "control-label field-required" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.TRANSTECHColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large required",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.TRANSTECHColumn, ViewData).Description
+                                }       
+                        )
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.MAXADDOWNColumn, new { @class = "control-label field-required" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.MAXADDOWNColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large required",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.MAXADDOWNColumn, ViewData).Description
+                                }       
+                        )
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.MAXADUPColumn, new { @class = "control-label field-required" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.MAXADUPColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large required",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.MAXADUPColumn, ViewData).Description
+                                }       
+                        )
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.TYPICDOWNColumn, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.TYPICDOWNColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.TYPICDOWNColumn, ViewData).Description
+                                }       
+                        )
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(x => x.MappingObject.TYPICUPColumn, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(
+                                x => x.MappingObject.TYPICUPColumn,
+                                new SelectList(Model.UploadDataColumns),
+                                "--select a column--",
+                                new { 
+                                    @class = "input-large",
+                                    Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
+                                        model => model.MappingObject.TYPICUPColumn, ViewData).Description
+                                }       
+                        )
+                    </div>
+                </div>
+            
+                <div class="form-actions">
+                    <a class="btn" title="Back to data preview" 
+                        href="@Url.Action("PreviewData", "Upload")">Back</a>
+                    <input type="submit" class="btn btn-primary" />
+                    <input type="reset" class="btn" />
+                
+                </div>
+            </form>
         </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.DBANAMEColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.DBANAMEColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.DBANAMEColumn, ViewData).Description
-                        }
-                )
-            </div>
-        </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.Provider_typeColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.Provider_typeColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.Provider_typeColumn, ViewData).DisplayName
-                        }
-                )
-            </div>
-        </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.FRNColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.FRNColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.FRNColumn, ViewData).Description
-                        }
-                )
-            </div>
-        </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.FULLFIPSIDColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.FULLFIPSIDColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.FULLFIPSIDColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.TRANSTECHColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.TRANSTECHColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.TRANSTECHColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.MAXADDOWNColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.MAXADDOWNColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.MAXADDOWNColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.MAXADUPColumn, new { @class = "control-label field-required" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.MAXADUPColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large required",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.MAXADUPColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.TYPICDOWNColumn, new { @class = "control-label" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.TYPICDOWNColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.TYPICDOWNColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-            <div class="control-group">
-            @Html.LabelFor(x => x.MappingObject.TYPICUPColumn, new { @class = "control-label" })
-            <div class="controls">
-                @Html.DropDownListFor(
-                        x => x.MappingObject.TYPICUPColumn,
-                        new SelectList(Model.UploadDataColumns),
-                        "--select a column--",
-                        new { 
-                            @class = "input-large",
-                            Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
-                                model => model.MappingObject.TYPICUPColumn, ViewData).Description
-                        }       
-                )
-            </div>
-        </div>
-            <div class="form-actions">
-                <input type="submit" class="btn btn-primary" />
-                <input type="reset" class="btn" />
-            </div>
-        </form>
     </div>
     <div class="well span6">
-        <h4>Previews</h4>
+        <h4>Preview <small>(First row data)</small></h4>
+        <br />
+        <div class="" id="previewPanel">
+            
+            <table class="table table-hover">
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.PROVNAMEColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.DBANAMEColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.Provider_typeColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x=>x.MappingObject.FRNColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.FULLFIPSIDColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.TRANSTECHColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.MAXADDOWNColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.MAXADUPColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.TYPICDOWNColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.MappingObject.TYPICUPColumn)</td>
+                    <td><span class="label">Not mapped</span></td>
+                </tr>
+            </table>
+            <hr />
+            <h5>Label description</h5>
+            <p><span class="label">Not mapped</span> <i>Field has not been mapped.</i></p>
+            <p><span class="label label-success">Data available</span> <i>Data is available.</i></p>
+            <p><span class="label label-warning">Data unavailable</span> <i>Data is not available (null or empty).</i></p>
+        </div>
     </div>
 </div>
 

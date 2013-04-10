@@ -7,6 +7,9 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using ESRGC.Broadband.ETL.CensusBlock.Infrastructure;
+using System.Data.Entity;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL;
+using ESRGC.Broadband.ETL.CensusBlock.Migrations;
 
 namespace ESRGC.Broadband.ETL.CensusBlock
 {
@@ -26,6 +29,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock
 
             //set ninject controller factory
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<DomainDataContext, Configuration>());
         }
     }
 }

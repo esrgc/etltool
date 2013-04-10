@@ -1,7 +1,9 @@
-﻿@{
-    ViewBag.Title = "Preview Mapping";
+﻿@using ESRGC.Broadband.ETL.CensusBlock.Models
+@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
+@model PreviewMappingModel
+@{
+    ViewBag.Title = "Data Review";
 }
-
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
@@ -36,3 +38,120 @@
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
+<div class="row-fluid">
+    <!--Report added here-->
+    <div class="span12">
+        <h4>Mapping Report</h4>
+        @if(Model.ErrorList.Count == 0){
+            <div class="alert alert-success">
+                Your data has been sucessfully mapped to NTIA data model.
+                @Model.SuccessCount row(s) stored to our database.
+            </div>
+        }
+        else{
+            <div class="alert">
+                Your data has been mapped to NTIA data model.
+                @Model.SuccessCount row(s) stored to our database.
+                However, there are @Model.ErrorList.Count errors in your data. 
+                Please view report below, and correct the error. Re-upload your data if neccessary.
+            </div>            
+        }
+
+        <div class="form-actions">
+            <a href="@Url.Action("index", "home")" class="btn btn-primary">Finish</a>
+        </div>
+
+        <h5>Data Review<i> (Showing 25 rows of @Model.SuccessCount)</i></h5>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Provider Name</th>
+                    <th>DBA name</th>
+                    <th>Provider Type</th>
+                    <th>FCC Registration Number (FRN)</th>
+                    <th>State FIPS</th>
+                    <th>County FIPS</th>
+                    <th>Census Tract</th>
+                    <th>Census Block ID</th>
+                    <th>Full Block ID</th>
+                    <th>Technology of Transmission</th>
+                    <th>Max Ad. Download</th>
+                    <th>Max Ad. Upload</th>
+                    <th>Typical Download</th>
+                    <th>Typical Upload</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model.Data) { 
+                    <tr>
+                        <td>@x.PROVNAME</td>
+                        <td>@x.DBANAME</td>
+                        <td>@x.Provider_Type</td>
+                        <td>@x.FRN</td>
+                        <td>@x.STATEFIPS</td>
+                        <td>@x.COUNTYFIPS</td>
+                        <td>@x.TRACT</td>
+                        <td>@x.BLOCKID</td>
+                        <td>@x.FULLFIPSID</td>
+                        <td>@x.TRANSTECH</td>
+                        <td>@x.MAXADDOWN</td>
+                        <td>@x.MAXADUP</td>
+                        <td>@x.TYPICDOWN</td>
+                        <td>@x.TYPICUP</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+        @if (Model.ErrorList.Count > 0) {
+            <h5>Error List</h5>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Row No.</th>
+                        <th>Provider Name</th>
+                        <th>DBA name</th>
+                        <th>Provider Type</th>
+                        <th>FCC Registration Number (FRN)</th>
+                        <th>State FIPS</th>
+                        <th>County FIPS</th>
+                        <th>Census Tract</th>
+                        <th>Census Block ID</th>
+                        <th>Full Block ID</th>
+                        <th>Technology of Transmission</th>
+                        <th>Max Ad. Download</th>
+                        <th>Max Ad. Upload</th>
+                        <th>Typical Download</th>
+                        <th>Typical Upload</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var entry in Model.ErrorList) {
+                        var x = entry.Value as ServiceCensusBlock;
+                        <tr class="error">
+                            <td>@entry.Key</td>
+                            <td>@x.PROVNAME</td>
+                            <td>@x.DBANAME</td>
+                            <td>@x.Provider_Type</td>
+                            <td>@x.FRN</td>
+                            <td>@x.STATEFIPS</td>
+                            <td>@x.COUNTYFIPS</td>
+                            <td>@x.TRACT</td>
+                            <td>@x.BLOCKID</td>
+                            <td>@x.FULLFIPSID</td>
+                            <td>@x.TRANSTECH</td>
+                            <td>@x.MAXADDOWN</td>
+                            <td>@x.MAXADUP</td>
+                            <td>@x.TYPICDOWN</td>
+                            <td>@x.TYPICUP</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        
+        <div class="form-actions">
+            <a href="@Url.Action("index", "home")" class="btn btn-primary">Finish</a>
+        </div>
+    </div>
+</div>

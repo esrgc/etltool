@@ -17,7 +17,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL
 
         /*public dbsets go here*/
         public IDbSet<ServiceCensusBlock> ServiceCensusBlocks { get; set; }
-
+        public IDbSet<Submission> Submissions { get; set; }
         /// <summary>
         /// On creating event for initialization
         /// </summary>

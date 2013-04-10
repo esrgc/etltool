@@ -11,7 +11,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
     {
         DomainDataContext _context;
         IRepository<ServiceCensusBlock> _serviceCensusRepo;
-
+        IRepository<Submission> _submissionRepo; 
         public DomainWorkUnit(DomainDataContext context) {
             _context = context;
         }
@@ -25,9 +25,13 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
                 return _serviceCensusRepo ?? (_serviceCensusRepo = new Repository<ServiceCensusBlock>(_context));
             }
         }
-
+        public IRepository<Submission> SubmissionRepository {
+            get { return _submissionRepo ?? (_submissionRepo = new Repository<Submission>(_context)); }
+        }
         public void SaveChanges() {
             _context.SaveChanges();
         }
+
+
     }
 }
