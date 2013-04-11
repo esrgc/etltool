@@ -33,13 +33,19 @@
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
-<!--Content-->
+<!--Content instructions-->
 <div class="row-fluid">
     <div class="well span12">
         <h4>Instructions</h4>
         <ol>
             <li>
-                Match each field/column with NTIA model field using the form below on the left.
+                Match each field/column with NTIA model field using the form below on the left. 
+                <strong>Note that</strong> the system attemptted to map the matching fields. 
+                Please make changes if neccessary.
+            </li>
+            <li>
+                The preview panel on the right allows you to see the data mapped for particular fields.
+                This panel will update along with the changes on the mapping form.
             </li>
             <li>
                 Each required (*) field must be mapped to an uploaded data field.
@@ -50,19 +56,21 @@
             <li>
                 Preview data is automatically updated once a field/column is mapped.
                 Make sure the data is valid for the mapping field/column.
-                If data for the field is empty or unavailable the data will be labeled as "Not available".
-                In that case, please check your data and upload a new file.            
+                If data for the field is empty or unavailable the data will be labeled as "Not available".               
+                In that case, NTIA default values will apply if available, 
+                otherwise, an error will be reported in the next step. 
             </li>
             <li>
-                Non-required fields are assigned with default value, specified by the NTIA model.
-                These fields can be left unmapped.
+                Non-required fields (<b>[TYPICAL UPLOAD]</b> and <b>[TYPICAL DOWNLOAD]</b>) are assigned with default
+                value, specified by the NTIA model, if left unmapped.
             </li>
             <li>
-                <strong>Important note</strong> [STATE FIPS], [COUNTY FIPS], and [TRACT] fields
-                are parsed from [FULL CENSUS BLOCK ID] field. They are obscured from the form for this reason.
+                <strong>Important note</strong> <b>[STATE FIPS]</b>, <b>[COUNTY FIPS]</b>, and <b>[TRACT]</b> fields
+                are parsed from <b>[FULL CENSUS BLOCK ID]</b> field. They are obscured from the form for this reason.
             </li>
             <li>
-                After all required fields are mapped. Click submit to proceed.                
+                After all required fields are mapped. Click "Map Data" button to proceed.
+                You can review your mapping on the next page.                
             </li>
         </ol>
     </div>
@@ -83,6 +91,8 @@
                         @Html.DropDownListFor(
                             x => x.MappingObject.PROVNAMEColumn,
                             new SelectList(Model.UploadDataColumns, 
+                                Model.MappingObject.PROVNAMEColumn != null?
+                                Model.MappingObject.PROVNAMEColumn :                                 
                                 Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("PROVIDER NAME"))),
                             "--select a column--",
                             new { 
@@ -100,6 +110,8 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.DBANAMEColumn,
                                 new SelectList(Model.UploadDataColumns,
+                                    Model.MappingObject.DBANAMEColumn != null?
+                                    Model.MappingObject.DBANAMEColumn :
                                     Model.UploadDataColumns.FirstOrDefault(x => x.ToUpper().Contains("DBA NAME"))),
                                 "--select a column--",
                                 new { 
@@ -116,6 +128,8 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.Provider_typeColumn,
                                 new SelectList(Model.UploadDataColumns,
+                                    Model.MappingObject.Provider_typeColumn != null?
+                                    Model.MappingObject.Provider_typeColumn :
                                     Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("PROVIDER TYPE"))),
                                 "--select a column--",
                                 new { 
@@ -132,6 +146,8 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.FRNColumn,
                                 new SelectList(Model.UploadDataColumns,
+                                    Model.MappingObject.FRNColumn != null?
+                                    Model.MappingObject.FRNColumn :
                                     Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("FRN"))),
                                 "--select a column--",
                                 new { 
@@ -148,6 +164,8 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.FULLFIPSIDColumn,
                                 new SelectList(Model.UploadDataColumns,
+                                    Model.MappingObject.FULLFIPSIDColumn != null?
+                                    Model.MappingObject.FULLFIPSIDColumn :
                                     Model.UploadDataColumns.FirstOrDefault(
                                     x=>x.ToUpper().Contains("FIPS") ||
                                     x.ToUpper().Contains("FULL"))),
@@ -166,6 +184,8 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.TRANSTECHColumn,
                                 new SelectList(Model.UploadDataColumns,
+                                    Model.MappingObject.TRANSTECHColumn != null?
+                                    Model.MappingObject.TRANSTECHColumn :
                                     Model.UploadDataColumns.FirstOrDefault(
                                         x=>x.ToUpper().Contains("TRANSMISSION") 
                                         || x.ToUpper().Contains("TECHONOLOGY"))),
@@ -175,7 +195,7 @@
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.TRANSTECHColumn, ViewData).Description
                                 }
-                                 )
+                        )
                     </div>
                 </div>
                 <div class="control-group">
@@ -183,19 +203,21 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.MAXADDOWNColumn,
-                                new SelectList(Model.UploadDataColumns, 
+                                new SelectList(Model.UploadDataColumns,
+                                    Model.MappingObject.MAXADDOWNColumn != null?
+                                    Model.MappingObject.MAXADDOWNColumn : 
                                     Model.UploadDataColumns.FirstOrDefault(
                                         x=> (x.ToUpper().Contains("DOWN") ||
                                         x.ToUpper().Contains("DOWNLOAD")) &&
-                                        x.ToUpper().Contains("ADVERTISED") ||
-                                        x.ToUpper().Contains("AD"))),
+                                        (x.ToUpper().Contains("ADVERTISED") ||
+                                        x.ToUpper().Contains("AD.")))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.MAXADDOWNColumn, ViewData).Description
                                 }
-                                 )
+                        )
                     </div>
                 </div>
                 <div class="control-group">
@@ -204,11 +226,13 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.MAXADUPColumn,
                                 new SelectList(Model.UploadDataColumns,
+                                    Model.MappingObject.MAXADUPColumn != null?
+                                    Model.MappingObject.MAXADUPColumn :
                                     Model.UploadDataColumns.FirstOrDefault(
                                         x=> (x.ToUpper().Contains("UP") ||
                                         x.ToUpper().Contains("UPLOAD")) &&
-                                        x.ToUpper().Contains("ADVERTISED") ||
-                                        x.ToUpper().Contains("AD"))),
+                                        (x.ToUpper().Contains("ADVERTISED") ||
+                                        x.ToUpper().Contains("AD.")))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -224,6 +248,8 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.TYPICDOWNColumn,
                                 new SelectList(Model.UploadDataColumns,
+                                    Model.MappingObject.TYPICDOWNColumn != null?
+                                    Model.MappingObject.TYPICDOWNColumn :
                                     Model.UploadDataColumns.FirstOrDefault(
                                         x=> (x.ToUpper().Contains("DOWN") ||
                                         x.ToUpper().Contains("DOWNLOAD")) &&
@@ -235,7 +261,7 @@
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.TYPICDOWNColumn, ViewData).Description
                                 }
-                                 )
+                        )
                     </div>
                 </div>
                 <div class="control-group">
@@ -244,7 +270,9 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.TYPICUPColumn,
                                 new SelectList(Model.UploadDataColumns,
-                                     Model.UploadDataColumns.FirstOrDefault(
+                                    Model.MappingObject.TYPICUPColumn != null?
+                                    Model.MappingObject.TYPICUPColumn :
+                                    Model.UploadDataColumns.FirstOrDefault(
                                         x=> (x.ToUpper().Contains("UP") ||
                                         x.ToUpper().Contains("UPLOAD")) &&
                                         x.ToUpper().Contains("TYPICAL") ||
@@ -255,14 +283,14 @@
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.TYPICUPColumn, ViewData).Description
                                 }
-                                 )
+                        )
                     </div>
                 </div>
             
                 <div class="form-actions">
                     <a class="btn" title="Back to data preview" 
                         href="@Url.Action("PreviewData", "Upload")">Back</a>
-                    <input type="submit" class="btn btn-primary" />
+                    <input type="submit" value="Map Data" class="btn btn-primary" />
                     <input type="reset" class="btn" />
                 
                 </div>
@@ -320,7 +348,7 @@
             <h5>Label description</h5>
             <p><span class="label">Not mapped</span> <i>Field has not been mapped.</i></p>
             <p><span class="label label-success">Data available</span> <i>Data is available.</i></p>
-            <p><span class="label label-warning">Data unavailable</span> <i>Data is not available (null or empty).</i></p>
+            <p><span class="label label-warning">Data unavailable</span> <i>Data is not available (null or empty). NTIA default values may apply.</i></p>
         </div>
     </div>
 </div>

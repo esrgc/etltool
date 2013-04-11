@@ -2,7 +2,7 @@
 @using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 @model PreviewMappingModel
 @{
-    ViewBag.Title = "Data Review";
+    ViewBag.Title = "Mapping Preview";
 }
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -35,80 +35,53 @@
             <a href="@Url.Action("PreviewData", "Upload")">
                 Data Preview</a><span class="divider">/</span>
         </li>
+        <li>
+            <a href="@Url.Action("MapData", "DataProcess")">
+                Field Mapping</a><span class="divider">/</span>
+        </li>
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
+
+<div class="row-fluid">
+    <div class="well span12">
+        <h4>Instructions</h4>
+        <ol>
+            <li>
+                Review your data to make sure no error occurred using the report below.
+            </li>
+            <li>
+                If any error occured, you have options to re-upload a new file to start over, 
+                or to submit the valid data.
+            </li>
+            <li>
+                <strong>Note that</strong> the uploaded data still can be submitted.
+                Except, the data rows that contain error(s) will be not stored to NTIA model.
+            </li>
+        </ol>
+    </div>
+</div>
 <div class="row-fluid">
     <!--Report added here-->
     <div class="span12">
-        <h4>Mapping Report</h4>
-        @if(Model.ErrorList.Count == 0){
-            <div class="alert alert-success">
-                Your data has been sucessfully mapped to NTIA data model.
-                @Model.SuccessCount row(s) stored to our database.
-            </div>
-        }
-        else{
-            <div class="alert">
-                Your data has been mapped to NTIA data model.
-                @Model.SuccessCount row(s) stored to our database.
-                However, there are @Model.ErrorList.Count errors in your data. 
-                Please view report below, and correct the error. Re-upload your data if neccessary.
-            </div>            
-        }
-
         <div class="form-actions">
-            <a href="@Url.Action("index", "home")" class="btn btn-primary">Finish</a>
+            <a href="@Url.Action("mapData", "DataProcess")" class="btn btn-primary">Re-map fields</a>
+            <a href="@Url.Action("uploadFile", "Upload")" class="btn btn-danger">Re-upload</a>
+            @if (Model.SuccessCount > 0) {
+                <a href="@Url.Action("CommitData", "DataProcess")" class="btn btn-primary pull-right">Submit data</a>
+            }
         </div>
 
-        <h5>Data Review<i> (Showing 25 rows of @Model.SuccessCount)</i></h5>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Provider Name</th>
-                    <th>DBA name</th>
-                    <th>Provider Type</th>
-                    <th>FCC Registration Number (FRN)</th>
-                    <th>State FIPS</th>
-                    <th>County FIPS</th>
-                    <th>Census Tract</th>
-                    <th>Census Block ID</th>
-                    <th>Full Block ID</th>
-                    <th>Technology of Transmission</th>
-                    <th>Max Ad. Download</th>
-                    <th>Max Ad. Upload</th>
-                    <th>Typical Download</th>
-                    <th>Typical Upload</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var x in Model.Data) { 
-                    <tr>
-                        <td>@x.PROVNAME</td>
-                        <td>@x.DBANAME</td>
-                        <td>@x.Provider_Type</td>
-                        <td>@x.FRN</td>
-                        <td>@x.STATEFIPS</td>
-                        <td>@x.COUNTYFIPS</td>
-                        <td>@x.TRACT</td>
-                        <td>@x.BLOCKID</td>
-                        <td>@x.FULLFIPSID</td>
-                        <td>@x.TRANSTECH</td>
-                        <td>@x.MAXADDOWN</td>
-                        <td>@x.MAXADUP</td>
-                        <td>@x.TYPICDOWN</td>
-                        <td>@x.TYPICUP</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        
-        @if (Model.ErrorList.Count > 0) {
-            <h5>Error List</h5>
+        @if (Model.SuccessCount > 0) {
+            <div class="alert alert-success">
+                Your data has been mapped to NTIA data model.
+                @Model.SuccessCount row(s) were mapped successfully.
+            </div>
+            
+            <h5>Mapped Data<small> (Showing 10 rows of @Model.SuccessCount)</small></h5>
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Row No.</th>
                         <th>Provider Name</th>
                         <th>DBA name</th>
                         <th>Provider Type</th>
@@ -126,10 +99,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var entry in Model.ErrorList) {
-                        var x = entry.Value as ServiceCensusBlock;
-                        <tr class="error">
-                            <td>@entry.Key</td>
+                    @foreach (var x in Model.Data.Take(10)) { 
+                        <tr>
                             <td>@x.PROVNAME</td>
                             <td>@x.DBANAME</td>
                             <td>@x.Provider_Type</td>
@@ -149,9 +120,47 @@
                 </tbody>
             </table>
         }
+        @if (Model.ErrorList.Count > 0) {
+            <div class="alert">
+                There were @Model.ErrorList.Count row(s) in your data that contain errors. 
+                Please view report below, and correct the error. Re-upload your data if neccessary.
+            </div>      
+            <h5>Error List</h5>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Row No.</th>
+                        <th>Field</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var entry in Model.ErrorList) {
+                        var errors = entry.Value as List<KeyValuePair<string, ModelState>>;
+                        foreach (var error in errors) { 
+                            <tr class="error">
+                                <td>@entry.Key</td>
+                                <td>@error.Key</td>
+                                <td>
+                                    @foreach (var modelError in error.Value.Errors) {
+                                        <ul>
+                                            <li>@modelError.ErrorMessage</li>
+                                        </ul>    
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
         
         <div class="form-actions">
-            <a href="@Url.Action("index", "home")" class="btn btn-primary">Finish</a>
+            <a href="@Url.Action("mapData", "DataProcess")" class="btn btn-primary">Re-map fields</a>
+            <a href="@Url.Action("uploadFile", "Upload")" class="btn btn-danger">Re-upload</a>
+            @if (Model.SuccessCount > 0) {
+                <a href="@Url.Action("CommitData", "DataProcess")" class="btn btn-primary pull-right">Submit data</a>
+            }
         </div>
     </div>
 </div>

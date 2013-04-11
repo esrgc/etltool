@@ -15,14 +15,21 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public DataProcessController(IUnitOfWork workUnit) : base(workUnit) { }
 
         public ActionResult MapData() {
+            
             if (Session["data"] != null) {
                 var obj = Session["data"] as dynamic;
                 var data = obj.data as IEnumerable<IDictionary<string, object>>;
-
-                var model = new DataMappingModel() {
-                    MappingObject = new ColumnMapping(),
-                    UploadDataColumns = data.First().Keys
-                };
+                DataMappingModel model = new DataMappingModel();
+                model.UploadDataColumns = data.First().Keys;
+                //check for existing mapping object
+                if (Session["mappingData"] != null) {
+                    var dynObj = Session["mappingData"] as dynamic;
+                    var mappingObject = dynObj.mappingObject as ColumnMapping;
+                    model.MappingObject = mappingObject;
+                }
+                else
+                    model.MappingObject = new ColumnMapping();
+                //data first row
                 ViewBag.firstRowData = data.First().ToJSon();
                 return View(model);
             }
@@ -44,10 +51,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var data = obj.data as IEnumerable<IDictionary<string, object>>;
             //data to be stored
             IList<ServiceCensusBlock> dataList = new List<ServiceCensusBlock>();
-            IDictionary<int, object> errorList = new Dictionary<int, object>();
-            Submission submission = new Submission();
-            _workUnit.SubmissionRepository.InsertEntity(submission);
-            _workUnit.SaveChanges();
+            IDictionary<int, object> errorList = new Dictionary<int, object>();            
             if (ModelState.IsValid) {
                 int count = 1;//start at line 1
                 foreach (var entry in data) {
@@ -99,10 +103,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         catch {
                             //reserve default value if error occurs
                         }
-
-                        dataEntry.SubmissionID = submission.SubmissionID;
-                        #endregion
                         
+                        #endregion
+
                         //validate data for each entry
                         TryValidateModel(dataEntry);
                         if (ModelState.IsValid) {
@@ -111,7 +114,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         }
                         else {
                             //redirect to report errors
-                            errorList.Add(count, dataEntry);
+                            errorList.Add(count, ModelState.ToList());
                         }
                     }
                     catch (Exception ex) {
@@ -121,13 +124,16 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     count++;//increase count
                 }
                 //_workUnit.SaveChanges();//push data to database
-                Session["data"] = null;//discard session data
-                Session["validData"] = dataList;
+                //Session["data"] = null;//discard session data
+                Session["mappingData"] = new {
+                    mappingObject = columns,
+                    validData = dataList
+                };
 
                 var previewData = new PreviewMappingModel();
                 previewData.SuccessCount = dataList.Count();
                 previewData.ErrorList = errorList;
-                previewData.Data = dataList.Take(25).ToList();
+                previewData.Data = dataList;
                 return View("PreviewMapping", previewData);
             }
             //error has occured
@@ -136,6 +142,27 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             }
         }
 
-
+        public ActionResult CommitData() {
+            //store data to database
+            if (Session["mappingData"] != null) {
+                var dynObj = Session["mappingData"] as dynamic;
+                var data = dynObj.validData as List<ServiceCensusBlock>;
+                Submission submission = new Submission();
+                _workUnit.SubmissionRepository.InsertEntity(submission);
+                _workUnit.SaveChanges();
+                foreach (var entry in data) {
+                    entry.SubmissionID = submission.SubmissionID;
+                    _workUnit.ServiceCensusRepository.InsertEntity(entry);
+                }
+                _workUnit.SaveChanges();//commit to database
+                Session.Clear();
+                return View(submission);
+            }
+            else {
+                updateStatusMessage("Your session has expired.");
+                return RedirectToAction("Index", "Home");
+            }
+            
+        }
     }
 }

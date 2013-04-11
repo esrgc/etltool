@@ -1,0 +1,38 @@
+﻿@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
+@model Submission
+@{
+    ViewBag.Title = "Confirm Submission";
+}
+
+@section header{
+    <h3>@ViewBag.Title</h3>
+    <ul class="breadcrumb">
+        <li>
+            <a href="@Url.Action("index", "Home")">
+                Home</a><span class="divider">/</span>
+        </li>
+        <li>
+            <a href="@Url.Action("UploadFile", "Upload")">
+                Upload</a><span class="divider">/</span>
+        </li>
+        <li>
+            <a href="@Url.Action("PreviewData", "Upload")">
+                Data Preview</a><span class="divider">/</span>
+        </li>
+        <li>
+            <a href="@Url.Action("MapData", "DataProcess")">
+                Field Mapping</a><span class="divider">/</span>
+        </li>
+        <li class="active">@ViewBag.Title</li>
+    </ul>
+}
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="alert alert-success">
+            <strong>Congratulations!</strong> your data has been submitted.
+        </div>
+        
+        <a href="@Url.Action("Index","Home")" class="btn btn-primary">Finish</a>
+    </div>
+</div>

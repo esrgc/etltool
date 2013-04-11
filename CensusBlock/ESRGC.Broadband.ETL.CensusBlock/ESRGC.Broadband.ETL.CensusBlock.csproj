@@ -192,6 +192,10 @@
     </Compile>
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Infrastructure\Services.cs" />
+    <Compile Include="Migrations\201304111754385_MinMaxLength.cs" />
+    <Compile Include="Migrations\201304111754385_MinMaxLength.Designer.cs">
+      <DependentUpon>201304111754385_MinMaxLength.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DataMappingModel.cs" />
@@ -354,12 +358,18 @@
     <Content Include="Views\DataProcess\MapData.cshtml" />
     <Content Include="Views\DataProcess\PreviewMapping.cshtml" />
     <Content Include="Views\DataProcess\Error.cshtml" />
+    <Content Include="Views\DataProcess\CommitData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">
       <Project>{6DF8FE5F-3672-4040-A2E4-4EBB9EA01AE8}</Project>
       <Name>ESRGC.Broadband.ETL.CensusBlock.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201304111754385_MinMaxLength.resx">
+      <DependentUpon>201304111754385_MinMaxLength.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
