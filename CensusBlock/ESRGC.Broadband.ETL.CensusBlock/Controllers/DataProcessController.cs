@@ -107,7 +107,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         TryValidateModel(dataEntry);
                         if (ModelState.IsValid) {
                             dataList.Add(dataEntry);
-                            _workUnit.ServiceCensusRepository.InsertEntity(dataEntry);
+                            //_workUnit.ServiceCensusRepository.InsertEntity(dataEntry);
                         }
                         else {
                             //redirect to report errors
@@ -120,8 +120,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     }
                     count++;//increase count
                 }
-                _workUnit.SaveChanges();//push data to database
+                //_workUnit.SaveChanges();//push data to database
                 Session["data"] = null;//discard session data
+                Session["validData"] = dataList;
+
                 var previewData = new PreviewMappingModel();
                 previewData.SuccessCount = dataList.Count();
                 previewData.ErrorList = errorList;

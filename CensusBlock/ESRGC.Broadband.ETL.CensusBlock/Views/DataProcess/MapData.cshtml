@@ -82,7 +82,8 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                             x => x.MappingObject.PROVNAMEColumn,
-                            new SelectList(Model.UploadDataColumns),
+                            new SelectList(Model.UploadDataColumns, 
+                                Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("PROVIDER NAME"))),
                             "--select a column--",
                             new { 
                                 @class = "input-large required",
@@ -98,7 +99,8 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.DBANAMEColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns,
+                                    Model.UploadDataColumns.FirstOrDefault(x => x.ToUpper().Contains("DBA NAME"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -113,7 +115,8 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.Provider_typeColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns,
+                                    Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("PROVIDER TYPE"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -128,7 +131,8 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.FRNColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns,
+                                    Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("FRN"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -143,13 +147,16 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.FULLFIPSIDColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns,
+                                    Model.UploadDataColumns.FirstOrDefault(
+                                    x=>x.ToUpper().Contains("FIPS") ||
+                                    x.ToUpper().Contains("FULL"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.FULLFIPSIDColumn, ViewData).Description
-                                }       
+                                }
                         )
                     </div>
                 </div>
@@ -158,14 +165,17 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.TRANSTECHColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns,
+                                    Model.UploadDataColumns.FirstOrDefault(
+                                        x=>x.ToUpper().Contains("TRANSMISSION") 
+                                        || x.ToUpper().Contains("TECHONOLOGY"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.TRANSTECHColumn, ViewData).Description
-                                }       
-                        )
+                                }
+                                 )
                     </div>
                 </div>
                 <div class="control-group">
@@ -173,14 +183,19 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.MAXADDOWNColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns, 
+                                    Model.UploadDataColumns.FirstOrDefault(
+                                        x=> (x.ToUpper().Contains("DOWN") ||
+                                        x.ToUpper().Contains("DOWNLOAD")) &&
+                                        x.ToUpper().Contains("ADVERTISED") ||
+                                        x.ToUpper().Contains("AD"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.MAXADDOWNColumn, ViewData).Description
-                                }       
-                        )
+                                }
+                                 )
                     </div>
                 </div>
                 <div class="control-group">
@@ -188,7 +203,12 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.MAXADUPColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns,
+                                    Model.UploadDataColumns.FirstOrDefault(
+                                        x=> (x.ToUpper().Contains("UP") ||
+                                        x.ToUpper().Contains("UPLOAD")) &&
+                                        x.ToUpper().Contains("ADVERTISED") ||
+                                        x.ToUpper().Contains("AD"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -203,14 +223,19 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.TYPICDOWNColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns,
+                                    Model.UploadDataColumns.FirstOrDefault(
+                                        x=> (x.ToUpper().Contains("DOWN") ||
+                                        x.ToUpper().Contains("DOWNLOAD")) &&
+                                        x.ToUpper().Contains("TYPICAL") ||
+                                        x.ToUpper().Contains("TYPIC"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.TYPICDOWNColumn, ViewData).Description
-                                }       
-                        )
+                                }
+                                 )
                     </div>
                 </div>
                 <div class="control-group">
@@ -218,14 +243,19 @@
                     <div class="controls">
                         @Html.DropDownListFor(
                                 x => x.MappingObject.TYPICUPColumn,
-                                new SelectList(Model.UploadDataColumns),
+                                new SelectList(Model.UploadDataColumns,
+                                     Model.UploadDataColumns.FirstOrDefault(
+                                        x=> (x.ToUpper().Contains("UP") ||
+                                        x.ToUpper().Contains("UPLOAD")) &&
+                                        x.ToUpper().Contains("TYPICAL") ||
+                                        x.ToUpper().Contains("TYPIC"))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.TYPICUPColumn, ViewData).Description
-                                }       
-                        )
+                                }
+                                 )
                     </div>
                 </div>
             

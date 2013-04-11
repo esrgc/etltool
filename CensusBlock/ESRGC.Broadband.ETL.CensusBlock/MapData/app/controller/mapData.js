@@ -14,7 +14,8 @@ ESRGC.Controller.MapData = ESRGC.Class({
         dataForm: 'form.form-horizontal',
         selectControls: 'form select',
         previewPanel: '#previewPanel',
-        labels: '.control-label'
+        labels: '.control-label',
+        selectedOptions: 'form option:selected'
     },
     control: {
         selectControls: {
@@ -45,19 +46,31 @@ ESRGC.Controller.MapData = ESRGC.Class({
         });
         scope.firstRowData = $.parseJSON(scope.getFirstRowDataHidFld().val());
         //log(scope.firstRowData);
+
+        //update initial mapping
+        $.each(scope.getSelectControls(), function (index, obj) {
+            var id = $(obj).attr('id');
+            //get value from data first row using key from the selected option
+            var value = scope.firstRowData[$(obj).val()];
+            scope.updateMapping(id, value);
+        });
     },
     onSelectItemChange: function (event, object) {
         var scope = this;
         var id = $(object).attr('id');
-        var html;
         var value = scope.firstRowData[$(object).val()];
         var label = scope.getLabels().filter('[for="' + id + '"]').text();
+        log(label + ': ' + value);
+        scope.updateMapping(id, value);
 
+    },
+    /*---Privates---*/
+    updateMapping: function (id, value) {
+        var html;
         if (typeof value != 'undefined') {
-            log(label + ': ' + value);
-            value = value == "" ? "Not available" : value;            
+            value = value == "" ? "Not available" : value;
             if (value == 'Not available')
-                html = '<span class="label label-warning">' + value + '</span>';           
+                html = '<span class="label label-warning">' + value + '</span>';
             else
                 html = '<span class="label label-success">' + value + '</span>';
         }
@@ -70,4 +83,5 @@ ESRGC.Controller.MapData = ESRGC.Class({
             .first();
         previewElement.html(html);
     }
+
 }, ESRGC.Controller.Base);
