@@ -18,6 +18,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public ActionResult UploadFile(bool? newUpload) {
             bool discard = newUpload.HasValue ? newUpload.Value : false;
             if (Session["data"] == null || discard) {
+                Session.Clear();
                 return View();
             }
             else {

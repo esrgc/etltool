@@ -24,6 +24,18 @@ ESRGC.Controller.MapData = ESRGC.Class({
     },
     init: function () {
         var scope = this;
+        //parse first row data
+        scope.firstRowData = $.parseJSON(scope.getFirstRowDataHidFld().val());
+        //log(scope.firstRowData);
+
+        //update initial mapping
+        $.each(scope.getSelectControls(), function (index, obj) {
+            var id = $(obj).attr('id');
+            //get value from data first row using key from the selected option
+            var value = scope.firstRowData[$(obj).val()];
+            scope.updateMapping(id, value);
+        });
+        //validate form
         scope.getDataForm().validate({
             debug: true,
             highlight: function (label) {
@@ -44,16 +56,8 @@ ESRGC.Controller.MapData = ESRGC.Class({
             //                'MappingObject.PROVNAMEColumn': 'Provider name is required.'
             //            }
         });
-        scope.firstRowData = $.parseJSON(scope.getFirstRowDataHidFld().val());
-        //log(scope.firstRowData);
+        scope.getDataForm().valid();
 
-        //update initial mapping
-        $.each(scope.getSelectControls(), function (index, obj) {
-            var id = $(obj).attr('id');
-            //get value from data first row using key from the selected option
-            var value = scope.firstRowData[$(obj).val()];
-            scope.updateMapping(id, value);
-        });
     },
     onSelectItemChange: function (event, object) {
         var scope = this;
