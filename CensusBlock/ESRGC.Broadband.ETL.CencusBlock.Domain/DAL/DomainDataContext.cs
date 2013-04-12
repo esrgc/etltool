@@ -11,13 +11,13 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL
 {
     public class DomainDataContext: DbContext
     {
-        public DomainDataContext():base("DomainDataContext") { 
+        public DomainDataContext():base("name=ETL") { 
         
         }
 
         /*public dbsets go here*/
         public IDbSet<ServiceCensusBlock> ServiceCensusBlocks { get; set; }
-
+        public IDbSet<Submission> Submissions { get; set; }
         /// <summary>
         /// On creating event for initialization
         /// </summary>

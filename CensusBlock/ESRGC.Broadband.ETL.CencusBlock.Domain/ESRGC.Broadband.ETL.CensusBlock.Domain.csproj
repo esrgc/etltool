@@ -52,6 +52,7 @@
     <Compile Include="DAL\DomainDataContext.cs" />
     <Compile Include="Model\ServiceCensusBlock.cs" />
     <Compile Include="Model\ColumnMapping.cs" />
+    <Compile Include="Model\Submission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

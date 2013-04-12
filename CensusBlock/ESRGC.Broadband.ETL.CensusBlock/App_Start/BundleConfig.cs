@@ -14,8 +14,29 @@ namespace ESRGC.Broadband.ETL.CensusBlock
                         "~/Scripts/jqueryPlugins/jquery-ui-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jqueryPlugins/jquery.unobtrusive*",
-                        "~/Scripts/jqueryPlugins/jquery.validate*"));
+                        //"~/Scripts/jqueryPlugins/jquery.unobtrusive*",
+                        "~/Scripts/jqueryPlugins/jquery.validate.js"));
+            
+            //App base Bundle
+            bundles.Add(new ScriptBundle("~/bundles/appBase").Include(
+                "~/Scripts/ESRGC/Script.js",
+                "~/Scripts/ESRGC/component.js",
+                "~/Scripts/ESRGC/Application/application.js",
+                "~/Scripts/ESRGC/Controller/base.js",
+                "~/Scripts/ESRGC/Model/base.js",
+                "~/Scripts/ESRGC/Store/base.js"
+            ));
+            //upload app bundle
+            bundles.Add(new ScriptBundle("~/bundles/uploadApp").Include(
+                "~/Upload/app.js",
+                "~/Upload/app/controller/upload.js"
+            ));
+            //data map app bundle
+            bundles.Add(new ScriptBundle("~/bundles/mapDataApp").Include(
+                "~/MapData/app.js",
+                "~/MapData/app/controller/mapData.js",
+                "~/MapData/app/view/mapData.js"
+            ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -41,7 +62,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             bundles.Add(new StyleBundle("~/Content/bootstrap/css/style").Include(
                 "~/Content/bootstrap/css/bootstrap.css",
                 "~/Content/bootstrap/css/bootstrap-responsive.css"));
-
             //BundleTable.EnableOptimizations = true;
         }
     }
