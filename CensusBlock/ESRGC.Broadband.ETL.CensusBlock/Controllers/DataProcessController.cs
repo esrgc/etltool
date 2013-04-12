@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ESRGC.Broadband.ETL.CensusBlock.Models;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
+using ESRGC.Broadband.ETL.CensusBlock.Extension;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
@@ -14,15 +15,22 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public DataProcessController(IUnitOfWork workUnit) : base(workUnit) { }
 
         public ActionResult MapData() {
+            
             if (Session["data"] != null) {
                 var obj = Session["data"] as dynamic;
                 var data = obj.data as IEnumerable<IDictionary<string, object>>;
-
-                var model = new DataMappingModel() {
-                    MappingObject = new ColumnMapping(),
-                    UploadDataColumns = data.First().Keys
-                };
-
+                DataMappingModel model = new DataMappingModel();
+                model.UploadDataColumns = data.First().Keys;
+                //check for existing mapping object
+                if (Session["mappingData"] != null) {
+                    var dynObj = Session["mappingData"] as dynamic;
+                    var mappingObject = dynObj.mappingObject as ColumnMapping;
+                    model.MappingObject = mappingObject;
+                }
+                else
+                    model.MappingObject = new ColumnMapping();
+                //data first row
+                ViewBag.firstRowData = data.First().ToJSon();
                 return View(model);
             }
             else {
@@ -43,20 +51,18 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var data = obj.data as IEnumerable<IDictionary<string, object>>;
             //data to be stored
             IList<ServiceCensusBlock> dataList = new List<ServiceCensusBlock>();
-            IDictionary<int, object> errorList = new Dictionary<int, object>();
-            DateTime timeSubmitted = DateTime.Now;
+            IDictionary<int, object> errorList = new Dictionary<int, object>();            
             if (ModelState.IsValid) {
-                ModelState.Clear();//clear model state to validate transfer data
                 int count = 1;//start at line 1
                 foreach (var entry in data) {
                     short tempShort;
                     object tempValue;
                     try {
-
+                        ModelState.Clear();//clear model state to validate transfer data
                         #region data transfer
                         var dataEntry = new ServiceCensusBlock();
 
-                        tempValue = entry[columns.PPROVNAMEColumn];
+                        tempValue = entry[columns.PROVNAMEColumn];
                         dataEntry.PROVNAME = tempValue != null ? tempValue.ToString() : string.Empty;
 
                         tempValue = entry[columns.DBANAMEColumn];
@@ -67,22 +73,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                             tempShort : (short)-9999;
 
                         tempValue = entry[columns.FRNColumn];
-                        dataEntry.FRN = tempValue != null ? tempValue.ToString() : dataEntry.FRN;
-
-                        tempValue = entry[columns.STATEFIPSColumn];
-                        dataEntry.STATEFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
-
-                        tempValue = entry[columns.COUNTYFIPSColumn];
-                        dataEntry.COUNTYFIPS = tempValue != null ? tempValue.ToString() : string.Empty;
-
-                        tempValue = entry[columns.TRACTColumn];
-                        dataEntry.TRACT = tempValue != null ? tempValue.ToString() : string.Empty;
-
-                        tempValue = entry[columns.BLOCKIDColumn];
-                        dataEntry.BLOCKID = tempValue != null ? tempValue.ToString() : string.Empty;
-
-                        tempValue = entry[columns.BLOCKSUBGROUPColumn];
-                        dataEntry.BLOCKSUBGROUP = tempValue != null ? tempValue.ToString() : string.Empty;
+                        dataEntry.FRN = tempValue != null ? tempValue.ToString().Replace("-", "") : dataEntry.FRN;
 
                         tempValue = entry[columns.FULLFIPSIDColumn];
                         dataEntry.FULLFIPSID = tempValue != null ? tempValue.ToString() : dataEntry.FULLFIPSID;
@@ -97,44 +88,81 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         tempValue = entry[columns.MAXADUPColumn];
                         dataEntry.MAXADUP = tempValue != null ? tempValue.ToString() : dataEntry.MAXADUP;
 
-                        tempValue = entry[columns.TYPICDOWNColumn];
-                        dataEntry.TYPICDOWN = tempValue != null ? tempValue.ToString() : dataEntry.TYPICDOWN;
+                        try {
+                            tempValue = entry[columns.TYPICDOWNColumn];
+                            dataEntry.TYPICDOWN = tempValue != null ? tempValue.ToString() : dataEntry.TYPICDOWN;
+                        }
+                        catch {
+                            //reserve default value if error occurs
+                        }
 
-                        tempValue = entry[columns.TYPICUPColumn];
-                        dataEntry.TYPICUP = tempValue != null ? tempValue.ToString() : dataEntry.TYPICUP;
-
-                        dataEntry.TimeStamp = timeSubmitted; 
+                        try {
+                            tempValue = entry[columns.TYPICUPColumn];
+                            dataEntry.TYPICUP = tempValue != null ? tempValue.ToString() : dataEntry.TYPICUP;
+                        }
+                        catch {
+                            //reserve default value if error occurs
+                        }
+                        
                         #endregion
 
                         //validate data for each entry
                         TryValidateModel(dataEntry);
                         if (ModelState.IsValid) {
                             dataList.Add(dataEntry);
-                            _workUnit.ServiceCensusRepository.InsertEntity(dataEntry);
+                            //_workUnit.ServiceCensusRepository.InsertEntity(dataEntry);
                         }
                         else {
                             //redirect to report errors
-                            errorList.Add(count, dataEntry);                            
+                            errorList.Add(count, ModelState.ToList());
                         }
-                        
                     }
                     catch (Exception ex) {
-                        ModelState.AddModelError("", "An error has occured. " + ex.Message);
+                        ViewBag.errorMsg = "Error processing submitted data. " + ex.Message;
                         return View("Error");
                     }
                     count++;//increase count
                 }
-                _workUnit.SaveChanges();//push data to database
-                return RedirectToAction("PreviewMapping");
+                //_workUnit.SaveChanges();//push data to database
+                //Session["data"] = null;//discard session data
+                Session["mappingData"] = new {
+                    mappingObject = columns,
+                    validData = dataList
+                };
+
+                var previewData = new PreviewMappingModel();
+                previewData.SuccessCount = dataList.Count();
+                previewData.ErrorList = errorList;
+                previewData.Data = dataList;
+                return View("PreviewMapping", previewData);
             }
             //error has occured
             else {
-                return View();
+                return View(mappingModel);
             }
         }
 
-        public ActionResult PreviewMapping(IEnumerable<ServiceCensusBlock> data) {
-            return View();
+        public ActionResult CommitData() {
+            //store data to database
+            if (Session["mappingData"] != null) {
+                var dynObj = Session["mappingData"] as dynamic;
+                var data = dynObj.validData as List<ServiceCensusBlock>;
+                Submission submission = new Submission() { Status = "Submitted"};
+                _workUnit.SubmissionRepository.InsertEntity(submission);
+                _workUnit.SaveChanges();
+                foreach (var entry in data) {
+                    entry.SubmissionID = submission.SubmissionID;
+                    _workUnit.ServiceCensusRepository.InsertEntity(entry);
+                }
+                _workUnit.SaveChanges();//commit to database
+                Session.Clear();
+                return View(submission);
+            }
+            else {
+                updateStatusMessage("Your session has expired.");
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
     }
 }

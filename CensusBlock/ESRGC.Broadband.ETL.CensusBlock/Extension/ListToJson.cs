@@ -8,7 +8,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Extension
     public static class ListToJson
     {
         /// <summary>
-        /// converts IDictionary typed list to json string
+        /// converts a list of IDictionary object to json string
         /// represents tabular data
         /// </summary>
         /// <param name="list">List of dictionary that contains table data</param>
@@ -28,6 +28,21 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Extension
             }
             jsonStr += string.Join(",", row);
             jsonStr += ']';
+            return jsonStr;
+        }
+        /// <summary>
+        /// converts a dictionary type list to json string
+        /// </summary>
+        /// <param name="dict">dictionary object to be converted</param>
+        /// <returns></returns>
+        public static string ToJSon(this IDictionary<string, object> dict) {
+            string jsonStr = "{";
+            var valueList = new List<string>();
+            foreach (var pair in dict) {
+                valueList.Add('"' + pair.Key + "\": \"" + pair.Value + '"');
+            }
+            jsonStr += string.Join(",", valueList);
+            jsonStr += '}';
             return jsonStr;
         }
     }

@@ -26,15 +26,17 @@ input#dataInput {
 label.valid {
     width: 24px;
     height: 24px;
-    background: url(images/valid.png) center center no-repeat;
+    background: url(images/valid.png) center center no-repeat !important;
     display: inline-block;
-    text-indent: -9999px;
+    text-indent: -9999px !important;
 }
 label.error {
+    background: url(images/error.jpg) left center no-repeat;
     font-weight: bold;
     color: red;
     padding: 2px 8px;
     margin-top: 2px;
+    text-indent: 15px;
 }
 label.field-required:before {
     color: red;

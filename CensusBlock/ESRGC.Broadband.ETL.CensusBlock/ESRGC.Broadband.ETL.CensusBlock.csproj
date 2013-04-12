@@ -192,6 +192,7 @@
     </Compile>
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Infrastructure\Services.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DataMappingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,6 +204,7 @@
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="Content\images\error.jpg" />
     <Content Include="Content\images\esrgclogo.jpg" />
     <Content Include="Content\images\SuLogo.jpg" />
     <Content Include="Content\images\towson.gif" />
@@ -269,6 +271,9 @@
     <Content Include="Documentation.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="MapData\app.js" />
+    <Content Include="MapData\app\controller\mapData.js" />
+    <Content Include="MapData\app\view\mapData.js" />
     <Content Include="Scripts\bootstrap\bootstrap.js" />
     <Content Include="Scripts\bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\ESRGC\Application\application.js" />
@@ -349,6 +354,7 @@
     <Content Include="Views\DataProcess\MapData.cshtml" />
     <Content Include="Views\DataProcess\PreviewMapping.cshtml" />
     <Content Include="Views\DataProcess\Error.cshtml" />
+    <Content Include="Views\DataProcess\CommitData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">

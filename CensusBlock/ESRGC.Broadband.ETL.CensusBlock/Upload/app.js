@@ -13,6 +13,6 @@ ESRGC.App = ESRGC.Class({
     views: [],
     stores: [],
     initialize: function (options) {
-        ESRGC.Application.prototype.initialize.call(this, arguments);
+        ESRGC.Application.prototype.initialize.apply(this, arguments);
     }
 }, ESRGC.Application);

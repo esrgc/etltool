@@ -18,6 +18,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public ActionResult UploadFile(bool? newUpload) {
             bool discard = newUpload.HasValue ? newUpload.Value : false;
             if (Session["data"] == null || discard) {
+                Session.Clear();
                 return View();
             }
             else {
@@ -66,11 +67,14 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 return View();
             }
         }
-        public ActionResult PreviewData(int rows = 10) {
+        public ActionResult PreviewData(int? rows) {
+            int rowNum = rows.HasValue ? rows.Value : 10;
             if (Session["data"] != null) {
                 var obj = Session["data"] as dynamic;
                 var data = obj.data as IEnumerable<IDictionary<string, object>>;
-                var result = data.Take(rows);
+                rowNum = (rowNum == -1 ? data.Count() : rowNum);
+                var result = data.Take(rowNum);
+                ViewBag.rows = rowNum;
                 return View(result);
             }
             else

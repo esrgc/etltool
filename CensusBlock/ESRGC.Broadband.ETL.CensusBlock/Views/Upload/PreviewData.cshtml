@@ -3,7 +3,7 @@
     ViewBag.Title = "Data Preview";
 }
 @section header{
-    <h3>@ViewBag.Title</h3>
+    <h3>@ViewBag.Title <i class="icon-check"></i></h3>
     <ul class="breadcrumb">
         <li><a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
         <li><a href="@Url.Action("UploadFile")">Upload</a><span class="divider">/</span></li>
@@ -33,12 +33,12 @@
         <a href="@Url.Action("UploadFile", new { newUpload = true })" class="btn btn-danger" title="Discard and upload a new file">
             <i class="icon-white icon-remove-sign"></i> Discard
         </a>
-        <a href="@Url.Action("MapData", "DataProcess")" class="btn btn-primary">Next <i class="icon-white icon-arrow-right"></i></a>
+        <a href="@Url.Action("MapData", "DataProcess", new { rows = ViewBag.rows })" class="btn btn-primary">Next <i class="icon-white icon-arrow-right"></i></a>
     </div>
 </div>
 <div class="row-fluid">
     <div class="span12">
-        <h4>Uploaded data</h4>
+        <h4>Uploaded data <small>(preview of @ViewBag.rows rows)</small></h4>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -65,7 +65,7 @@
         <a href="@Url.Action("UploadFile", new { newUpload = true })" class="btn btn-danger" title="Discard and upload a new file">
             <i class="icon-white icon-remove-sign"></i> Discard
         </a>
-        <a href="@Url.Action("MapData", "DataProcess")" class="btn btn-primary">Next <i class="icon-white icon-arrow-right"></i></a>
+        <a href="@Url.Action("MapData", "DataProcess", new { rows = ViewBag.rows })" class="btn btn-primary">Next <i class="icon-white icon-arrow-right"></i></a>
     </div>
 </div>
 
