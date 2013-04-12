@@ -9,7 +9,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.DomainDataContext context)
