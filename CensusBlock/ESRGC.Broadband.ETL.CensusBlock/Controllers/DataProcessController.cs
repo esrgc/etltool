@@ -147,7 +147,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             if (Session["mappingData"] != null) {
                 var dynObj = Session["mappingData"] as dynamic;
                 var data = dynObj.validData as List<ServiceCensusBlock>;
-                Submission submission = new Submission();
+                Submission submission = new Submission() { Status = "Submitted"};
                 _workUnit.SubmissionRepository.InsertEntity(submission);
                 _workUnit.SaveChanges();
                 foreach (var entry in data) {
