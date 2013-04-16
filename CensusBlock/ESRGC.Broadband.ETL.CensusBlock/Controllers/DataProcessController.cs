@@ -7,6 +7,7 @@ using ESRGC.Broadband.ETL.CensusBlock.Models;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 using ESRGC.Broadband.ETL.CensusBlock.Extension;
+using ESRGC.Broadband.ETL.CensusBlock.Services;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
@@ -142,27 +143,48 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             }
         }
 
-        public ActionResult CommitData() {
-            //store data to database
-            if (Session["mappingData"] != null) {
-                var dynObj = Session["mappingData"] as dynamic;
-                var data = dynObj.validData as List<ServiceCensusBlock>;
-                Submission submission = new Submission() { Status = "Submitted"};
-                _workUnit.SubmissionRepository.InsertEntity(submission);
-                _workUnit.SaveChanges();
-                foreach (var entry in data) {
-                    entry.SubmissionID = submission.SubmissionID;
-                    _workUnit.ServiceCensusRepository.InsertEntity(entry);
+        [NoAsyncTimeout]
+        public void CommitDataAsync() {
+            if (Session["mappingData"] == null)
+                return;
+
+            var dynObj = Session["mappingData"] as dynamic;
+            var data = dynObj.validData as List<ServiceCensusBlock>;
+                         
+            AsyncManager.OutstandingOperations.Increment();//notify async operation
+            var service = new DataCommit(_workUnit);
+
+            //status report handler
+            service.DataCommitProgressChanged += (e) => {
+                var eventArg = e as OperationProgressChangedEventArgs;
+                var message = eventArg.Status +
+                    ". Progress: " +
+                    eventArg.ProgressPercentage +
+                    "%";
+
+                Session["statusMessage"] = message;
+            };
+            //completed handler
+            service.DataCommitCompleted += (o, e) => {
+                try {
+                    AsyncManager.Parameters["result"] = e.Data;
+                    AsyncManager.Parameters["status"] = "success";
                 }
-                _workUnit.SaveChanges();//commit to database
+                catch (Exception ex) {
+                    AsyncManager.Parameters["data"] = null;
+                    AsyncManager.Parameters["status"] = ex.ToString();
+                }
+                AsyncManager.OutstandingOperations.Decrement();
                 Session.Clear();
-                return View(submission);
-            }
-            else {
-                updateStatusMessage("Your session has expired.");
-                return RedirectToAction("Index", "Home");
-            }
-            
+            };
+            service.CommitDataAsync(data, Guid.NewGuid());
+        }
+        public ActionResult CommitData(Submission result, string status) {
+            ViewBag.Status = status;
+            return View(result);                       
+        }
+        public ActionResult UpdateStatus() {
+            return View();
         }
     }
 }

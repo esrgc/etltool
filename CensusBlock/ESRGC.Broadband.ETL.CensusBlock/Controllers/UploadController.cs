@@ -42,22 +42,31 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var binaryData = new byte[dataInput.ContentLength];
             //read the data
             dataInput.InputStream.Read(binaryData, 0, dataInput.ContentLength);
-
-            //save to file
-            var filePath = HttpContext.Server.MapPath("~/") + "uploadFile";
+                        
             try {
-                FileInfo f = new FileInfo(filePath);
-                if (f.Exists)//delete if already exists
-                    f.Delete();
-                //open file and overwrite if exists
-                using (var fileStream = f.Open(FileMode.CreateNew, FileAccess.Write, FileShare.None)) {
-                    fileStream.Write(binaryData, 0, dataInput.ContentLength);
-                    fileStream.Close();
+                List<IDictionary<string, object>> data = null;
+                if (dataInput.FileName.Contains(".xls") || dataInput.FileName.Contains(".xlsx")) {
+                    //save to file
+                    var filePath = HttpContext.Server.MapPath("~/") + "uploadFile";
+                    FileInfo f = new FileInfo(filePath);
+                    if (f.Exists)//delete if already exists
+                        f.Delete();
+                    //open file and overwrite if exists
+                    using (var fileStream = f.Open(FileMode.CreateNew, FileAccess.Write, FileShare.None)) {
+                        fileStream.Write(binaryData, 0, dataInput.ContentLength);
+                        fileStream.Close();
+                    } 
+                    //read excel content
+                    data = Helpers.parseToDictionary(filePath);
                 }
-
-                //read excel content
-                var data = parseToDictionary(filePath);
-
+                else if (dataInput.FileName.Contains(".csv")) {
+                    data = Helpers.parseToDictionary(dataInput.InputStream);
+                }
+                else {
+                    throw new Exception("The uploaded file extension isn't supported. Please upload a .csv file or an excel file.");
+                }
+                if (data == null)
+                    throw new Exception("An error occured processing the upload file.");
                 var rowCount = previewCount.HasValue ? previewCount.Value : 10;
                 Session["data"] = new { data = data, rows = rowCount };//store in session
                 return RedirectToAction("PreviewData", new { rows = rowCount });
@@ -74,7 +83,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 var data = obj.data as IEnumerable<IDictionary<string, object>>;
                 rowNum = (rowNum == -1 ? data.Count() : rowNum);
                 var result = data.Take(rowNum);
-                ViewBag.rows = rowNum;
+                ViewBag.previewRows = rowNum;
+                ViewBag.dataCount = data.Count();
                 return View(result);
             }
             else
@@ -85,56 +95,37 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         #region Private function
 
         /*----------------Private functions-----------------*/
-        private string parseToJson(string filePath) {
-            var excel = new ExcelQueryFactory(filePath);
-            var worksheets = excel.GetWorksheetNames();
+        //private string parseToJson(string filePath) {
+        //    var excel = new ExcelQueryFactory(filePath);
+        //    var worksheets = excel.GetWorksheetNames();
 
-            var allRows = from c in excel.Worksheet(worksheets.First())
-                          select c;
+        //    var allRows = from c in excel.Worksheet(worksheets.First())
+        //                  select c;
 
-            string jsonResult = "";
-            var columnNames = allRows.First().ColumnNames;
-            //convert to objects
-            List<string> rowData = new List<string>();
-            jsonResult += '[';
+        //    string jsonResult = "";
+        //    var columnNames = allRows.First().ColumnNames;
+        //    //convert to objects
+        //    List<string> rowData = new List<string>();
+        //    jsonResult += '[';
 
-            foreach (var row in allRows) {
-                var str = "{";
-                List<string> valuePairs = new List<string>();
-                foreach (var name in columnNames) {
-                    var value = row[name];
-                    valuePairs.Add('"' + name + "\" : \"" + value + '"');
-                }
-                str += string.Join(",", valuePairs);
-                str += '}';
-                rowData.Add(str);
-            }
-            jsonResult += string.Join(",", rowData);
-            jsonResult += ']';
-            //return Json
-            return jsonResult;
-        }
+        //    foreach (var row in allRows) {
+        //        var str = "{";
+        //        List<string> valuePairs = new List<string>();
+        //        foreach (var name in columnNames) {
+        //            var value = row[name];
+        //            valuePairs.Add('"' + name + "\" : \"" + value + '"');
+        //        }
+        //        str += string.Join(",", valuePairs);
+        //        str += '}';
+        //        rowData.Add(str);
+        //    }
+        //    jsonResult += string.Join(",", rowData);
+        //    jsonResult += ']';
+        //    //return Json
+        //    return jsonResult;
+        //}
 
-        private List<IDictionary<string, object>> parseToDictionary(string filePath) {
-            var excel = new ExcelQueryFactory(filePath);
-            var worksheets = excel.GetWorksheetNames();
-
-            var allRows = from c in excel.Worksheet(worksheets.First())
-                          select c;
-
-            var columnNames = allRows.First().ColumnNames;
-            var dataList = new List<IDictionary<string, object>>();
-            foreach (var row in allRows) {
-                IDictionary<string, object> dict = new Dictionary<string, object>();
-                foreach (var name in columnNames) {
-                    var value = row[name];
-                    dict.Add(name, value);
-                }
-                dataList.Add(dict);
-            }
-            return dataList;
-        }
-
+        
         #endregion
     }
 }
