@@ -24,8 +24,13 @@ ESRGC.Store.Base = ESRGC.Class({
     initialize: function (options) {
         //call super class constructor to initialize the class
         ESRGC.Component.prototype.initialize.apply(this, arguments);
+        //run init function in sub class
+        if (typeof this.init == 'function')
+            this.init.apply(this, options);
+        //run auto load if property is set to true
         if (this.autoLoad)
             this.loadJson();
+        
     },
     loadJson: function (method) {
         var scope = this;
@@ -120,7 +125,7 @@ ESRGC.Store.Base = ESRGC.Class({
             if (typeof scope.errorCallback != 'undefined')
                 scope.errorCallback.call(scope);
             else {
-                alert('An error has occured. Store.' + scope.name + '.loadContent()');
+                alert('An error has occured. Store.' + scope.name + '.loadContent(). Url: ' + scope.url);
             }
         };
         //call jquery .get or .post methods to send request

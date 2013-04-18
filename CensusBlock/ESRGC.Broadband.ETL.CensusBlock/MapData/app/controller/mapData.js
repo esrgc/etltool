@@ -1,6 +1,6 @@
 ﻿/*
 Author: Tu Hoang
-ESRGC 2013
+ESRGC April 2013
 
 mapData.js 
 Controller that handles the data mapping preview.

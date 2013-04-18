@@ -16,7 +16,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public DataProcessController(IUnitOfWork workUnit) : base(workUnit) { }
 
         public ActionResult MapData() {
-            
+
             if (Session["data"] != null) {
                 var obj = Session["data"] as dynamic;
                 var data = obj.data as IEnumerable<IDictionary<string, object>>;
@@ -52,7 +52,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var data = obj.data as IEnumerable<IDictionary<string, object>>;
             //data to be stored
             IList<ServiceCensusBlock> dataList = new List<ServiceCensusBlock>();
-            IDictionary<int, object> errorList = new Dictionary<int, object>();            
+            IDictionary<int, object> errorList = new Dictionary<int, object>();
             if (ModelState.IsValid) {
                 int count = 1;//start at line 1
                 foreach (var entry in data) {
@@ -104,7 +104,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         catch {
                             //reserve default value if error occurs
                         }
-                        
+
                         #endregion
 
                         //validate data for each entry
@@ -144,13 +144,14 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         }
 
         [NoAsyncTimeout]
+        [HttpPost]
         public void CommitDataAsync() {
             if (Session["mappingData"] == null)
                 return;
 
             var dynObj = Session["mappingData"] as dynamic;
             var data = dynObj.validData as List<ServiceCensusBlock>;
-                         
+
             AsyncManager.OutstandingOperations.Increment();//notify async operation
             var service = new DataCommit(_workUnit);
 
@@ -162,29 +163,53 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     eventArg.ProgressPercentage +
                     "%";
 
-                Session["statusMessage"] = message;
+                Session["status"] = new {
+                    message = message,
+                    progress = eventArg.ProgressPercentage
+                };
+
             };
             //completed handler
             service.DataCommitCompleted += (o, e) => {
                 try {
                     AsyncManager.Parameters["result"] = e.Data;
                     AsyncManager.Parameters["status"] = "success";
+                    Session.Clear();
+                    Session["status"] = new {
+                        message = "Finished successfully.",
+                        progress = 100
+                    };
                 }
                 catch (Exception ex) {
                     AsyncManager.Parameters["data"] = null;
                     AsyncManager.Parameters["status"] = ex.ToString();
+                    Session.Clear();
+                    Session["status"] = new {
+                        message = "Finished with exceptions.",
+                        progress = 100
+                    };
                 }
                 AsyncManager.OutstandingOperations.Decrement();
-                Session.Clear();
             };
             service.CommitDataAsync(data, Guid.NewGuid());
         }
-        public ActionResult CommitData(Submission result, string status) {
+
+        public ActionResult CommitDataCompleted(Submission result, string status) {
             ViewBag.Status = status;
-            return View(result);                       
+            return View(result);
         }
         public ActionResult UpdateStatus() {
-            return View();
+            lock (Session["status"]) {
+                if (Session["status"] != null) {
+                    var status = (Session["status"] as dynamic);
+                    return Json(status, JsonRequestBehavior.AllowGet);
+                }
+                else//no operation running
+                    return Json(
+                        new { progress = -1 },
+                        JsonRequestBehavior.AllowGet
+                    );
+            }
         }
     }
 }

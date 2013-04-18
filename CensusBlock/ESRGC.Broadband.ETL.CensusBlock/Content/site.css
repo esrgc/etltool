@@ -17,11 +17,20 @@ input#dataInput {
     height: 0;
 }
 
+#body {
+}
 
 /*classes*/
 .validation-summary-errors {
     color: Red;
 }
+.navbar-inner{
+    webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+   
+}
+
 /*validation*/
 label.valid {
     width: 24px;

@@ -11,19 +11,20 @@
     
 </head>
 <body>
-    <div id="body" class="container-fluid">
-        <div class="navbar ">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="#">ETL Tool</a>
-                    <ul class="nav">
-                        <li class=""><a href="@Url.Action("Index", "Home")"><i class="icon-home"></i> Home</a></li>
-                        <li><a href="#"><i class="icon-question-sign"></i> Help</a></li>
-                        <li><a href="#"><i class="icon-user"></i> Contact</a></li>
-                    </ul>
-                </div>
+    <div class="navbar  navbar-inverse">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="#">ETL Tool</a>
+                <ul class="nav">
+                    <li class=""><a href="@Url.Action("Index", "Home")"><i class="icon-white icon-home"></i> Home</a></li>
+                    <li><a href="#"><i class="icon-white icon-question-sign"></i> Help</a></li>
+                    <li><a href="#"><i class="icon-white icon-user"></i> Contact</a></li>
+                </ul>
             </div>
         </div>
+    </div>
+    <div id="body" class="container-fluid">
+        
         <header class="page-header">
             @RenderSection("header", required: false)
         </header>

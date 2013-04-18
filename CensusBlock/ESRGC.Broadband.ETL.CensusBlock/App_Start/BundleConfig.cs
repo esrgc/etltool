@@ -37,7 +37,14 @@ namespace ESRGC.Broadband.ETL.CensusBlock
                 "~/MapData/app/controller/mapData.js",
                 "~/MapData/app/view/mapData.js"
             ));
+            //preview mapping app bundle
+            bundles.Add(new ScriptBundle("~/bundles/commitDataApp").Include(
+                    "~/CommitData/app.js",
+                    "~/CommitData/app/controller/commitData.js",
+                    "~/CommitData/app/store/commitData.js",
+                    "~/CommitData/app/store/commitProgress.js"
 
+            ));
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(

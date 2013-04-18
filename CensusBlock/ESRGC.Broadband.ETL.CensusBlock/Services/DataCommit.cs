@@ -110,9 +110,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                     _workUnit.SaveChanges();
                     int count = 1;
                     foreach (var entry in processingData) {
+                        System.Diagnostics.Debug.WriteLine(count);
                         entry.SubmissionID = submission.SubmissionID;
                         _workUnit.ServiceCensusRepository.InsertEntity(entry);
-                        postProgress("Processing", (int)((float)(count / processingData.Count()) * 100), asyncOp);
+                        postProgress("Processing", (int)(((float)count / (float)processingData.Count()) * 100), asyncOp);
                         count++;
                     }
                     submission.Status = "Submitted";

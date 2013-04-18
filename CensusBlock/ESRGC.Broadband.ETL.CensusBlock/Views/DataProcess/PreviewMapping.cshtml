@@ -5,18 +5,14 @@
     ViewBag.Title = "Mapping Preview";
 }
 @section scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render(
+        "~/bundles/jqueryval",
+        "~/bundles/appBase",
+        "~/bundles/commitDataApp"
+    )
     <script type="text/javascript">
-        $('form').validate({
-            debug: true,
-            highlight: function (label) {
-                $(label).closest('.control-group').addClass('error');
-                $(label).closest('.control-group').removeClass('success');
-            },
-            success: function (label) {
-                label.text('OK!').addClass('valid')
-                    .closest('.control-group').addClass('success');
-            }
+        $(function () {
+           new ESRGC.App();
         });
     </script>
 }
@@ -72,7 +68,8 @@
             <a href="@Url.Action("mapData", "DataProcess")" class="btn btn-primary">Re-map fields</a>
             <a href="@Url.Action("uploadFile", "Upload")" class="btn btn-danger">Re-upload</a>
             @if (Model.SuccessCount > 0 && Model.ErrorList.Count == 0) {
-                <a href="@Url.Action("CommitData", "DataProcess")" class="btn btn-primary pull-right">Submit data</a>
+                <button type="button" data-toggle="modal" data-target="#progressPanel"
+                    class="btn btn-primary pull-right">Submit data</button>
             }
         </div>
 
@@ -163,8 +160,48 @@
             <a href="@Url.Action("mapData", "DataProcess")" class="btn btn-primary">Re-map fields</a>
             <a href="@Url.Action("uploadFile", "Upload")" class="btn btn-danger">Re-upload</a>
             @if (Model.SuccessCount > 0 && Model.ErrorList.Count == 0) {
-                <a href="@Url.Action("CommitData", "DataProcess")" class="btn btn-primary pull-right">Submit data</a>
+                <button type="button" data-toggle="modal" data-target="#progressPanel"
+                    class="btn btn-primary pull-right">Submit data</button>
             }
         </div>
+    </div>
+</div>
+
+<!--Modal progress window-->
+<div class="modal hide fade" data-backdrop="static" tabindex="-1" 
+    id="progressPanel" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <h3 id="modalLabel">Data submission</h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-info">
+            <h5>Message!</h5>
+            <strong>Important!</strong> Your data has been mapped and ready to be submitted.
+            To start submitting, click "Submit" button. 
+            <b>Please, do not refresh your browser or navigate out of this page while the data
+            is being submitted. The page will automatically reload when finish.</b>
+        </div>
+        @if (Model.SuccessCount > 10000) { 
+            <div class="alert alert-warning">
+                Your data has more than 10000 records. This 
+            </div>
+        }
+        <div id="statusContent" class="hide">
+            <label>
+                Data submission initiated...Please wait!
+                <img src="@Url.Content("~/Content/images/ajax-loader.gif")" alt="" 
+                    style="padding: 10px; width:20px;">
+            </label>
+            <div class="progress progress-striped active">
+              <div class="bar" style="width: 0%;"></div>
+            </div>
+            <label id="submitStatus"></label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" id="commitBtn">
+            Submit</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">
+            Cancel</button>
     </div>
 </div>

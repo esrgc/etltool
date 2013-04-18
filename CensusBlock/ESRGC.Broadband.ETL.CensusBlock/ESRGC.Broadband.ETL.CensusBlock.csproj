@@ -212,6 +212,7 @@
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\error.jpg" />
     <Content Include="Content\images\esrgclogo.jpg" />
     <Content Include="Content\images\SuLogo.jpg" />
@@ -282,6 +283,10 @@
     <Content Include="MapData\app.js" />
     <Content Include="MapData\app\controller\mapData.js" />
     <Content Include="MapData\app\view\mapData.js" />
+    <Content Include="CommitData\app.js" />
+    <Content Include="CommitData\app\controller\commitData.js" />
+    <Content Include="CommitData\app\store\commitData.js" />
+    <Content Include="CommitData\app\store\commitProgress.js" />
     <Content Include="Scripts\bootstrap\bootstrap.js" />
     <Content Include="Scripts\bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\ESRGC\Application\application.js" />
@@ -351,6 +356,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CommitData\app\view\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
