@@ -34,19 +34,15 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         [MinLength(10, ErrorMessage = "FRN does not meet minimum length (10 characters)")]
         [Display(Description = "FCC Registration Number")]
         public string FRN { get; set; }
-        [Required]
         [StringLength(2)]
         [Display(Name = "STATE FIPS", Description = "2-digit State ANSI (FIPS) Code")]
         public string STATEFIPS { get; set; }
-        [Required]
         [StringLength(3)]
         [Display(Name = "COUNTY FIPS", Description = "3-digit County ANSI (FIPS) Code")]
         public string COUNTYFIPS { get; set; }
-        [Required]
         [StringLength(6)]
         [Display(Name = "TRACT", Description = "Census Tract")]
         public string TRACT { get; set; }
-        [Required]
         [StringLength(4)]
         [Display(Description = "Census Block ID")]
         public string BLOCKID { get; set; }
