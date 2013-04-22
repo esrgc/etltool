@@ -125,7 +125,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     count++;//increase count
                 }
                 //_workUnit.SaveChanges();//push data to database
-                //Session["data"] = null;//discard session data
+                Session["data"] = null;//discard session data
+                //store data to be committed to session
                 Session["mappingData"] = new {
                     mappingObject = columns,
                     validData = dataList

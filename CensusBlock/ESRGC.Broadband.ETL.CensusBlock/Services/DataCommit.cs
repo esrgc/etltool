@@ -108,13 +108,21 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                     submission = new Submission() { Status = "Submitting" };
                     _workUnit.SubmissionRepository.InsertEntity(submission);
                     _workUnit.SaveChanges();
-                    int count = 1;
+                    int count = 1, commitCount = 0;
                     foreach (var entry in processingData) {
                         System.Diagnostics.Debug.WriteLine(count);
                         entry.SubmissionID = submission.SubmissionID;
                         _workUnit.ServiceCensusRepository.InsertEntity(entry);
-                        postProgress("Processing", (int)(((float)count / (float)processingData.Count()) * 100), asyncOp);
+                        postProgress("Processing", 
+                            (int)(((float)count / (float)processingData.Count()) * 100),
+                            asyncOp
+                        );
                         count++;
+                        if(commitCount == 1000){//save every 1000 records
+                            _workUnit.SaveChanges();
+                            commitCount = 0;
+                        }
+                        commitCount++;
                     }
                     submission.Status = "Submitted";
                     _workUnit.SubmissionRepository.UpdateEntity(submission);
@@ -122,6 +130,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                 }
                 catch (Exception ex) {
                     exception = ex;
+                    submission.Status = "Incomplete";
+                    _workUnit.SubmissionRepository.UpdateEntity(submission);
+                    _workUnit.SaveChanges();//commit to database
                 }
             }
             //call completion method to finish

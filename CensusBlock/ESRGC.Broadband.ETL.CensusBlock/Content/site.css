@@ -5,22 +5,30 @@
 
 
 /*IDs*/
+#uploadBrowse {
+    width: auto;
+    position: relative;
+    overflow: hidden;
+    direction: ltr;    
+}
 input#dataInput {
-    opacity: 0;
-    filter: alpha(opacity = 0);
     position: absolute;
-    left: 0;
-    top: 0;
-    margin: 0;
-    padding: 0;
-    width: 0;
-    height: 0;
+    right: 0px;
+    top: 0px;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    opacity: 0
 }
 
 #body {
 }
 
 /*classes*/
+.message-box {
+    text-align: center;
+    font-weight: bold;   
+ }
 .validation-summary-errors {
     color: Red;
 }

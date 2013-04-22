@@ -183,9 +183,11 @@
         </div>
         @if (Model.SuccessCount > 10000) { 
             <div class="alert alert-warning">
-                Your data has more than 10000 records. This 
+                Your data has more than 10000 records. 
+                The process might take longer to finish.
             </div>
         }
+        <hr />
         <div id="statusContent" class="hide">
             <label>
                 Data submission initiated...Please wait!

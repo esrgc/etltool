@@ -18,24 +18,17 @@ ESRGC.Controller.Upload = ESRGC.Class({
     name: 'Upload',
     refs: {
         fileUpload: 'input#dataInput',
-        fileSelectBtn: 'div#uploadDiv',
-        fileNameSpan: 'span#fileName'
+        fileNameSpan: 'span#fileName',
     },
     control: {
-        fileSelectBtn: {
-            click: 'onFileBtnClick'
-        },
         fileUpload: {
             change: 'onFileChange'
+        },
+        form: {
+            submit: 'onSubmit'
         }
     },
     init: function () { },
-    onFileBtnClick: function (event, object) {
-        var scope = this;
-        log('clicked');
-        var uploader = scope.getFileUpload();
-        uploader.trigger('click');
-    },
     onFileChange: function (event, object) {
         var scope = this;
         var file = $(object).val().split('\\').pop();
