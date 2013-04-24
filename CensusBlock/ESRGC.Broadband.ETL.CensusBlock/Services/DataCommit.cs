@@ -109,8 +109,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                     _workUnit.SubmissionRepository.InsertEntity(submission);
                     _workUnit.SaveChanges();
                     int count = 1, commitCount = 0;
-                    foreach (var entry in processingData) {
-                        System.Diagnostics.Debug.WriteLine(count);
+                    foreach (var entry in processingData) {                        
                         entry.SubmissionID = submission.SubmissionID;
                         _workUnit.ServiceCensusRepository.InsertEntity(entry);
                         postProgress("Processing", 
@@ -121,6 +120,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                         if(commitCount == 1000){//save every 1000 records
                             _workUnit.SaveChanges();
                             commitCount = 0;
+                            System.Diagnostics.Debug.WriteLine("Saved " + count);
                         }
                         commitCount++;
                     }

@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -40,6 +41,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
@@ -99,6 +102,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="ServiceCensusBlockTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -107,6 +111,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">
+      <Project>{6DF8FE5F-3672-4040-A2E4-4EBB9EA01AE8}</Project>
+      <Name>ESRGC.Broadband.ETL.CensusBlock.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CensusBlock\ESRGC.Broadband.ETL.CensusBlock.csproj">
       <Project>{BE89FAAE-0128-4275-A353-D87DAB937284}</Project>
       <Name>ESRGC.Broadband.ETL.CensusBlock</Name>

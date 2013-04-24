@@ -15,11 +15,16 @@ ESRGC.Controller.MapData = ESRGC.Class({
         selectControls: 'form select',
         previewPanel: '#previewPanel',
         labels: '.control-label',
-        selectedOptions: 'form option:selected'
+        selectedOptions: 'form option:selected',
+        mapDataBtn: 'input[value="Map Data"]',
+        progressModal: '#progressPanel'
     },
     control: {
         selectControls: {
             change: 'onSelectItemChange'
+        },
+        mapDataBtn: {
+            click: 'onMapDataBtnClick'
         }
     },
     init: function () {
@@ -67,6 +72,10 @@ ESRGC.Controller.MapData = ESRGC.Class({
         log(label + ': ' + value);
         scope.updateMapping(id, value);
 
+    },
+    onMapDataBtnClick: function (event, object) {
+        var scope = this;
+        scope.getProgressModal().modal('show');
     },
     /*---Privates---*/
     updateMapping: function (id, value) {

@@ -90,7 +90,7 @@ ESRGC.Store.Base = ESRGC.Class({
 
         };
         var errorCallback = function () {
-            if (typeof scope.errorCallback != 'undefined')
+            if (typeof scope.errorCallback == 'function')
                 scope.errorCallback.call(scope);
             else {
                 alert('An error has occured. Store.' + scope.name + '.loadJson()');

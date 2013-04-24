@@ -5,7 +5,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 {
     public class ServiceCensusBlock
     {
-        private string _fullFipsID;
+        private string _fullFipsID, _frn;
         public ServiceCensusBlock() {
             DBANAME = "N/A";
             FRN = "9999";
@@ -33,7 +33,18 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         [StringLength(10, ErrorMessage = "FRN length can not excceed 10 characters")]
         [MinLength(10, ErrorMessage = "FRN does not meet minimum length (10 characters)")]
         [Display(Description = "FCC Registration Number")]
-        public string FRN { get; set; }
+        public string FRN { 
+            get { return _frn; }
+            set {
+                if (value.Length < 10) {
+                    int originalLength = value.Length;
+                    for (int i = 0; i < 10 - originalLength; i++) {
+                        value = value.Insert(0, "0");
+                    }
+                }
+                _frn = value;
+            } 
+        }
         [StringLength(2)]
         [Display(Name = "STATE FIPS", Description = "2-digit State ANSI (FIPS) Code")]
         public string STATEFIPS { get; set; }

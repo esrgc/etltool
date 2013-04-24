@@ -125,7 +125,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     count++;//increase count
                 }
                 //_workUnit.SaveChanges();//push data to database
-                Session["data"] = null;//discard session data
+                //Session["data"] = null;//discard session data
                 //store data to be committed to session
                 Session["mappingData"] = new {
                     mappingObject = columns,
@@ -147,6 +147,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         [NoAsyncTimeout]
         [HttpPost]
         public void CommitDataAsync() {
+            //discard uploaded file
+            Session["data"] = null;
+            //check for mapped data
             if (Session["mappingData"] == null)
                 return;
 
@@ -200,17 +203,17 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             return View(result);
         }
         public ActionResult UpdateStatus() {
-            lock (Session["status"]) {
-                if (Session["status"] != null) {
+            if (Session["status"] != null) {
+                lock (Session["status"]) {
                     var status = (Session["status"] as dynamic);
                     return Json(status, JsonRequestBehavior.AllowGet);
                 }
-                else//no operation running
-                    return Json(
-                        new { progress = -1 },
-                        JsonRequestBehavior.AllowGet
-                    );
             }
+            else//no operation running
+                return Json(
+                    new { progress = -1 },
+                    JsonRequestBehavior.AllowGet
+                );
         }
     }
 }
