@@ -28,6 +28,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         public string DBANAME { get; set; }
         [Required]
         [Display(Name = "Provider Type")]
+        //[Range(1, 3, ErrorMessage = "Provider type value ranges from 1 to 3 ")]
         public short Provider_Type { get; set; }
         [Required]
         [StringLength(10, ErrorMessage = "FRN length can not excceed 10 characters")]

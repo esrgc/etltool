@@ -21,15 +21,21 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 var obj = Session["data"] as dynamic;
                 var data = obj.data as IEnumerable<IDictionary<string, object>>;
                 DataMappingModel model = new DataMappingModel();
-                model.UploadDataColumns = data.First().Keys;
+                List<string> uploadedColumns = data.First().Keys.ToList();
+                //add 'use default' value to apply default values
+                uploadedColumns.Add("Use default");
+                model.UploadDataColumns = uploadedColumns;
                 //check for existing mapping object
                 if (Session["mappingData"] != null) {
                     var dynObj = Session["mappingData"] as dynamic;
                     var mappingObject = dynObj.mappingObject as ColumnMapping;
                     model.MappingObject = mappingObject;
+                    model.DefaultData = dynObj.defaultData as ServiceCensusBlock;
                 }
-                else
+                else {
                     model.MappingObject = new ColumnMapping();
+                    model.DefaultData = new ServiceCensusBlock();
+                }
                 //data first row
                 ViewBag.firstRowData = data.First().ToJSon();
                 return View(model);
@@ -47,50 +53,71 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             }
             //get mappnig columns
             var columns = mappingModel.MappingObject;
+            var defaultData = mappingModel.DefaultData;
             //get upload data
             var obj = Session["data"] as dynamic;
             var data = obj.data as IEnumerable<IDictionary<string, object>>;
             //data to be stored
             IList<ServiceCensusBlock> dataList = new List<ServiceCensusBlock>();
             IDictionary<int, object> errorList = new Dictionary<int, object>();
+            //by pass DefaultData validation
+            var defaultDataModelStates = ModelState.Where(x => x.Key.Contains("DefaultData")).ToList();
+            foreach (var state in defaultDataModelStates) {
+                ModelState.Remove(state.Key);//remove these DefaultData states
+            }
+            //now that the model is valid we can start mapping data
             if (ModelState.IsValid) {
                 int count = 1;//start at line 1
                 foreach (var entry in data) {
                     short tempShort;
                     object tempValue;
+                    string str, key, useDefault = "Use default";
                     try {
                         ModelState.Clear();//clear model state to validate transfer data
                         #region data transfer
                         var dataEntry = new ServiceCensusBlock();
-
-                        tempValue = entry[columns.PROVNAMEColumn];
+                        //PROVIDER NAME
+                        key = columns.PROVNAMEColumn;
+                        tempValue = key == useDefault? defaultData.PROVNAME :  entry[key];
                         dataEntry.PROVNAME = tempValue != null ? tempValue.ToString() : string.Empty;
 
-                        tempValue = entry[columns.DBANAMEColumn];
+                        key = columns.DBANAMEColumn;
+                        tempValue = key == useDefault ? defaultData.DBANAME : entry[key];
                         dataEntry.DBANAME = tempValue != null ? tempValue.ToString() : dataEntry.DBANAME;
 
+                        key = columns.Provider_typeColumn;
+                        tempValue = key == useDefault ? defaultData.Provider_Type : entry[key];
+                        str = tempValue != null ? tempValue.ToString() : "";
                         dataEntry.Provider_Type =
-                            short.TryParse(entry[columns.Provider_typeColumn].ToString(), out tempShort) ?
+                            short.TryParse(str, out tempShort) ?
                             tempShort : (short)-9999;
 
-                        tempValue = entry[columns.FRNColumn];
+                        key = columns.FRNColumn;
+                        tempValue = key == useDefault ? defaultData.FRN : entry[key];
                         dataEntry.FRN = tempValue != null ? tempValue.ToString().Replace("-", "") : dataEntry.FRN;
 
-                        tempValue = entry[columns.FULLFIPSIDColumn];
+                        key = columns.FULLFIPSIDColumn;
+                        tempValue = key == useDefault ? defaultData.FULLFIPSID : entry[key];
                         dataEntry.FULLFIPSID = tempValue != null ? tempValue.ToString() : dataEntry.FULLFIPSID;
 
+                        key = columns.TRANSTECHColumn;
+                        tempValue = key == useDefault ? defaultData.TRANSTECH : entry[key];
+                        str = tempValue != null? tempValue.ToString(): "";
                         dataEntry.TRANSTECH =
-                            short.TryParse(entry[columns.TRANSTECHColumn].ToString(), out tempShort) ?
+                            short.TryParse(str, out tempShort) ?
                             tempShort : dataEntry.TRANSTECH;
 
-                        tempValue = entry[columns.MAXADDOWNColumn];
+                        key = columns.MAXADDOWNColumn;
+                        tempValue = key == useDefault ? defaultData.MAXADDOWN : entry[key];
                         dataEntry.MAXADDOWN = tempValue != null ? tempValue.ToString() : dataEntry.MAXADDOWN;
 
-                        tempValue = entry[columns.MAXADUPColumn];
+                        key = columns.MAXADUPColumn;
+                        tempValue = key == useDefault ? defaultData.MAXADUP : entry[key];
                         dataEntry.MAXADUP = tempValue != null ? tempValue.ToString() : dataEntry.MAXADUP;
 
                         try {
-                            tempValue = entry[columns.TYPICDOWNColumn];
+                            key = columns.TYPICDOWNColumn;
+                            tempValue = key == useDefault ? defaultData.TYPICDOWN : entry[key];
                             dataEntry.TYPICDOWN = tempValue != null ? tempValue.ToString() : dataEntry.TYPICDOWN;
                         }
                         catch {
@@ -98,7 +125,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         }
 
                         try {
-                            tempValue = entry[columns.TYPICUPColumn];
+                            key = columns.TYPICUPColumn;
+                            tempValue = key == useDefault ? defaultData.TYPICUP : entry[key];
                             dataEntry.TYPICUP = tempValue != null ? tempValue.ToString() : dataEntry.TYPICUP;
                         }
                         catch {
@@ -129,17 +157,25 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 //store data to be committed to session
                 Session["mappingData"] = new {
                     mappingObject = columns,
-                    validData = dataList
+                    validData = dataList,
+                    defaultData = defaultData
                 };
 
                 var previewData = new PreviewMappingModel();
                 previewData.SuccessCount = dataList.Count();
                 previewData.ErrorList = errorList;
                 previewData.Data = dataList;
-                return View("PreviewMapping", previewData);
+                return View("ReviewMapping", previewData);
             }
             //error has occured
             else {
+                //re-populate view data
+                List<string> uploadedColumns = data.First().Keys.ToList();
+                //add 'use default' value to apply default values
+                uploadedColumns.Add("Use default");
+                mappingModel.UploadDataColumns = uploadedColumns;
+                //data first row
+                ViewBag.firstRowData = data.First().ToJSon();
                 return View(mappingModel);
             }
         }

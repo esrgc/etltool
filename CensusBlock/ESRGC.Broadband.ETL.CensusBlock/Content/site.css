@@ -23,6 +23,10 @@ input#dataInput {
 
 #body {
 }
+#previewPanel input {
+    margin-bottom: 0;    
+}
+#previewPanel label { display: inline-block;}
 
 /*classes*/
 .message-box {

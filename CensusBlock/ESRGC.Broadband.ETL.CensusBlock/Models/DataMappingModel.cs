@@ -10,6 +10,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Models
     {
         public IEnumerable<string> UploadDataColumns { get; set; }
         public ColumnMapping MappingObject { get; set; }
+        public ServiceCensusBlock DefaultData { get; set; }
     }
     public class PreviewMappingModel
     {

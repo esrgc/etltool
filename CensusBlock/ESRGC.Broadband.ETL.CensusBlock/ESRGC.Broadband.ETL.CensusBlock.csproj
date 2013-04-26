@@ -366,9 +366,12 @@
     <Content Include="Views\Upload\UploadFile.cshtml" />
     <Content Include="Views\Upload\PreviewData.cshtml" />
     <Content Include="Views\DataProcess\MapData.cshtml" />
-    <Content Include="Views\DataProcess\PreviewMapping.cshtml" />
+    <Content Include="Views\DataProcess\ReviewMapping.cshtml" />
     <Content Include="Views\DataProcess\Error.cshtml" />
     <Content Include="Views\DataProcess\CommitData.cshtml" />
+    <Content Include="Views\Shared\TechOfTrans.cshtml" />
+    <Content Include="Views\Shared\SpeedTierCodes.cshtml" />
+    <Content Include="Views\Shared\ProviderTypes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">

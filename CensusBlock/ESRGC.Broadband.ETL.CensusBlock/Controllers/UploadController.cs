@@ -59,11 +59,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     //read excel content
                     data = Helpers.parseToDictionary(filePath);
                 }
-                else if (dataInput.FileName.Contains(".csv")) {
+                else if (dataInput.FileName.Contains(".csv") || dataInput.FileName.Contains(".txt")) {
                     data = Helpers.parseToDictionary(dataInput.InputStream);
                 }
                 else {
-                    throw new Exception("The uploaded file extension isn't supported. Please upload a .csv file or an excel file.");
+                    throw new Exception("The uploaded file format isn't supported. Please upload a csv, text or an excel file.");
                 }
                 if (data == null)
                     throw new Exception("An error occured processing the upload file.");
