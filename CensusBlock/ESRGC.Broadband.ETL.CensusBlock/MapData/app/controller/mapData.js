@@ -13,13 +13,13 @@ ESRGC.Controller.MapData = ESRGC.Class({
     refs: {
         firstRowDataHidFld: '#firstRowData',
         dataForm: 'form.form-horizontal',
-        selectControls: 'form select',
+        selectControls: 'form select:not(".default-value-input")',
         previewPanel: '#previewPanel',
         labels: '.control-label',
         selectedOptions: 'form option:selected',
         mapDataBtn: 'input[value="Map Data"]',
         progressModal: '#progressPanel',
-        defaultInputs: 'form input'
+        defaultInputs: 'form .default-value-input'
     },
     control: {
         selectControls: {
@@ -42,7 +42,7 @@ ESRGC.Controller.MapData = ESRGC.Class({
         $.each(scope.getSelectControls(), function (index, obj) {
             var id = $(obj).attr('id');
             if ($(obj).val() == scope.defaultItemText) {//selected item is 'use default'
-                var value = $(obj).siblings().filter('input')
+                var value = $(obj).siblings().filter('input, select')
                     .first().removeClass('hide').val();
                 scope.updateMapping(id, value);
             }

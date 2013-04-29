@@ -68,6 +68,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Extension
 
                 return result;
             }
-        }
+        }        
     }
 }

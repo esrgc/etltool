@@ -47,7 +47,9 @@
                 Each required (*) field must be mapped to an uploaded data field.
             </li>
             <li>
-                If all the required fields are not mapped you must check your data and upload a new file.
+                If all the required fields are not mapped you must check your data and upload a new file
+                or select <strong>"Use default"</strong> in the drop down box to enter a default value for that field.
+                <strong>Note!</strong> not all fields can be mapped with a default value.
             </li>
             <li>
                 The preview panel on the right allows you to see the data mapped for particular fields.
@@ -59,11 +61,16 @@
             </li>
             <li>
                 Non-required fields (<b>[TYPICAL UPLOAD]</b> and <b>[TYPICAL DOWNLOAD]</b>) are assigned with default
-                value, specified by the NTIA model, if left unmapped.
+                value ("ZZ"), specified by the NTIA model, if left unmapped.
             </li>
             <li>
                 <strong>Important note</strong> <b>[STATE FIPS]</b>, <b>[COUNTY FIPS]</b>, and <b>[TRACT]</b> fields
                 are parsed from <b>[FULL CENSUS BLOCK ID]</b> field. They are obscured from the form for this reason.
+                <strong>These fields can not be mapped with default values.</strong>
+            </li>
+            <li>
+                To see more information about coded values for the mapping fields, click on 
+                <i class="icon-info-sign"></i> icons on the preview panel.
             </li>
             <li>
                 After all required fields are mapped, click "Map Data" button to proceed.
@@ -99,7 +106,7 @@
                                     model => model.MappingObject.PROVNAMEColumn, ViewData).DisplayName
                             }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.PROVNAME, new { @class= "input-medium hide"})
+                        @Html.TextBoxFor(x => x.DefaultData.PROVNAME, new { @class= "input-medium hide default-value-input"})
                     </div>
                 </div>
                 <div class="control-group">
@@ -118,7 +125,7 @@
                                         model => model.MappingObject.DBANAMEColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.DBANAME, new { @class= "input-medium hide"})
+                        @Html.TextBoxFor(x => x.DefaultData.DBANAME, new { @class= "input-medium hide default-value-input"})
                     </div>
                 </div>
                 <div class="control-group">
@@ -137,7 +144,15 @@
                                         model => model.MappingObject.Provider_typeColumn, ViewData).DisplayName
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.Provider_Type, new { @class= "input-small hide"})
+                        <select class="input-large hide default-value-input" 
+                                id="DefaultData_Provider_Type" 
+                                name="DefaultData.Provider_Type">
+                            <option value="1">As described in the NOFA</option>
+                            <option value="2">Reseller</option>
+                            <option value="3">Other</option>
+                        </select>
+                         
+                        @*@Html.TextBoxFor(x => x.DefaultData.Provider_Type, new { @class = "input-small hide default-value-input" })*@
                     </div>
                 </div>
                 <div class="control-group">
@@ -156,7 +171,7 @@
                                         model => model.MappingObject.FRNColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.FRN, new { @class= "input-medium hide"})
+                        @Html.TextBoxFor(x => x.DefaultData.FRN, new { @class = "input-medium hide default-value-input" })
                     </div>
                 </div>
                 <div class="control-group">
@@ -198,7 +213,7 @@
                                         model => model.MappingObject.TRANSTECHColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.TRANSTECH, new { @class= "input-small hide"})
+                        @Html.TextBoxFor(x => x.DefaultData.TRANSTECH, new { @class = "input-small hide default-value-input" })
                     </div>
                 </div>
                 <div class="control-group">
@@ -221,7 +236,7 @@
                                         model => model.MappingObject.MAXADDOWNColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.MAXADDOWN, new { @class= "input-small hide"})
+                        @Html.TextBoxFor(x => x.DefaultData.MAXADDOWN, new { @class = "input-small hide default-value-input" })
                     </div>
                 </div>
                 <div class="control-group">
@@ -258,8 +273,8 @@
                                     Model.UploadDataColumns.FirstOrDefault(
                                         x=> (x.ToUpper().Contains("DOWN") ||
                                         x.ToUpper().Contains("DOWNLOAD")) &&
-                                        x.ToUpper().Contains("TYPICAL") ||
-                                        x.ToUpper().Contains("TYPIC"))),
+                                        (x.ToUpper().Contains("TYPICAL") ||
+                                        x.ToUpper().Contains("TYPIC")))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large",
@@ -267,7 +282,7 @@
                                         model => model.MappingObject.TYPICDOWNColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.TYPICDOWN, new { @class= "input-small hide"})
+                        @Html.TextBoxFor(x => x.DefaultData.TYPICDOWN, new { @class = "input-small hide default-value-input" })
                     </div>
                 </div>
                 <div class="control-group">
@@ -281,8 +296,8 @@
                                     Model.UploadDataColumns.FirstOrDefault(
                                         x=> (x.ToUpper().Contains("UP") ||
                                         x.ToUpper().Contains("UPLOAD")) &&
-                                        x.ToUpper().Contains("TYPICAL") ||
-                                        x.ToUpper().Contains("TYPIC"))),
+                                        (x.ToUpper().Contains("TYPICAL") ||
+                                        x.ToUpper().Contains("TYPIC")))),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large",
@@ -290,16 +305,14 @@
                                         model => model.MappingObject.TYPICUPColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.TYPICUP, new { @class= "input-small hide"})
+                        @Html.TextBoxFor(x => x.DefaultData.TYPICUP, new { @class = "input-small hide default-value-input" })
                     </div>
                 </div>                               
                 <!--Form actions-->
                 <div class="form-actions">
                     <a class="btn" title="Back to data preview" 
                         href="@Url.Action("PreviewData", "Upload")">Back</a>
-                    <input type="submit" value="Map Data" class="btn btn-primary" />
-                    <input type="reset" class="btn" />
-                
+                    <input type="submit" value="Map Data" class="btn btn-primary" />                                  
                 </div>
             </form>
         </div>

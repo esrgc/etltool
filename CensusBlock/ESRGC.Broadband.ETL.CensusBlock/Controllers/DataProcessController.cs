@@ -78,7 +78,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         var dataEntry = new ServiceCensusBlock();
                         //PROVIDER NAME
                         key = columns.PROVNAMEColumn;
-                        tempValue = key == useDefault? defaultData.PROVNAME :  entry[key];
+                        tempValue = key == useDefault? defaultData.PROVNAME :  entry[key];                        
                         dataEntry.PROVNAME = tempValue != null ? tempValue.ToString() : string.Empty;
 
                         key = columns.DBANAMEColumn;

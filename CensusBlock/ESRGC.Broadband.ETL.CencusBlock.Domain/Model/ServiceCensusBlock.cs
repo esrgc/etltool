@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.ValidationAttributes;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 {
@@ -20,15 +21,17 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         public int ServiceCensusBlockID { get; set; }
         [Required]
         [StringLength(200, ErrorMessage = "Name can not exceed 200 characters")]
-        [Display(Name = "Provider Name")]
+        [Display(Name = "Provider Name")] 
+        [Name]//checks if name isn't a number or empty
         public string PROVNAME { get; set; }
         [Required]
         [StringLength(200, ErrorMessage = "Name can not exceed 200 characters")]
         [Display(Name = "DBA Name", Description = "Doing-Business As Name")]
+        [Name]//checks if name isn't a number or empty
         public string DBANAME { get; set; }
         [Required]
         [Display(Name = "Provider Type")]
-        //[Range(1, 3, ErrorMessage = "Provider type value ranges from 1 to 3 ")]
+        [Range(1, 3, ErrorMessage = "Provider type value ranges from 1 to 3 ")]
         public short Provider_Type { get; set; }
         [Required]
         [StringLength(10, ErrorMessage = "FRN length can not excceed 10 characters")]
