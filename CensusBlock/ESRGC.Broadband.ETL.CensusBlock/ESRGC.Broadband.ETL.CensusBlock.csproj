@@ -197,6 +197,14 @@
     </Compile>
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Infrastructure\Services.cs" />
+    <Compile Include="Migrations\201304302122183_submission.cs" />
+    <Compile Include="Migrations\201304302122183_submission.Designer.cs">
+      <DependentUpon>201304302122183_submission.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304302300034_renamedSubmissionTimeStarted.cs" />
+    <Compile Include="Migrations\201304302300034_renamedSubmissionTimeStarted.Designer.cs">
+      <DependentUpon>201304302300034_renamedSubmissionTimeStarted.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CsvDataRow.cs" />
@@ -379,6 +387,14 @@
       <Project>{6DF8FE5F-3672-4040-A2E4-4EBB9EA01AE8}</Project>
       <Name>ESRGC.Broadband.ETL.CensusBlock.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201304302122183_submission.resx">
+      <DependentUpon>201304302122183_submission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304302300034_renamedSubmissionTimeStarted.resx">
+      <DependentUpon>201304302300034_renamedSubmissionTimeStarted.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

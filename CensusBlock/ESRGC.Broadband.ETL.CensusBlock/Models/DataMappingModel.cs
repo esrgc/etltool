@@ -16,6 +16,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Models
     {
         public int SuccessCount { get; set; }
         public IDictionary<int, object> ErrorList { get; set; }
-        public IList<ServiceCensusBlock> Data { get; set; } 
+        public IList<ServiceCensusBlock> Data { get; set; }
+        public int SubmissionID { get; set; }
     }
 }

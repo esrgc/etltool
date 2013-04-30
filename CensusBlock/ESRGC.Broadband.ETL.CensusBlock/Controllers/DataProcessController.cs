@@ -141,7 +141,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         TryValidateModel(dataEntry);
                         if (ModelState.IsValid) {
                             dataList.Add(dataEntry);
-                            //_workUnit.ServiceCensusRepository.InsertEntity(dataEntry);
                         }
                         else {
                             //redirect to report errors
@@ -154,7 +153,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     }
                     count++;//increase count
                 }
-                //_workUnit.SaveChanges();//push data to database
                 //Session["data"] = null;//discard session data
                 //store data to be committed to session
                 Session["mappingData"] = new {
@@ -162,11 +160,21 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     validData = dataList,
                     defaultData = defaultData
                 };
-
+                //initiate submission if there's no error
+                var submission = new Submission() { 
+                    Status = "Initiated",
+                    DataCount = dataList.Count,
+                    RecordsStored = 0,
+                    ProgressPercentage = 0
+                };
+                _workUnit.SubmissionRepository.InsertEntity(submission);
+                _workUnit.SaveChanges();//save initiated submission
+                //prepare view model
                 var previewData = new PreviewMappingModel();
                 previewData.SuccessCount = dataList.Count();
                 previewData.ErrorList = errorList;
                 previewData.Data = dataList;
+                previewData.SubmissionID = submission.SubmissionID;
                 return View("ReviewMapping", previewData);
             }
             //error has occured
@@ -184,7 +192,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 
         [HttpPost]
         [NoAsyncTimeout]  
-        public void CommitDataAsync() {
+        public void CommitDataAsync(int submissionID) {
             //discard uploaded file
             Session["data"] = null;
             //check for mapped data
@@ -195,24 +203,25 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var data = dynObj.validData as List<ServiceCensusBlock>;
 
             AsyncManager.OutstandingOperations.Increment();//notify async operation
-            var service = new DataCommit();
+            //initialize data commit service
+            var service = new DataCommit(submissionID);
             //BackgroundWorker worker = new BackgroundWorker();
             //status report handler
-            service.DataCommitProgressChanged += (e) => {
-                AsyncManager.Sync(() => {
-                    var eventArg = e as OperationProgressChangedEventArgs;
-                    var message = eventArg.Status +
-                        ". Progress: " +
-                        eventArg.ProgressPercentage +
-                        "%";
+            //service.DataCommitProgressChanged += (e) => {
+                //AsyncManager.Sync(() => {
+                //    var eventArg = e as OperationProgressChangedEventArgs;
+                //    var message = 
+                //        "Progress: " +
+                //        eventArg.ProgressPercentage +
+                //        "%. " + 
+                //        eventArg.Status ;
 
-                    Session["status"] = new {
-                        message = message,
-                        progress = eventArg.ProgressPercentage
-                    };
-                });
-
-            };
+                //    Session["status"] = new {
+                //        message = message,
+                //        progress = eventArg.ProgressPercentage
+                //    };
+                //});
+            //};
             //completed handler
             service.DataCommitCompleted += (o, e) => {
                 AsyncManager.Sync(() => {
@@ -220,19 +229,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         AsyncManager.Parameters["result"] = e.Data;
                         AsyncManager.Parameters["status"] = "success";
                         Session.Clear();
-                        Session["status"] = new {
-                            message = "Finished successfully.",
-                            progress = 100
-                        };
                     }
                     catch (Exception ex) {
                         AsyncManager.Parameters["data"] = null;
                         AsyncManager.Parameters["status"] = ex.ToString();
-                        Session.Clear();
-                        Session["status"] = new {
-                            message = "Finished with exceptions.",
-                            progress = 100
-                        };
+                        Session.Clear();                        
                     }
                     AsyncManager.OutstandingOperations.Decrement();
                 });

@@ -9,14 +9,19 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
     public class Submission
     {
         public Submission() {
-            SubmissionTime = DateTime.Now;
+            SubmissionTimeStarted = DateTime.Now;
         }
         [Key]
         public int SubmissionID { get; set; }
-        [StringLength(30)]
+        [StringLength(50)]
         public string Status { get; set; }
-        [Required]
-        public DateTime SubmissionTime { get; set; }
+        public DateTime? SubmissionTimeStarted { get; set; }
+        public DateTime? SubmissionTimeCompleted { get; set; }
+        public DateTime? LastStatusUpdate { get; set; }
+        public int? RecordsStored {get; set;}
+        public int DataCount { get; set; }
+        public int ProgressPercentage { get; set; }
         public virtual List<ServiceCensusBlock> ServiceCensusBlocks { get; set; }
+
     }
 }

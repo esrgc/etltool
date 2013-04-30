@@ -57,7 +57,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
         public event CompletedEventHandler DataCommitCompleted;
         public event ProgressChangedEventHandler DataCommitProgressChanged;
 
-        public DataCommit() {
+        int _commitID;
+        public DataCommit(int commitID) {
+            _commitID = commitID;
             initializeDelegates();
         }
 
@@ -95,7 +97,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
         }
         private void postProgress(string status, int progress, AsyncOperation asyncOp) {
             var progressArg = new OperationProgressChangedEventArgs(
-                status + " (updated at " + DateTime.Now.ToShortTimeString() + ")",
+                status,
                 progress,
                 asyncOp.UserSuppliedState);
             asyncOp.Post(onProgressReportCallback, progressArg);
@@ -105,39 +107,52 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
             //get data and start committing
             var processingData = data as IEnumerable<ServiceCensusBlock>;
             Submission submission = null;
+            var startTime = DateTime.Now;
             if (!TaskCanceled(asyncOp.UserSuppliedState)) {
                 //create a new database context (work unit)
                 IUnitOfWork _workUnit = new DomainWorkUnit(new DomainDataContext());
                 try {
-                    submission = new Submission() { Status = "Submitting" };
-                    _workUnit.SubmissionRepository.InsertEntity(submission);
-                    _workUnit.SaveChanges();
-                    int count = 0, intervalCount = 0;
+                    submission = _workUnit.SubmissionRepository.GetEntityByID(_commitID);
+                    if (submission == null)
+                        throw new InvalidOperationException("Submission was not initiated.");
+
+                    int count = 0;
                     float total = (float)processingData.Count();
-                    foreach (var entry in processingData) {                        
+                    foreach (var entry in processingData) {
                         entry.SubmissionID = submission.SubmissionID;
                         _workUnit.ServiceCensusRepository.InsertEntity(entry);
+                        count++;//keeps count
+
                         //report progress
-                        if (intervalCount == 100) {
-                            postProgress("Processing",
-                                (int)(((float)count / total) * 100),
-                                asyncOp
-                            );
-                            //reset interval
-                            intervalCount = 0;
-                        }
-                        else
-                            intervalCount++;
+                        var status = "Processing";
+                        var progressPercent = (int)(((float)count / total) * 100);
+                        //store submission status
+                        submission.Status = status;
+                        submission.SubmissionTimeStarted = startTime;
+                        submission.LastStatusUpdate = DateTime.Now;
+                        submission.RecordsStored = count;
+                        submission.ProgressPercentage = progressPercent;
+                        //update submission
+                        _workUnit.SubmissionRepository.UpdateEntity(submission);
+                        //postProgress(status,
+                        //    progressPercent,
+                        //    asyncOp
+                        //);
+                        //reset interval
+
                         //commit changes
                         _workUnit.SaveChanges();
-                        count++;//keeps count
                         System.Diagnostics.Debug.WriteLine("Processed " + count);
                     }
+                    //update submission status when finished
                     submission.Status = "Submitted";
+                    submission.SubmissionTimeCompleted = DateTime.Now;
                     _workUnit.SubmissionRepository.UpdateEntity(submission);
-                    System.Diagnostics.Debug.WriteLine("Saving " + count);
                     _workUnit.SaveChanges();//commit to database
                     System.Diagnostics.Debug.WriteLine("Saved " + count);
+                }
+                catch (InvalidOperationException ex) {
+                    exception = ex;
                 }
                 catch (Exception ex) {
                     exception = ex;
@@ -145,11 +160,12 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                     _workUnit.SubmissionRepository.UpdateEntity(submission);
                     _workUnit.SaveChanges();//commit to database
                 }
+
             }
             //call completion method to finish
             completionMethod(submission, exception, TaskCanceled(asyncOp.UserSuppliedState), asyncOp);
         }
-        
+
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
         }

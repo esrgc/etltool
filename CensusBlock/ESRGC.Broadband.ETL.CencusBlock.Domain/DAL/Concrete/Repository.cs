@@ -48,7 +48,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
         }
 
         public TEntity GetEntityByID(object ID) {
-            return _dbSet.Find(ID);
+            var entry = _dbSet.Find(ID);
+            _context.Entry(entry).Reload();
+            return entry;
         }
 
 

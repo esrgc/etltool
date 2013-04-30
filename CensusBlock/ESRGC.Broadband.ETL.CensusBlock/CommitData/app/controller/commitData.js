@@ -14,7 +14,8 @@ ESRGC.Controller.CommitData = ESRGC.Class({
         statusPanel: '#statusContent',
         controlButtons: '.modal-footer button',
         statusLabel: '#submitStatus',
-        progressBar: '.bar'
+        progressBar: '.bar',
+        submissionKey: '#submissionID'
     },
     control: {
         commitBtn: {
@@ -28,7 +29,10 @@ ESRGC.Controller.CommitData = ESRGC.Class({
         if (typeof commitDataStore != 'undefined') {
             commitDataStore.on('load', function (store, data) {
                 //store new view
-                scope.finishHtml = data;
+                scope.getStatusLabel().text('Reloading...');
+                setTimeout(function () {
+                    $('body').html(data);
+                }, 1000);
             });
         }
     },
@@ -43,36 +47,50 @@ ESRGC.Controller.CommitData = ESRGC.Class({
         var progressStore = ESRGC.getStore('CommitProgress');
         if (typeof progressStore != 'undefined') {
             //setting interval for status refresh        
-            scope.pollKey = setInterval(function () {
+            //            scope.pollKey = setInterval(function () {
+            //                log('Fetching progress..');
+            //                progressStore.loadJson('post');
+            //            }, 10000); //refresh every 10 seconds
+            //start tracking status
+            setTimeout(function () {
                 log('Fetching progress..');
+                progressStore.setParams({
+                    submissionID: scope.getSubmissionKey().val()
+                });
                 progressStore.loadJson('post');
-            }, 10000); //refresh every 10 seconds
+            }, 5000);
             //wire load event for progress store
             progressStore.on('load', function (store, data) {
                 if (typeof data != 'undefined') {
                     var progress = data.progress;
-                    if (progress != -1)
+                    if (typeof progress != -1) {
                         scope.getProgressBar().css('width', progress + '%');
 
-                    var message = data.message;
-                    if (typeof message != 'undefined')
-                        scope.getStatusLabel().text(message);
+                        var message = data.message.trim();
 
-                    if (progress == 100) {//stop polling when operation is completed
-                        clearInterval(scope.pollKey);
-                        setTimeout(function () {
-                            scope.getStatusLabel().text('Reloading...');
-                            $('body').html(scope.finishHtml);
-                        }, 3000);
+                        if (typeof message != 'undefined')
+                            scope.getStatusLabel().text(message);
+
+                        //still in progress..fetch new status after 10seconds
+                        if (progress != 100) {
+                            setTimeout(function () {
+                                log('Fetching progress..');
+                                progressStore.loadJson('post');
+                            }, 10000);
+                        }
                     }
                 }
             });
         }
         //initiate data submission
         var commitDataStore = ESRGC.getStore('CommitData');
+        commitDataStore.setParams({
+            submissionID: scope.getSubmissionKey().val()
+        });
         if (typeof commitDataStore != 'undefined') {
             commitDataStore.loadContent('post');
         }
+
     }
 
 }, ESRGC.Controller.Base);
