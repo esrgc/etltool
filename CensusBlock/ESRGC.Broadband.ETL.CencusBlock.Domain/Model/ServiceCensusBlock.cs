@@ -22,12 +22,12 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         [Required]
         [StringLength(200, ErrorMessage = "Name can not exceed 200 characters")]
         [Display(Name = "Provider Name")] 
-        [Name]//checks if name isn't a number or empty
+        //[Name]//checks if name isn't a number or empty
         public string PROVNAME { get; set; }
         [Required]
         [StringLength(200, ErrorMessage = "Name can not exceed 200 characters")]
         [Display(Name = "DBA Name", Description = "Doing-Business As Name")]
-        [Name]//checks if name isn't a number or empty
+        //[Name]//checks if name isn't a number or empty
         public string DBANAME { get; set; }
         [Required]
         [Display(Name = "Provider Type")]

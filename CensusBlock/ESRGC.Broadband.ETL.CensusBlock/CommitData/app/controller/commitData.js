@@ -46,7 +46,7 @@ ESRGC.Controller.CommitData = ESRGC.Class({
             scope.pollKey = setInterval(function () {
                 log('Fetching progress..');
                 progressStore.loadJson('post');
-            }, 5000); //refresh every 5 seconds
+            }, 10000); //refresh every 10 seconds
             //wire load event for progress store
             progressStore.on('load', function (store, data) {
                 if (typeof data != 'undefined') {

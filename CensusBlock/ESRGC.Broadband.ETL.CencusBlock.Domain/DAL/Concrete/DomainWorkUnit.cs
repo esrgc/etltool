@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
+using System.Data.Entity.Infrastructure;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
 {
@@ -29,7 +30,13 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
             get { return _submissionRepo ?? (_submissionRepo = new Repository<Submission>(_context)); }
         }
         public void SaveChanges() {
-            _context.SaveChanges();
+            try {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex) {
+                ex.Entries.Single().Reload();                
+            }
+            
         }
 
 

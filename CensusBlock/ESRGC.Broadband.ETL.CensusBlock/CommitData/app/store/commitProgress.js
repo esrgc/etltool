@@ -8,7 +8,7 @@ Updates status of data commitment
 
 ESRGC.Store.CommitProgress = ESRGC.Class({
     name: 'CommitProgress',
-    url: 'UpdateStatus',
+    url: '../Monitor/UpdateStatus',
     errorCallback: function () {
         var controller = ESRGC.getController('DataCommit');
         if (typeof controller != 'undefined') {

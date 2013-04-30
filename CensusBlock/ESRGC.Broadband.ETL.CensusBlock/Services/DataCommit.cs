@@ -7,6 +7,8 @@ using System.Threading;
 using System.Collections.Specialized;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Services
 {
@@ -46,16 +48,16 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
     public delegate void ProgressChangedEventHandler(OperationProgressChangedEventArgs e);
     public class DataCommit : Component
     {
-        IUnitOfWork _workUnit = null;
         private HybridDictionary userStateToLifetime = new HybridDictionary();
         private delegate void workerEventHandler(object data, AsyncOperation asyncOp);
+
         private SendOrPostCallback onProgressReportCallback;
         private SendOrPostCallback onCompletedCallback;
+
         public event CompletedEventHandler DataCommitCompleted;
         public event ProgressChangedEventHandler DataCommitProgressChanged;
 
-        public DataCommit(IUnitOfWork workUnit) {
-            _workUnit = workUnit;
+        public DataCommit() {
             initializeDelegates();
         }
 
@@ -64,11 +66,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
             onCompletedCallback = completeOperation;
         }
 
-        void reportProgress(object state) {
+        private void reportProgress(object state) {
             var e = state as OperationProgressChangedEventArgs;
             onProgressChanged(e);
         }
-        void completeOperation(object state) {
+        private void completeOperation(object state) {
             var e = state as OperationCompletedEventArgs;
             onOperationCompleted(e);
         }
@@ -104,29 +106,38 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
             var processingData = data as IEnumerable<ServiceCensusBlock>;
             Submission submission = null;
             if (!TaskCanceled(asyncOp.UserSuppliedState)) {
+                //create a new database context (work unit)
+                IUnitOfWork _workUnit = new DomainWorkUnit(new DomainDataContext());
                 try {
                     submission = new Submission() { Status = "Submitting" };
                     _workUnit.SubmissionRepository.InsertEntity(submission);
                     _workUnit.SaveChanges();
-                    int count = 1, commitCount = 0;
+                    int count = 0, intervalCount = 0;
+                    float total = (float)processingData.Count();
                     foreach (var entry in processingData) {                        
                         entry.SubmissionID = submission.SubmissionID;
                         _workUnit.ServiceCensusRepository.InsertEntity(entry);
-                        postProgress("Processing", 
-                            (int)(((float)count / (float)processingData.Count()) * 100),
-                            asyncOp
-                        );
-                        count++;
-                        if(commitCount == 1000){//save every 1000 records
-                            _workUnit.SaveChanges();
-                            commitCount = 0;
-                            System.Diagnostics.Debug.WriteLine("Saved " + count);
+                        //report progress
+                        if (intervalCount == 100) {
+                            postProgress("Processing",
+                                (int)(((float)count / total) * 100),
+                                asyncOp
+                            );
+                            //reset interval
+                            intervalCount = 0;
                         }
-                        commitCount++;
+                        else
+                            intervalCount++;
+                        //commit changes
+                        _workUnit.SaveChanges();
+                        count++;//keeps count
+                        System.Diagnostics.Debug.WriteLine("Processed " + count);
                     }
                     submission.Status = "Submitted";
                     _workUnit.SubmissionRepository.UpdateEntity(submission);
+                    System.Diagnostics.Debug.WriteLine("Saving " + count);
                     _workUnit.SaveChanges();//commit to database
+                    System.Diagnostics.Debug.WriteLine("Saved " + count);
                 }
                 catch (Exception ex) {
                     exception = ex;

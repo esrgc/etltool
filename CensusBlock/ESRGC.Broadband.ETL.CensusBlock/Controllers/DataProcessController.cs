@@ -8,9 +8,11 @@ using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 using ESRGC.Broadband.ETL.CensusBlock.Extension;
 using ESRGC.Broadband.ETL.CensusBlock.Services;
+using System.ComponentModel;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
+    
     public class DataProcessController : BaseController
     {
         public DataProcessController(IUnitOfWork workUnit) : base(workUnit) { }
@@ -180,8 +182,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             }
         }
 
-        [NoAsyncTimeout]
         [HttpPost]
+        [NoAsyncTimeout]  
         public void CommitDataAsync() {
             //discard uploaded file
             Session["data"] = null;
@@ -193,63 +195,60 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var data = dynObj.validData as List<ServiceCensusBlock>;
 
             AsyncManager.OutstandingOperations.Increment();//notify async operation
-            var service = new DataCommit(_workUnit);
-
+            var service = new DataCommit();
+            //BackgroundWorker worker = new BackgroundWorker();
             //status report handler
             service.DataCommitProgressChanged += (e) => {
-                var eventArg = e as OperationProgressChangedEventArgs;
-                var message = eventArg.Status +
-                    ". Progress: " +
-                    eventArg.ProgressPercentage +
-                    "%";
+                AsyncManager.Sync(() => {
+                    var eventArg = e as OperationProgressChangedEventArgs;
+                    var message = eventArg.Status +
+                        ". Progress: " +
+                        eventArg.ProgressPercentage +
+                        "%";
 
-                Session["status"] = new {
-                    message = message,
-                    progress = eventArg.ProgressPercentage
-                };
+                    Session["status"] = new {
+                        message = message,
+                        progress = eventArg.ProgressPercentage
+                    };
+                });
 
             };
             //completed handler
             service.DataCommitCompleted += (o, e) => {
-                try {
-                    AsyncManager.Parameters["result"] = e.Data;
-                    AsyncManager.Parameters["status"] = "success";
-                    Session.Clear();
-                    Session["status"] = new {
-                        message = "Finished successfully.",
-                        progress = 100
-                    };
-                }
-                catch (Exception ex) {
-                    AsyncManager.Parameters["data"] = null;
-                    AsyncManager.Parameters["status"] = ex.ToString();
-                    Session.Clear();
-                    Session["status"] = new {
-                        message = "Finished with exceptions.",
-                        progress = 100
-                    };
-                }
-                AsyncManager.OutstandingOperations.Decrement();
+                AsyncManager.Sync(() => {
+                    try {
+                        AsyncManager.Parameters["result"] = e.Data;
+                        AsyncManager.Parameters["status"] = "success";
+                        Session.Clear();
+                        Session["status"] = new {
+                            message = "Finished successfully.",
+                            progress = 100
+                        };
+                    }
+                    catch (Exception ex) {
+                        AsyncManager.Parameters["data"] = null;
+                        AsyncManager.Parameters["status"] = ex.ToString();
+                        Session.Clear();
+                        Session["status"] = new {
+                            message = "Finished with exceptions.",
+                            progress = 100
+                        };
+                    }
+                    AsyncManager.OutstandingOperations.Decrement();
+                });
             };
             service.CommitDataAsync(data, Guid.NewGuid());
         }
 
         public ActionResult CommitDataCompleted(Submission result, string status) {
             ViewBag.Status = status;
-            return View(result);
-        }
-        public ActionResult UpdateStatus() {
-            if (Session["status"] != null) {
-                lock (Session["status"]) {
-                    var status = (Session["status"] as dynamic);
-                    return Json(status, JsonRequestBehavior.AllowGet);
-                }
+            if (result != null)
+                return View(result);
+            else {
+                ViewBag.errorMsg = "Error submitting your data. Please try again";
+                return View("Error");
             }
-            else//no operation running
-                return Json(
-                    new { progress = -1 },
-                    JsonRequestBehavior.AllowGet
-                );
         }
+        
     }
 }
