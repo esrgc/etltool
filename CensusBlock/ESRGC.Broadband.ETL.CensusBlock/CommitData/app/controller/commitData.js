@@ -28,11 +28,12 @@ ESRGC.Controller.CommitData = ESRGC.Class({
         var commitDataStore = ESRGC.getStore('CommitData');
         if (typeof commitDataStore != 'undefined') {
             commitDataStore.on('load', function (store, data) {
+                scope.getProgressBar().css('width', '100%');
                 //store new view
                 scope.getStatusLabel().text('Reloading...');
                 setTimeout(function () {
                     $('body').html(data);
-                }, 1000);
+                }, 2000);
             });
         }
     },

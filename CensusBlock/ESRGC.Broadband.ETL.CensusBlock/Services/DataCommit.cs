@@ -107,13 +107,18 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
         private void workerMethod(object data, AsyncOperation asyncOp) {
             //debug code
             Debug.AutoFlush = true;
-            int maxInterval = 500, maxRecycleInterval = 20000;
-
             Exception exception = null;
+            Submission submission = null;
             //get data and start committing
             var processingData = data as IEnumerable<ServiceCensusBlock>;
-            Submission submission = null;
+            float total = (float)processingData.Count();
+            //calculation variables
+            int maxInterval = (int)(total/6);
+            int count = 0, interval = 0;
+            
+            //start time
             var startTime = DateTime.Now;
+            //checks if task is canceled
             if (!TaskCanceled(asyncOp.UserSuppliedState)) {
                 //create a new database context (work unit)
                 IUnitOfWork _workUnit = new DomainWorkUnit(new DomainDataContext());
@@ -124,10 +129,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                     //timers
                     DateTime timer = DateTime.Now;
                     DateTime startTimer = DateTime.Now;
-
-                    int count = 0, interval = 0, recycleInterval = 0;
-                    
-                    float total = (float)processingData.Count();
+                    //start processing
                     foreach (var entry in processingData) {
                         entry.SubmissionID = submission.SubmissionID;
                         _workUnit.ServiceCensusRepository.InsertEntity(entry);
@@ -139,7 +141,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                         //keeps count
                         count++;
                         interval++;
-                        recycleInterval++;
                         
                         //store every 1000 records
                         if (interval == maxInterval) {
@@ -177,14 +178,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                             //reset interval
                             interval = 0;
                             //renew context 
-                            //_workUnit.Dispose();
-                            //_workUnit = new DomainWorkUnit(new DomainDataContext());
-                        }
-                        if (recycleInterval == maxRecycleInterval) {
-                            //_workUnit.Dispose();
-                            //_workUnit = null;
-                            //_workUnit = new DomainWorkUnit(new DomainDataContext());
-                            recycleInterval = 0;
+                            //_workUnit.RenewContext();
                         }
                     }
                     //update submission status when finished

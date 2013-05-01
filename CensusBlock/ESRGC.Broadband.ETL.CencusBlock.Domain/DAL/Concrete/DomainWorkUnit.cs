@@ -20,7 +20,12 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
         public void Dispose() {
             _context.Dispose();
         }
-
+        public void RenewContext() {
+            _context.Dispose();
+            _context = new DomainDataContext();
+            _serviceCensusRepo = null;
+            _submissionRepo = null;
+        }
         public IRepository<Model.ServiceCensusBlock> ServiceCensusRepository {
             get {
                 return _serviceCensusRepo ?? (_serviceCensusRepo = new Repository<ServiceCensusBlock>(_context));

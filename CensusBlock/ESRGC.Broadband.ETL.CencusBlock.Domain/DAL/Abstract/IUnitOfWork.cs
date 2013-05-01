@@ -11,6 +11,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract
         IRepository<Submission> SubmissionRepository { get; }
         IRepository<ServiceCensusBlock> ServiceCensusRepository { get; }
         void SaveChanges();
-        void Dispose();
+        void RenewContext();
     }
 }
