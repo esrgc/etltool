@@ -11,8 +11,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL
 {
     public class DomainDataContext: DbContext
     {
-        public DomainDataContext():base("name=ETL") { 
-        
+        public DomainDataContext():base("name=ETL") {
+            //this helps reduce latency on large dataset
+            Configuration.AutoDetectChangesEnabled = false;
         }
 
         /*public dbsets go here*/

@@ -9,6 +9,8 @@ using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL;
+using System.Diagnostics;
+using System.Configuration;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Services
 {
@@ -103,6 +105,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
             asyncOp.Post(onProgressReportCallback, progressArg);
         }
         private void workerMethod(object data, AsyncOperation asyncOp) {
+            //debug code
+            Debug.AutoFlush = true;
+            int maxInterval = 500, maxRecycleInterval = 20000;
+
             Exception exception = null;
             //get data and start committing
             var processingData = data as IEnumerable<ServiceCensusBlock>;
@@ -115,41 +121,80 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
                     submission = _workUnit.SubmissionRepository.GetEntityByID(_commitID);
                     if (submission == null)
                         throw new InvalidOperationException("Submission was not initiated.");
+                    //timers
+                    DateTime timer = DateTime.Now;
+                    DateTime startTimer = DateTime.Now;
 
-                    int count = 0;
+                    int count = 0, interval = 0, recycleInterval = 0;
+                    
                     float total = (float)processingData.Count();
                     foreach (var entry in processingData) {
                         entry.SubmissionID = submission.SubmissionID;
                         _workUnit.ServiceCensusRepository.InsertEntity(entry);
-                        count++;//keeps count
 
-                        //report progress
-                        var status = "Processing";
-                        var progressPercent = (int)(((float)count / total) * 100);
-                        //store submission status
-                        submission.Status = status;
-                        submission.SubmissionTimeStarted = startTime;
-                        submission.LastStatusUpdate = DateTime.Now;
-                        submission.RecordsStored = count;
-                        submission.ProgressPercentage = progressPercent;
-                        //update submission
-                        _workUnit.SubmissionRepository.UpdateEntity(submission);
-                        //postProgress(status,
-                        //    progressPercent,
-                        //    asyncOp
-                        //);
-                        //reset interval
+                        //tracking time
+                        if (interval == 0)
+                            timer = DateTime.Now;
 
-                        //commit changes
-                        _workUnit.SaveChanges();
-                        System.Diagnostics.Debug.WriteLine("Processed " + count);
+                        //keeps count
+                        count++;
+                        interval++;
+                        recycleInterval++;
+                        
+                        //store every 1000 records
+                        if (interval == maxInterval) {
+                            _workUnit.SaveChanges();//Commit pending data
+                            
+                            //calculating time
+                            var intervalTime = DateTime.Now - timer;
+                            var timeElapsed = DateTime.Now - startTimer;
+                            //calculate speed
+                            int speedPerSec = (int)(interval / intervalTime.TotalSeconds);
+                            //report progress
+                            var status = "Processing";
+                            var progressPercent = (int)(((float)count / total) * 100);
+
+                            //store submission status
+                            submission.Status = status;
+                            submission.SubmissionTimeStarted = startTime;
+                            submission.LastStatusUpdate = DateTime.Now;
+                            submission.RecordsStored = count;
+                            submission.ProgressPercentage = progressPercent;
+                            submission.SpeedPerSecond = speedPerSec;
+                            //update submission
+                            _workUnit.SubmissionRepository.UpdateEntity(submission);
+                            //commit changes
+                            _workUnit.SaveChanges();
+                            
+                            //debug code
+                            Debug.WriteLine("Processed " + count + " " +
+                                DateTime.Now.ToLongTimeString() + " " +
+                                progressPercent + "%. Time elapsed: " + 
+                                timeElapsed.TotalSeconds + " seconds. Interval time: " + 
+                                intervalTime.TotalSeconds + " seconds. Speed: " + 
+                                speedPerSec + " rec/second.");
+                            
+                            //reset interval
+                            interval = 0;
+                            //renew context 
+                            //_workUnit.Dispose();
+                            //_workUnit = new DomainWorkUnit(new DomainDataContext());
+                        }
+                        if (recycleInterval == maxRecycleInterval) {
+                            //_workUnit.Dispose();
+                            //_workUnit = null;
+                            //_workUnit = new DomainWorkUnit(new DomainDataContext());
+                            recycleInterval = 0;
+                        }
                     }
                     //update submission status when finished
                     submission.Status = "Submitted";
+                    submission.RecordsStored = count;
+                    submission.ProgressPercentage = 100;
+                    submission.LastStatusUpdate = DateTime.Now;
                     submission.SubmissionTimeCompleted = DateTime.Now;
                     _workUnit.SubmissionRepository.UpdateEntity(submission);
                     _workUnit.SaveChanges();//commit to database
-                    System.Diagnostics.Debug.WriteLine("Saved " + count);
                 }
                 catch (InvalidOperationException ex) {
                     exception = ex;

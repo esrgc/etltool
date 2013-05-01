@@ -205,6 +205,10 @@
     <Compile Include="Migrations\201304302300034_renamedSubmissionTimeStarted.Designer.cs">
       <DependentUpon>201304302300034_renamedSubmissionTimeStarted.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201305011951564_SpeedPerSecondAdded.cs" />
+    <Compile Include="Migrations\201305011951564_SpeedPerSecondAdded.Designer.cs">
+      <DependentUpon>201305011951564_SpeedPerSecondAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CsvDataRow.cs" />
@@ -394,6 +398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304302300034_renamedSubmissionTimeStarted.resx">
       <DependentUpon>201304302300034_renamedSubmissionTimeStarted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305011951564_SpeedPerSecondAdded.resx">
+      <DependentUpon>201305011951564_SpeedPerSecondAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

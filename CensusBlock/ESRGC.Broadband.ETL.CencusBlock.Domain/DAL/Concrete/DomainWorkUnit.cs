@@ -30,12 +30,13 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
             get { return _submissionRepo ?? (_submissionRepo = new Repository<Submission>(_context)); }
         }
         public void SaveChanges() {
-            try {
+            //try {
                 _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException ex) {
-                ex.Entries.Single().Reload();                
-            }
+            //}
+            //catch (DbUpdateConcurrencyException ex) {
+            //    ex.Entries.Single().Reload();
+            //    _context.SaveChanges();
+            //}
             
         }
 

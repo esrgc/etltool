@@ -10,6 +10,7 @@ using ESRGC.Broadband.ETL.CensusBlock.Infrastructure;
 using System.Data.Entity;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL;
 using ESRGC.Broadband.ETL.CensusBlock.Migrations;
+using System.Net;
 
 namespace ESRGC.Broadband.ETL.CensusBlock
 {
@@ -30,6 +31,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             //set ninject controller factory
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DomainDataContext, Configuration>());
+
+            ServicePointManager.DefaultConnectionLimit = int.MaxValue;
         }
     }
 }

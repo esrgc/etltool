@@ -21,6 +21,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         public int? RecordsStored {get; set;}
         public int DataCount { get; set; }
         public int ProgressPercentage { get; set; }
+        public int SpeedPerSecond { get; set; }
         public virtual List<ServiceCensusBlock> ServiceCensusBlocks { get; set; }
 
     }

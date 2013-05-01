@@ -14,7 +14,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public ActionResult UpdateStatus(int submissionID) {
             var submission = _workUnit.SubmissionRepository.GetEntityByID(submissionID);
             if (submission != null) {
-                var message = string.Format(@"Status: {0} ({1}%), Time started: {2}, Last update: {3}", 
+                var message = string.Format(@"Status: {0} ({1}%). Time started: {2}. Last update: {3}", 
                 submission.Status,
                 submission.ProgressPercentage,
                 submission.SubmissionTimeStarted.Value.ToShortTimeString(),
