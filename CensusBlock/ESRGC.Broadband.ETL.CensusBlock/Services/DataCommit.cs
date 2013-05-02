@@ -113,7 +113,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Services
             var processingData = data as IEnumerable<ServiceCensusBlock>;
             float total = (float)processingData.Count();
             //calculation variables
-            int maxInterval = (int)(total/6);
+            int maxInterval = 10000;//(int)(total/10);
             int count = 0, interval = 0;
             
             //start time

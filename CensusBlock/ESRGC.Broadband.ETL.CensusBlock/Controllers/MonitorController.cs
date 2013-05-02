@@ -11,7 +11,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
     public class MonitorController : BaseController
     {
         public MonitorController(IUnitOfWork workUnit) : base(workUnit) { }
-        public ActionResult UpdateStatus(int submissionID) {
+        public ActionResult UpdateStatus(int? submissionID) {
+            if(submissionID == null)
+                return Json(new { progress = -1 }, JsonRequestBehavior.AllowGet);
+
             var submission = _workUnit.SubmissionRepository.GetEntityByID(submissionID);
             if (submission != null) {
                 var message = string.Format(@"Status: {0} ({1}%). Time started: {2}. Last update: {3}", 

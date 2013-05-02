@@ -55,11 +55,12 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
 
 
         public void InsertEntity(TEntity entity) {
-            _dbSet.Add(entity);
+            //_dbSet.Add(entity);
+            _context.Entry<TEntity>(entity).State = EntityState.Added;
         }
 
         public void UpdateEntity(TEntity entity) {
-            _dbSet.Attach(entity);
+            //_dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
 
@@ -69,10 +70,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
         }
 
         public void DeleteEntity(TEntity entity) {
-            if (_context.Entry(entity).State == EntityState.Detached) {
-                _dbSet.Attach(entity);
-            }
-            _dbSet.Remove(entity);
+            //if (_context.Entry(entity).State == EntityState.Detached) {
+            //    _dbSet.Attach(entity);
+            //}
+            //_dbSet.Remove(entity);
+            _context.Entry<TEntity>(entity).State = EntityState.Deleted;
         }
 
         #endregion
