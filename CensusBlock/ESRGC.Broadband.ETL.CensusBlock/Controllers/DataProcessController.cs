@@ -17,7 +17,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
     {
         public DataProcessController(IUnitOfWork workUnit) : base(workUnit) { }
 
-        public ActionResult MapData() {
+        public ActionResult MapData(int? submissionID) {
 
             if (Session["data"] != null) {
                 var obj = Session["data"] as dynamic;
@@ -40,6 +40,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 }
                 //data first row
                 ViewBag.firstRowData = data.First().ToJSon();
+                ViewBag.submissionID = submissionID;
                 return View(model);
             }
             else {
@@ -48,7 +49,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             }
         }
         [HttpPost]
-        public ActionResult MapData(DataMappingModel mappingModel) {
+        public ActionResult MapData(DataMappingModel mappingModel, int? submissionID) {
             if (Session["data"] == null) {
                 updateStatusMessage("Your session has expired. Please upload a new file.");
                 return RedirectToAction("Index", "Home");
@@ -161,14 +162,20 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     defaultData = defaultData
                 };
                 //initiate submission if there's no error
-                var submission = new Submission() { 
-                    Status = "Initiated",
-                    DataCount = dataList.Count,
-                    RecordsStored = 0,
-                    ProgressPercentage = 0
-                };
-                _workUnit.SubmissionRepository.InsertEntity(submission);
-                _workUnit.SaveChanges();//save initiated submission
+                Submission submission;
+                if (submissionID.HasValue) {
+                    submission = _workUnit.SubmissionRepository.GetEntityByID(submissionID);
+                }
+                else {
+                    submission = new Submission() {
+                        Status = "Initiated",
+                        DataCount = dataList.Count,
+                        RecordsStored = 0,
+                        ProgressPercentage = 0
+                    };
+                    _workUnit.SubmissionRepository.InsertEntity(submission);
+                    _workUnit.SaveChanges();//save initiated submission
+                }
                 //prepare view model
                 var previewData = new PreviewMappingModel();
                 previewData.SuccessCount = dataList.Count();

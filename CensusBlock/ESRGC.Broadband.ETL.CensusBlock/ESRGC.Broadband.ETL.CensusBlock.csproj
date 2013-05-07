@@ -188,6 +188,7 @@
     <Compile Include="Controllers\DataProcessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
+    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Extension\Helpers.cs" />
     <Compile Include="Extension\ListToJson.cs" />

@@ -14,7 +14,7 @@ using ESRGC.Broadband.ETL.CensusBlock.Models;
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
     [Authorize]
-    [InitializeSimpleMembership]
+    //[InitializeSimpleMembership]
     public class AccountController : Controller
     {
         //

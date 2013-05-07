@@ -65,7 +65,7 @@
     <!--Report added here-->
     <div class="span12">
         <div class="form-actions">
-            <a href="@Url.Action("mapData", "DataProcess")" class="btn btn-primary">Re-map fields</a>
+            <a href="@Url.Action("mapData", "DataProcess", new { submissionID = Model.SubmissionID})" class="btn btn-primary">Re-map fields</a>
             <a href="@Url.Action("uploadFile", "Upload")" class="btn btn-danger">Re-upload</a>
             @if (Model.SuccessCount > 0 && Model.ErrorList.Count == 0) {
                 <button type="button" data-toggle="modal" data-target="#progressPanel"
@@ -217,7 +217,7 @@
         }
         
         <div class="form-actions">
-            <a href="@Url.Action("mapData", "DataProcess")" class="btn btn-primary">Re-map fields</a>
+            <a href="@Url.Action("mapData", "DataProcess", new { submissionID = Model.SubmissionID })" class="btn btn-primary">Re-map fields</a>
             <a href="@Url.Action("uploadFile", "Upload")" class="btn btn-danger">Re-upload</a>
             @if (Model.SuccessCount > 0 && Model.ErrorList.Count == 0) {
                 <button type="button" data-toggle="modal" data-target="#progressPanel"

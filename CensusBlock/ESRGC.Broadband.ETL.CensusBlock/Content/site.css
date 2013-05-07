@@ -5,21 +5,7 @@
 
 
 /*IDs*/
-#uploadBrowse {
-    width: auto;
-    position: relative;
-    overflow: hidden;
-    direction: ltr;    
-}
-input#dataInput {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    margin: 0px;
-    padding: 0px;
-    cursor: pointer;
-    opacity: 0
-}
+ 
 
 #body {
 }
@@ -29,6 +15,23 @@ input#dataInput {
 #previewPanel label { display: inline-block;}
 
 /*classes*/
+
+.upload-container {
+    width: auto;
+    position: relative;
+    overflow: hidden;
+    direction: ltr;    
+}
+.file-input{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    opacity: 0
+}
+
 .message-box {
     text-align: center;
     font-weight: bold;   

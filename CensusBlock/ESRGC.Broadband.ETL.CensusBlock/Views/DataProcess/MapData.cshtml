@@ -33,6 +33,36 @@
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
+
+@{
+    var defaultProvName = Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("PROVIDER NAME"));
+    var defaultDBA =   Model.UploadDataColumns.FirstOrDefault(x => x.ToUpper().Contains("DBA NAME"));
+    var defaultProviderType = Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("PROVIDER TYPE"));
+    var defaultFRN = Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("FRN"));
+    var defaultTransTech = Model.UploadDataColumns.FirstOrDefault(
+                                        x=>x.ToUpper().Contains("TRANSMISSION") 
+                                        || x.ToUpper().Contains("TECHONOLOGY"));
+    var defaultMaxAdDown = Model.UploadDataColumns.FirstOrDefault(
+                                        x => (x.ToUpper().Contains("DOWN") ||
+                                        x.ToUpper().Contains("DOWNLOAD")) &&
+                                        (x.ToUpper().Contains("ADVERTISED") ||
+                                        x.ToUpper().Contains("AD.")));
+    var defaultMaxAdUp = Model.UploadDataColumns.FirstOrDefault(
+                                        x => (x.ToUpper().Contains("UP") ||
+                                        x.ToUpper().Contains("UPLOAD")) &&
+                                        (x.ToUpper().Contains("ADVERTISED") ||
+                                        x.ToUpper().Contains("AD.")));
+    var defaultTypicDown = Model.UploadDataColumns.FirstOrDefault(
+                                        x => (x.ToUpper().Contains("DOWN") ||
+                                        x.ToUpper().Contains("DOWNLOAD")) &&
+                                        (x.ToUpper().Contains("TYPICAL") ||
+                                        x.ToUpper().Contains("TYPIC")));
+    var defaultTypicUp = Model.UploadDataColumns.FirstOrDefault(
+                                        x => (x.ToUpper().Contains("UP") ||
+                                        x.ToUpper().Contains("UPLOAD")) &&
+                                        (x.ToUpper().Contains("TYPICAL") ||
+                                        x.ToUpper().Contains("TYPIC")));                                                                                                                 
+ }
 <!--Content instructions-->
 <div class="row-fluid">
     <div class="well span12">
@@ -89,6 +119,7 @@
         <div>   
             @Html.Hidden("firstRowData", ViewBag.firstRowData as string, new { name = "firstRowdata"})
             <form class="form-horizontal" action="@Url.Action("MapData")" method="post">
+                <input type="hidden" value="@ViewBag.submissionID" id="submissionID" name="submissionID" />
                 @Html.ValidationSummary()
                 <div class="control-group">
                     @Html.LabelFor(x => x.MappingObject.PROVNAMEColumn, new { @class = "control-label field-required" })
@@ -98,7 +129,8 @@
                             new SelectList(Model.UploadDataColumns, 
                                 Model.MappingObject.PROVNAMEColumn != null?
                                 Model.MappingObject.PROVNAMEColumn :                                 
-                                Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("PROVIDER NAME"))),
+                                string.IsNullOrEmpty(defaultProvName) ? "Use default" : defaultProvName
+                                ),
                             "--select a column--",
                             new { 
                                 @class = "input-large required",
@@ -117,7 +149,8 @@
                                 new SelectList(Model.UploadDataColumns,
                                     Model.MappingObject.DBANAMEColumn != null?
                                     Model.MappingObject.DBANAMEColumn :
-                                    Model.UploadDataColumns.FirstOrDefault(x => x.ToUpper().Contains("DBA NAME"))),
+                                    string.IsNullOrEmpty(defaultDBA) ? "Use default" : defaultDBA
+                                    ),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -136,7 +169,8 @@
                                 new SelectList(Model.UploadDataColumns,
                                     Model.MappingObject.Provider_typeColumn != null?
                                     Model.MappingObject.Provider_typeColumn :
-                                    Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("PROVIDER TYPE"))),
+                                    string.IsNullOrEmpty(defaultProviderType) ? "Use default" : defaultProviderType
+                                    ),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -163,7 +197,8 @@
                                 new SelectList(Model.UploadDataColumns,
                                     Model.MappingObject.FRNColumn != null?
                                     Model.MappingObject.FRNColumn :
-                                    Model.UploadDataColumns.FirstOrDefault(x=>x.ToUpper().Contains("FRN"))),
+                                    string.IsNullOrEmpty(defaultFRN) ? "Use default" : defaultFRN
+                                    ),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -202,10 +237,9 @@
                                 x => x.MappingObject.TRANSTECHColumn,
                                 new SelectList(Model.UploadDataColumns,
                                     Model.MappingObject.TRANSTECHColumn != null?
-                                    Model.MappingObject.TRANSTECHColumn :
-                                    Model.UploadDataColumns.FirstOrDefault(
-                                        x=>x.ToUpper().Contains("TRANSMISSION") 
-                                        || x.ToUpper().Contains("TECHONOLOGY"))),
+                                    Model.MappingObject.TRANSTECHColumn : 
+                                    string.IsNullOrEmpty(defaultTransTech) ? "Use default" : defaultTransTech
+                                    ),
                                 "--select a column--",
                                 new { 
                                     @class = "input-large required",
@@ -213,7 +247,22 @@
                                         model => model.MappingObject.TRANSTECHColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.TRANSTECH, new { @class = "input-small hide default-value-input" })
+                        <select class="input-large hide default-value-input" 
+                                id="DefaultData_TRANSTECH" 
+                                name="DefaultData.TRANSTECH">
+                            <option value="10">Asymmetric xDSL</option>
+                            <option value="20">Symmetric xDSL</option>
+                            <option value="30">Other Copper Wireline</option>
+                            <option value="40">Cable Modem - DOCSIS 3.0</option>
+                            <option value="41">Cable Modem - Other</option>
+                            <option value="50">Optical Carrier/Fiber to the End User</option>
+                            <option value="60">Satellite</option>
+                            <option value="70">Terrestrial Fixed Wireless - Unlicensed</option>
+                            <option value="71">Terrestrial Fixed Wireless - Licensed</option>
+                            <option value="80">Terrestrial Mobile Wireless</option>
+                            <option value="90">Electric Power Line</option>
+                            <option value="0">All other</option>
+                        </select>
                     </div>
                 </div>
                 <div class="control-group">
@@ -222,21 +271,29 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.MAXADDOWNColumn,
                                 new SelectList(Model.UploadDataColumns,
-                                    Model.MappingObject.MAXADDOWNColumn != null?
-                                    Model.MappingObject.MAXADDOWNColumn : 
-                                    Model.UploadDataColumns.FirstOrDefault(
-                                        x=> (x.ToUpper().Contains("DOWN") ||
-                                        x.ToUpper().Contains("DOWNLOAD")) &&
-                                        (x.ToUpper().Contains("ADVERTISED") ||
-                                        x.ToUpper().Contains("AD.")))),
+                                    Model.MappingObject.MAXADDOWNColumn != null ?
+                                    Model.MappingObject.MAXADDOWNColumn :
+                                    string.IsNullOrEmpty(defaultMaxAdDown) ? "Use default" : defaultMaxAdDown),
                                 "--select a column--",
-                                new { 
+                                new {
                                     @class = "input-large required",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.MAXADDOWNColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.MAXADDOWN, new { @class = "input-small hide default-value-input" })
+                        <select class="input-large hide default-value-input" 
+                                id="DefaultData_MAXADDOWN" 
+                                name="DefaultData.MAXADDOWN">
+                            <option value="3">Greater than or equal to 768 kbps and less than 1.5 mbps</option>
+                            <option value="4">Greater than or equal to 1.5 mbps and less than 3 mbps</option>
+                            <option value="5">Greater than or equal to 3 mbps and less than 6 mbps</option>
+                            <option value="6">Greater than or equal to 6 mbps and less than 10 mbps</option>
+                            <option value="7">Greater than or equal to 10 mbps and less than 25 mbps</option>
+                            <option value="8">Greater than or equal to 25 mbps and less than 50 mbps</option>
+                            <option value="9">Greater than or equal to 50 mbps and less than 100 mbps</option>
+                            <option value="10">Greater than or equal to 100 mbps and less than 1 gbps</option>
+                            <option value="11">Greater than or equal to 1 gbps</option>
+                        </select>
                     </div>
                 </div>
                 <div class="control-group">
@@ -245,21 +302,32 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.MAXADUPColumn,
                                 new SelectList(Model.UploadDataColumns,
-                                    Model.MappingObject.MAXADUPColumn != null?
+                                    Model.MappingObject.MAXADUPColumn != null ?
                                     Model.MappingObject.MAXADUPColumn :
-                                    Model.UploadDataColumns.FirstOrDefault(
-                                        x=> (x.ToUpper().Contains("UP") ||
-                                        x.ToUpper().Contains("UPLOAD")) &&
-                                        (x.ToUpper().Contains("ADVERTISED") ||
-                                        x.ToUpper().Contains("AD.")))),
+                                    string.IsNullOrEmpty(defaultMaxAdUp) ? "Use default" : defaultMaxAdUp
+                                    ),
                                 "--select a column--",
-                                new { 
+                                new {
                                     @class = "input-large required",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.MAXADUPColumn, ViewData).Description
-                                }       
+                                }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.MAXADUP, new { @class= "input-small hide"})
+                        <select class="input-large hide default-value-input" 
+                                id="DefaultData_MAXADUP" 
+                                name="DefaultData.MAXADUP">
+                            <option value="1">Less than or equal to 200 kpbs</option>
+                            <option value="2">Greater than 200 kbps and less than 768 kbps</option>
+                            <option value="3">Greater than or equal to 768 kbps and less than 1.5 mbps</option>
+                            <option value="4">Greater than or equal to 1.5 mbps and less than 3 mbps</option>
+                            <option value="5">Greater than or equal to 3 mbps and less than 6 mbps</option>
+                            <option value="6">Greater than or equal to 6 mbps and less than 10 mbps</option>
+                            <option value="7">Greater than or equal to 10 mbps and less than 25 mbps</option>
+                            <option value="8">Greater than or equal to 25 mbps and less than 50 mbps</option>
+                            <option value="9">Greater than or equal to 50 mbps and less than 100 mbps</option>
+                            <option value="10">Greater than or equal to 100 mbps and less than 1 gbps</option>
+                            <option value="11">Greater than or equal to 1 gbps</option>
+                        </select>
                     </div>
                 </div>
                 <div class="control-group">
@@ -268,21 +336,30 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.TYPICDOWNColumn,
                                 new SelectList(Model.UploadDataColumns,
-                                    Model.MappingObject.TYPICDOWNColumn != null?
+                                    Model.MappingObject.TYPICDOWNColumn != null ?
                                     Model.MappingObject.TYPICDOWNColumn :
-                                    Model.UploadDataColumns.FirstOrDefault(
-                                        x=> (x.ToUpper().Contains("DOWN") ||
-                                        x.ToUpper().Contains("DOWNLOAD")) &&
-                                        (x.ToUpper().Contains("TYPICAL") ||
-                                        x.ToUpper().Contains("TYPIC")))),
+                                    string.IsNullOrEmpty(defaultTypicDown) ? "Use default" : defaultTypicDown
+                                ),
                                 "--select a column--",
-                                new { 
+                                new {
                                     @class = "input-large",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.TYPICDOWNColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.TYPICDOWN, new { @class = "input-small hide default-value-input" })
+                        <select class="input-large hide default-value-input" 
+                                id="DefaultData_TYPICDOWN" 
+                                name="DefaultData.TYPICDOWN">
+                            <option value="3">Greater than or equal to 768 kbps and less than 1.5 mbps</option>
+                            <option value="4">Greater than or equal to 1.5 mbps and less than 3 mbps</option>
+                            <option value="5">Greater than or equal to 3 mbps and less than 6 mbps</option>
+                            <option value="6">Greater than or equal to 6 mbps and less than 10 mbps</option>
+                            <option value="7">Greater than or equal to 10 mbps and less than 25 mbps</option>
+                            <option value="8">Greater than or equal to 25 mbps and less than 50 mbps</option>
+                            <option value="9">Greater than or equal to 50 mbps and less than 100 mbps</option>
+                            <option value="10">Greater than or equal to 100 mbps and less than 1 gbps</option>
+                            <option value="11">Greater than or equal to 1 gbps</option>
+                        </select>
                     </div>
                 </div>
                 <div class="control-group">
@@ -291,21 +368,32 @@
                         @Html.DropDownListFor(
                                 x => x.MappingObject.TYPICUPColumn,
                                 new SelectList(Model.UploadDataColumns,
-                                    Model.MappingObject.TYPICUPColumn != null?
+                                    Model.MappingObject.TYPICUPColumn != null ?
                                     Model.MappingObject.TYPICUPColumn :
-                                    Model.UploadDataColumns.FirstOrDefault(
-                                        x=> (x.ToUpper().Contains("UP") ||
-                                        x.ToUpper().Contains("UPLOAD")) &&
-                                        (x.ToUpper().Contains("TYPICAL") ||
-                                        x.ToUpper().Contains("TYPIC")))),
+                                    string.IsNullOrEmpty(defaultTypicUp) ? "Use default" : defaultTypicUp
+                                    ),
                                 "--select a column--",
-                                new { 
+                                new {
                                     @class = "input-large",
                                     Title = ModelMetadata.FromLambdaExpression<DataMappingModel, string>(
                                         model => model.MappingObject.TYPICUPColumn, ViewData).Description
                                 }
                         )
-                        @Html.TextBoxFor(x => x.DefaultData.TYPICUP, new { @class = "input-small hide default-value-input" })
+                        <select class="input-large hide default-value-input" 
+                                id="DefaultData_TYPICUP" 
+                                name="DefaultData.TYPICUP">
+                            <option value="1">Less than or equal to 200 kpbs</option>
+                            <option value="2">Greater than 200 kbps and less than 768 kbps</option>
+                            <option value="3">Greater than or equal to 768 kbps and less than 1.5 mbps</option>
+                            <option value="4">Greater than or equal to 1.5 mbps and less than 3 mbps</option>
+                            <option value="5">Greater than or equal to 3 mbps and less than 6 mbps</option>
+                            <option value="6">Greater than or equal to 6 mbps and less than 10 mbps</option>
+                            <option value="7">Greater than or equal to 10 mbps and less than 25 mbps</option>
+                            <option value="8">Greater than or equal to 25 mbps and less than 50 mbps</option>
+                            <option value="9">Greater than or equal to 50 mbps and less than 100 mbps</option>
+                            <option value="10">Greater than or equal to 100 mbps and less than 1 gbps</option>
+                            <option value="11">Greater than or equal to 1 gbps</option>
+                        </select>
                     </div>
                 </div>                               
                 <!--Form actions-->

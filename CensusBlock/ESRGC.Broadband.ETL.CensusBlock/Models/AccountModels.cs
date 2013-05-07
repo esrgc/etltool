@@ -12,7 +12,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Models
     public class UsersContext : DbContext
     {
         public UsersContext()
-            : base("DefaultConnection") {
+            : base("ETL-Security") {
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
