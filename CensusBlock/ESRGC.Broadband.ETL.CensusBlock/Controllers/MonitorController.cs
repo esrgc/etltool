@@ -17,13 +17,20 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 
             var submission = _workUnit.SubmissionRepository.GetEntityByID(submissionID);
             if (submission != null) {
-                var message = string.Format(@"Status: {0} ({1}%). Time started: {2}. Last update: {3}", 
+                //estimate time left in minute
+                float est = -1;
+                if (submission.SpeedPerSecond != 0 && submission.RecordsStored.HasValue) {
+                    est = ((float)(submission.DataCount - submission.RecordsStored.Value) / submission.SpeedPerSecond) / 60;
+                }
+                var message = string.Format(@"Status: {0} ({1}%). Time started: {2}. Last update: {3}.", 
                 submission.Status,
                 submission.ProgressPercentage,
                 submission.SubmissionTimeStarted.Value.ToShortTimeString(),
                 submission.LastStatusUpdate.HasValue? 
                     submission.LastStatusUpdate.Value.ToShortTimeString() : "N/A"
                 );
+                if (est != -1)
+                    message += " Remaining Time: " + est.ToString("0.00") + " (minutes)"; 
                 return Json(
                         new { 
                             message = message,
