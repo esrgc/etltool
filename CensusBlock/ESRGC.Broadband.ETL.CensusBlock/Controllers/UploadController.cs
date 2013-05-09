@@ -9,6 +9,7 @@ using ESRGC.Broadband.ETL.CensusBlock.Extension;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
+    [Authorize]
     public class UploadController : Controller
     {
         /// <summary>
@@ -35,7 +36,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         [HttpPost]
         public ActionResult UploadFile(HttpPostedFileBase dataInput, int? previewCount) {
             if (dataInput == null) {
-                ModelState.AddModelError("", "No data input. Please select a an excel file to upload");
+                ModelState.AddModelError("", "No data input. Please select a file to upload");
                 return View();
             }
 

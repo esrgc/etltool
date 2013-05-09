@@ -7,6 +7,7 @@ using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
+    [Authorize]
     public class BaseController : AsyncController
     {
         protected IUnitOfWork _workUnit; 

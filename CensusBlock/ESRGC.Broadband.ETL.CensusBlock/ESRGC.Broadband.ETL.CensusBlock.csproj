@@ -188,7 +188,6 @@
     <Compile Include="Controllers\DataProcessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
-    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Extension\Helpers.cs" />
     <Compile Include="Extension\ListToJson.cs" />
@@ -386,6 +385,7 @@
     <Content Include="Views\Shared\TechOfTrans.cshtml" />
     <Content Include="Views\Shared\SpeedTierCodes.cshtml" />
     <Content Include="Views\Shared\ProviderTypes.cshtml" />
+    <Content Include="Views\Shared\LoginForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">

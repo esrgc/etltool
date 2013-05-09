@@ -23,7 +23,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return PartialView();
         }
 
         //
@@ -33,7 +33,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl) {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe)) {
+            if (ModelState.IsValid && Membership.ValidateUser(model.UserName, model.Password)) {
+                FormsAuthentication.SetAuthCookie(model.UserName, false);
                 return RedirectToLocal(returnUrl);
             }
 
@@ -45,10 +46,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         //
         // POST: /Account/LogOff
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff() {
-            WebSecurity.Logout();
+        //[ValidateAntiForgeryToken]
+        public ActionResult LogOut() {
+            FormsAuthentication.SignOut();
 
             return RedirectToAction("Index", "Home");
         }
