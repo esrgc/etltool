@@ -1,7 +1,7 @@
 ﻿@using ESRGC.Broadband.ETL.CensusBlock.Models
 @model LoginModel
 
-<form id="signInForm" action="@Url.Action("Login", "Account")" method="post" class="form-horizontal">
+@*<form id="signInForm" action="@Url.Action("Login", "Account")" method="post" class="form-horizontal">
     @Html.AntiForgeryToken()
     <input type="hidden" name="returnUrl" id="returnUrl" value="@ViewBag.returnUrl"/>
     <div class="control-group username">
@@ -22,8 +22,19 @@
                                 <input type="checkbox" name="rememberMe"/>
                                 Remember me
                             </label>*@
-            <button type="submit" data-loading-text="Signing in..." class="btn">
+            @*<button type="submit" data-loading-text="Signing in..." class="btn">
                 Sign in</button>
         </div>
     </div>
+</form>*@
+
+<form class="form-inline" action="@Url.Action("Login", "Account")" method="post" >
+    @Html.AntiForgeryToken()
+    <input type="text" class="input-medium" placeholder="Username"
+        name="Username" id="Username">
+    <input type="password" class="input-medium" placeholder="Password"
+        name="Password" id="Password">
+    <button type="submit" data-loading-text="Signing in..." class="btn">
+        Log in
+    </button>
 </form>

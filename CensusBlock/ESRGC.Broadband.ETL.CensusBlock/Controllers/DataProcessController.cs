@@ -12,7 +12,6 @@ using System.ComponentModel;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
-    
     public class DataProcessController : BaseController
     {
         public DataProcessController(IUnitOfWork workUnit) : base(workUnit) { }

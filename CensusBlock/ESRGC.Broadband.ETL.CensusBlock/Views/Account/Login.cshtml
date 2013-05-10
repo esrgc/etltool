@@ -1,9 +1,16 @@
 ﻿@model ESRGC.Broadband.ETL.CensusBlock.Models.LoginModel
-
 <div class="row-fluid">
     <div class="span12 well">
-        <h4>Login</h4>
-        @Html.Partial("LoginForm")
+        @if (User.Identity.IsAuthenticated) {
+            <a href="@Url.Action("UploadFile", "Upload")" class="btn btn-primary">
+                Start here <i class="icon-white icon-arrow-right"></i></a>
+        }
+        else { 
+            <fieldset>
+                <legend>Log in <small></small></legend>
+                @Html.ValidationSummary()
+                @Html.Partial("LoginForm")
+            </fieldset>
+        }
     </div>
 </div>
-

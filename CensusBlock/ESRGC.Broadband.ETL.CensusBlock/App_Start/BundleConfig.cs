@@ -28,21 +28,21 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             ));
             //upload app bundle
             bundles.Add(new ScriptBundle("~/bundles/uploadApp").Include(
-                "~/Upload/app.js",
-                "~/Upload/app/controller/upload.js"
+                "~/Scripts/Applications/Upload/app.js",
+                "~/Scripts/Applications/Upload/app/controller/upload.js"
             ));
             //data map app bundle
             bundles.Add(new ScriptBundle("~/bundles/mapDataApp").Include(
-                "~/MapData/app.js",
-                "~/MapData/app/controller/mapData.js",
-                "~/MapData/app/view/mapData.js"
+                "~/Scripts/Applications/MapData/app.js",
+                "~/Scripts/Applications/MapData/app/controller/mapData.js",
+                "~/Scripts/Applications/MapData/app/view/mapData.js"
             ));
             //preview mapping app bundle
             bundles.Add(new ScriptBundle("~/bundles/commitDataApp").Include(
-                    "~/CommitData/app.js",
-                    "~/CommitData/app/controller/commitData.js",
-                    "~/CommitData/app/store/commitData.js",
-                    "~/CommitData/app/store/commitProgress.js"
+                    "~/Scripts/Applications/CommitData/app.js",
+                    "~/Scripts/Applications/CommitData/app/controller/commitData.js",
+                    "~/Scripts/Applications/CommitData/app/store/commitData.js",
+                    "~/Scripts/Applications/CommitData/app/store/commitProgress.js"
 
             ));
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
