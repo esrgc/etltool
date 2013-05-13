@@ -26,6 +26,12 @@ namespace ESRGC.Broadband.ETL.CensusBlock
                 "~/Scripts/ESRGC/Model/base.js",
                 "~/Scripts/ESRGC/Store/base.js"
             ));
+            //security app bundle
+            bundles.Add(new ScriptBundle("~/bundles/securityApp").Include(
+                "~/Scripts/Applications/Home/app.js",
+                "~/Scripts/Applications/Home/app/controller/security.js",
+                "~/Scripts/Applications/Home/app/store/login.js"
+            ));
             //upload app bundle
             bundles.Add(new ScriptBundle("~/bundles/uploadApp").Include(
                 "~/Scripts/Applications/Upload/app.js",

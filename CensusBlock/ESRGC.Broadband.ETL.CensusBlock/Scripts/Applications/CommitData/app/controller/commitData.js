@@ -66,14 +66,14 @@ ESRGC.Controller.CommitData = ESRGC.Class({
                     var progress = data.progress;
                     if (typeof progress != -1) {
                         scope.getProgressBar().css('width', progress + '%');
+                        if (typeof data.message != 'undefined') {
+                            var message = data.message.trim();
 
-                        var message = data.message.trim();
-
-                        if (typeof message != 'undefined')
-                            scope.getStatusLabel().text(message);
-
+                            if (typeof message != 'undefined')
+                                scope.getStatusLabel().text(message);
+                        }
                         //still in progress..fetch new status after 10seconds
-                        if (progress != 100) {
+                        if (progress < 100) {
                             setTimeout(function () {
                                 log('Fetching progress..');
                                 progressStore.loadJson('post');

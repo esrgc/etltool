@@ -9,11 +9,6 @@
         "~/bundles/appBase",
         "~/bundles/mapDataApp"
     )
-    <script type="text/javascript">
-        $(function () {
-            new ESRGC.App();
-        });
-    </script>
 }
 @section header{
     <h3>@ViewBag.Title <i class="icon-resize-horizontal"></i></h3>
@@ -94,7 +89,7 @@
                 value ("ZZ"), specified by the NTIA model, if left unmapped.
             </li>
             <li>
-                <strong>Important note</strong> <b>[STATE FIPS]</b>, <b>[COUNTY FIPS]</b>, and <b>[TRACT]</b> fields
+                <strong>Important!</strong> <b>[STATE FIPS]</b>, <b>[COUNTY FIPS]</b>, and <b>[TRACT]</b> fields
                 are parsed from <b>[FULL CENSUS BLOCK ID]</b> field. They are obscured from the form for this reason.
                 <strong>These fields can not be mapped with default values.</strong>
             </li>

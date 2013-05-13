@@ -1,6 +1,16 @@
 ﻿@{
     ViewBag.Title = "Home";
 }
+
+@section scripts{
+    <!--App script--to be packed into bundle-->
+    <!--base app structure code-->
+    @Scripts.Render("~/bundles/appBase")
+    <!--Custom app code-->
+    @Scripts.Render("~/bundles/securityApp")
+    
+}
+
 @section header{
     <div class="row-fluid">
         <div class="span8">

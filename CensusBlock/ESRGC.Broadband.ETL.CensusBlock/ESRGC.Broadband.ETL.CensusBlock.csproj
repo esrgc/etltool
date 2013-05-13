@@ -293,6 +293,9 @@
     <Content Include="Documentation.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\Applications\Home\app.js" />
+    <Content Include="Scripts\Applications\Home\app\controller\security.js" />
+    <Content Include="Scripts\Applications\Home\app\store\login.js" />
     <Content Include="Scripts\Applications\MapData\app.js" />
     <Content Include="Scripts\Applications\MapData\app\controller\mapData.js" />
     <Content Include="Scripts\Applications\MapData\app\view\mapData.js" />
@@ -370,7 +373,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\Applications\CommitData\app\view\" />
-    <Folder Include="Scripts\Applications\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
