@@ -20,20 +20,33 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 //estimate time left in minute
                 float est = -1;
                 if (submission.SpeedPerSecond != 0 && submission.RecordsStored.HasValue) {
-                    est = ((float)(submission.DataCount - submission.RecordsStored.Value) / submission.SpeedPerSecond) / 60;
+                    //in seconds
+                    est = ((float)(submission.DataCount - submission.RecordsStored.Value) / submission.SpeedPerSecond);
                 }
-                var message = string.Format(@"Status: {0} ({1}%). Time started: {2}. Last update: {3}.", 
-                submission.Status,
-                submission.ProgressPercentage,
-                submission.SubmissionTimeStarted.Value.ToShortTimeString(),
-                submission.LastStatusUpdate.HasValue? 
-                    submission.LastStatusUpdate.Value.ToShortTimeString() : "N/A"
-                );
-                if (est != -1)
-                    message += " Remaining Time: " + est.ToString("0.00") + " (minutes)"; 
+                var estimatedTime = "";// string.Format(@"<span class=""label label-important"">{0} ({1}%)</span> <br/>Time started: {2}. Last update: {3}. ",
+                 //submission.Status,
+                 //submission.ProgressPercentage,
+                 //submission.SubmissionTimeStarted.Value.ToShortTimeString(),
+                 //submission.LastStatusUpdate.HasValue ?
+                 //    submission.LastStatusUpdate.Value.ToShortTimeString() : "N/A"
+                 //);
+                if (est != -1) {
+                    if (est < 60)
+                        estimatedTime += est.ToString("0") + " second(s)";
+                    else if (est <= 3600)
+                        estimatedTime += (est / 60).ToString("0") + " minute(s)";
+                    else if (est > 3600)
+                        estimatedTime += (est / 3600).ToString("0") + " hour(s)";
+                }
+                else
+                    estimatedTime = "N/A";
                 return Json(
                         new { 
-                            message = message,
+                            estimatedTime = estimatedTime,
+                            status = submission.Status,
+                            timeStarted = submission.SubmissionTimeStarted.Value.ToShortTimeString(),
+                            lastUpdate = submission.LastStatusUpdate.HasValue? 
+                                         submission.LastStatusUpdate.Value.ToShortTimeString() : "N/A",
                             progress = submission.ProgressPercentage
                         }, JsonRequestBehavior.AllowGet);
             }
@@ -43,10 +56,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         //public void UpdateStatusAsync() {
         //    AsyncManager.OutstandingOperations.Increment();
         //    BackgroundWorker worker = new BackgroundWorker();
-            
+
         //    worker.DoWork += (o, e) => {
         //        var w = o as BackgroundWorker;
-                
+
         //        if (Session["status"] != null) {
         //            lock (Session["status"]) {
         //                if (Session["status"] != null) {
@@ -55,7 +68,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         //            }
         //        }
         //    };
-            
+
         //    worker.RunWorkerCompleted += (o, e) => {
         //        AsyncManager.Sync(() => {
         //            var status = e.Result as dynamic;

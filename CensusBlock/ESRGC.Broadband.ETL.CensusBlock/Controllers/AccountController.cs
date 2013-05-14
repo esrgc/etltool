@@ -13,9 +13,9 @@ using ESRGC.Broadband.ETL.CensusBlock.Models;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
-    [Authorize]
+    //this class is decorated with Authorize attribute in the base class
     //[InitializeSimpleMembership]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         //
         // GET: /Account/Login
@@ -23,7 +23,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;
-            return PartialView();
+            return View();
         }
 
         //
@@ -31,7 +31,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl) {
             if (ModelState.IsValid && Membership.ValidateUser(model.UserName, model.Password)) {
                 FormsAuthentication.SetAuthCookie(model.UserName, false);
@@ -40,7 +40,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
-            return PartialView(model);
+            return View(model);
         }
 
         //
@@ -49,7 +49,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult LogOut() {
             FormsAuthentication.SignOut();
-
+            updateStatusMessage("You have been successfully signed out.");
             return RedirectToAction("Index", "Home");
         }
 

@@ -389,6 +389,8 @@
     <Content Include="Views\Shared\SpeedTierCodes.cshtml" />
     <Content Include="Views\Shared\ProviderTypes.cshtml" />
     <Content Include="Views\Shared\LoginForm.cshtml" />
+    <Content Include="Views\Shared\HomeHeader.cshtml" />
+    <Content Include="Views\Shared\messagePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">

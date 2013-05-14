@@ -14,6 +14,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public BaseController(IUnitOfWork workUnit) {
             _workUnit = workUnit;
         }
+        public BaseController() { 
+        
+        }
         public void updateStatusMessage(string message) {
             TempData["message"] = message;
         }

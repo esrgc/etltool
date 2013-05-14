@@ -1,0 +1,19 @@
+﻿@if (TempData["message"] != null) {
+    <div class="row-fluid">
+        <div class="span6 offset3">
+            @if (TempData["type"] != null) {
+                var labelType = "alert-" + TempData["type"].ToString();
+                <div class="alert @labelType message-box">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Message!</strong> <span>@TempData["message"]</span>
+                </div>
+            }
+            else {
+                <div class="alert alert-info message-box">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Message!</strong> <span>@TempData["message"]</span>
+                </div>
+            }
+        </div>
+    </div>
+}

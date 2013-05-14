@@ -17,20 +17,20 @@
                 <ul class="nav">
                     <li class="">
                         <a href="@Url.Action("Index", "Home")"><i class="icon-white icon-home">
-                        </i>Home</a>
+                        </i> Home</a>
                     </li>
                     <li>
                         <a href="@Url.Action("Index", "Help")"><i class="icon-white icon-question-sign">
-                        </i>Help</a></li>
+                        </i> Help</a></li>
                     <li>
                         <a href="@Url.Action("Index", "Contact")"><i class="icon-white icon-envelope">
-                        </i>Contact</a></li>
+                        </i> Contact</a></li>
                 </ul>
                 @if (Request.IsAuthenticated) {
                     <ul class="nav pull-right">
                         <li class="dropdown">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                                @User.Identity.Name <b class="caret"></b></a>
+                                <i class="icon-white icon-user"></i> @User.Identity.Name <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="#"><i class="icon-user"></i> Account</a></li>
@@ -40,7 +40,7 @@
                                     <li class="divider">
                                     </li>
                                     <li>
-                                        <a href="#"><i class="icon-list-alt"></i> Manager</a>
+                                        <a href="#"><i class="icon-list-alt"></i> Administration</a>
                                     </li>
                                 }
                             </ul>
@@ -61,16 +61,10 @@
             @RenderSection("header", required: false)
         </header>
         <section>
-            @if (TempData["message"] != null) {
-                <div class="row-fluid">
-                    <div class="span6 offset3">
-                        <div class="alert message-box">@TempData["message"]</div>
-                    </div>
-                </div>
-            }
+            @Html.Partial("messagePartial")            
             @RenderBody()
         </section>
-        @if (ViewBag.Title != "Home") {
+        @if (ViewBag.Title != "Home" && ViewBag.Title != "Login") {
             <hr />
             <footer>
                 <div class="row-fluid">

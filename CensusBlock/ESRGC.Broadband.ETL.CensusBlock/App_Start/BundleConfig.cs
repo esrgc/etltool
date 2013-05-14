@@ -45,10 +45,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             ));
             //preview mapping app bundle
             bundles.Add(new ScriptBundle("~/bundles/commitDataApp").Include(
-                    "~/Scripts/Applications/CommitData/app.js",
-                    "~/Scripts/Applications/CommitData/app/controller/commitData.js",
-                    "~/Scripts/Applications/CommitData/app/store/commitData.js",
-                    "~/Scripts/Applications/CommitData/app/store/commitProgress.js"
+                "~/Scripts/Applications/CommitData/app.js",
+                "~/Scripts/Applications/CommitData/app/controller/commitData.js",
+                "~/Scripts/Applications/CommitData/app/store/commitData.js",
+                "~/Scripts/Applications/CommitData/app/store/commitProgress.js"
 
             ));
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -59,18 +59,19 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             bundles.Add(new StyleBundle("~/Content/siteStyle").Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
-                        "~/Content/themes/base/jquery.ui.core.css",
-                        "~/Content/themes/base/jquery.ui.resizable.css",
-                        "~/Content/themes/base/jquery.ui.selectable.css",
-                        "~/Content/themes/base/jquery.ui.accordion.css",
-                        "~/Content/themes/base/jquery.ui.autocomplete.css",
-                        "~/Content/themes/base/jquery.ui.button.css",
-                        "~/Content/themes/base/jquery.ui.dialog.css",
-                        "~/Content/themes/base/jquery.ui.slider.css",
-                        "~/Content/themes/base/jquery.ui.tabs.css",
-                        "~/Content/themes/base/jquery.ui.datepicker.css",
-                        "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery.ui.theme.css"));
+                "~/Content/themes/base/jquery.ui.core.css",
+                "~/Content/themes/base/jquery.ui.resizable.css",
+                "~/Content/themes/base/jquery.ui.selectable.css",
+                "~/Content/themes/base/jquery.ui.accordion.css",
+                "~/Content/themes/base/jquery.ui.autocomplete.css",
+                "~/Content/themes/base/jquery.ui.button.css",
+                "~/Content/themes/base/jquery.ui.dialog.css",
+                "~/Content/themes/base/jquery.ui.slider.css",
+                "~/Content/themes/base/jquery.ui.tabs.css",
+                "~/Content/themes/base/jquery.ui.datepicker.css",
+                "~/Content/themes/base/jquery.ui.progressbar.css",
+                "~/Content/themes/base/jquery.ui.theme.css"
+            ));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap/css/style").Include(
                 "~/Content/bootstrap/css/bootstrap.css",
