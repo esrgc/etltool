@@ -14,13 +14,13 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             
             return View();
         }
-
+        [AllowAnonymous]
         public ActionResult Help() {
             ViewBag.Message = "Your app description page.";
 
             return View();
         }
-
+        [AllowAnonymous]
         public ActionResult Contact() {
             ViewBag.Message = "Your contact page.";
 

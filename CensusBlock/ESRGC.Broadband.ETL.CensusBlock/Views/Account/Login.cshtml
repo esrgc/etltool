@@ -6,9 +6,9 @@
     @Html.Partial("HomeHeader")
 }
 <div class="row-fluid">
-    <div class="span12 well security">
+    <div class="span6 offset3 well security">
         <fieldset>
-            <legend>Log in <small></small></legend>
+            <legend>Sign in <small></small></legend>
             @Html.ValidationSummary()
             @Html.Partial("LoginForm", Model)
         </fieldset>

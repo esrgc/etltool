@@ -14,9 +14,11 @@ html, body {
 /*IDs*/
  .footer > .container {
      border-top: 1px solid #eeeeee;
-     padding-top: 15px;
+     padding-top: 30px;
 }
-
+.wrapper > .container {
+    padding-top: 60px;    
+}
 .upload-container {
     width: auto;
     position: relative;
