@@ -1,15 +1,21 @@
 ﻿header {
     margin-top: 60px;
 }
-/*IDs*/
- #body {
+html, body {
+	height: 100%;
 }
+
 #previewPanel input {
     margin-bottom: 0;    
 }
 #previewPanel label { display: inline-block;}
 #submitStatus { font-size: small; }
 /*classes*/
+/*IDs*/
+ .footer > .container {
+     border-top: 1px solid #eeeeee;
+     padding-top: 15px;
+}
 
 .upload-container {
     width: auto;
@@ -38,7 +44,6 @@
     webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
     border-radius: 0 !important;
-   
 }
 
 /*validation*/

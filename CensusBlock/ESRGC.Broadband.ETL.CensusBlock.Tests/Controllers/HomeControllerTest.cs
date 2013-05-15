@@ -30,7 +30,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Tests.Controllers
             HomeController controller = new HomeController();
 
             // Act
-            ViewResult result = controller.About() as ViewResult;
+            ViewResult result = controller.Help() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);

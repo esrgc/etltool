@@ -64,7 +64,7 @@ ESRGC.Controller.CommitData = ESRGC.Class({
             progressStore.on('load', function (store, data) {
                 if (typeof data != 'undefined') {
                     var progress = data.progress;
-                    if (typeof progress != -1) {
+                    if (progress != -1) {
                         scope.getProgressBar().css('width', progress + '%');
                         var message = [
                             '<span class="label label-important">Processing (' + progress + '%)</span><br/>',
@@ -86,6 +86,7 @@ ESRGC.Controller.CommitData = ESRGC.Class({
                             }, 10000);
                         }
                     }
+                    else { log('Process completed or terminated.'); }
                 }
             });
         }

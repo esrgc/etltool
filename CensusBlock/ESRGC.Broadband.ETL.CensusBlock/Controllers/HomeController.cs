@@ -15,7 +15,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             return View();
         }
 
-        public ActionResult About() {
+        public ActionResult Help() {
             ViewBag.Message = "Your app description page.";
 
             return View();

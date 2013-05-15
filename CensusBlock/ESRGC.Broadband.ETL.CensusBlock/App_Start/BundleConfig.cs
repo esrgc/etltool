@@ -56,7 +56,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/siteStyle").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/siteStyle").Include(
+                "~/Content/site.css",
+                "~/Content/stickyFooter.css"
+            ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                 "~/Content/themes/base/jquery.ui.core.css",
