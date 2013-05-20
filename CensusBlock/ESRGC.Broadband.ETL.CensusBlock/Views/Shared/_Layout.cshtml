@@ -16,7 +16,7 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="brand" href="#">ETL Tool</a>
+                    <a class="brand" href="#">ETL</a>
                     <ul class="nav">
                         <li class="">
                             <a href="@Url.Action("Index", "Home")"><i class="icon-white icon-home">
@@ -36,14 +36,16 @@
                                     <i class="icon-white icon-user"></i> @User.Identity.Name <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#"><i class="icon-user"></i> Account settings</a></li>
+                                        <a href="#"><i class="icon-cog"></i> Account settings</a></li>
                                     <li>
                                         <a href="#"><i class="icon-folder-close"></i> Submission</a></li>
                                     @if (Roles.IsUserInRole("admin")) { 
                                         <li class="divider">
                                         </li>
                                         <li>
-                                            <a href="#"><i class="icon-list-alt"></i> Administration</a>
+                                            <a href="@Url.Action("Index", "Admin")">
+                                                <i class="icon-tasks"></i> Dashboard
+                                            </a>
                                         </li>
                                     }
                                 </ul>

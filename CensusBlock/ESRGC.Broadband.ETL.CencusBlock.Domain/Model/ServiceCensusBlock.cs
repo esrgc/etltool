@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.ValidationAttributes;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 {
@@ -96,7 +97,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         [StringLength(2, ErrorMessage = "Speed code can not exceed 2 characters")]
         [Display(Name = "Typical Upstream Speed")]
         public string TYPICUP { get; set; }
-
+        [ForeignKey("Submission")]
         public int SubmissionID { get; set; }
         public Submission Submission { get; set; }
     }

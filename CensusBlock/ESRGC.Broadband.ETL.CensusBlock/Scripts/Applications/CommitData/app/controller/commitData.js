@@ -66,8 +66,9 @@ ESRGC.Controller.CommitData = ESRGC.Class({
                     var progress = data.progress;
                     if (progress != -1) {
                         scope.getProgressBar().css('width', progress + '%');
+                        scope.getProgressBar().siblings().first().text(progress + '%');
                         var message = [
-                            '<span class="label label-important">Processing (' + progress + '%)</span><br/>',
+                            '<span class="label label-important">Processing</span><br/>',
                             '<span>',
                             'Time started: ' + data.timeStarted + '. ',
                             'Last update: ' + data.lastUpdate + '. ',

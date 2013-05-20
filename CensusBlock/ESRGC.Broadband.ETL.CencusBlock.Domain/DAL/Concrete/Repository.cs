@@ -9,11 +9,11 @@ using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
 {
-    public class Repository<TEntity>: IRepository<TEntity> where TEntity: class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         internal DbContext _context = null;
         internal IDbSet<TEntity> _dbSet;
-        public Repository(DbContext context){
+        public Repository(DbContext context) {
             _context = context;
             _dbSet = _context.Set<TEntity>();
         }
@@ -44,7 +44,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
         #region IRepository<TEntity> Members
 
         public IQueryable<TEntity> Entities {
-            get { return _dbSet; }
+            get { return _dbSet.AsQueryable(); }
         }
 
         public TEntity GetEntityByID(object ID) {

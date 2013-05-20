@@ -170,7 +170,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         Status = "Initiated",
                         DataCount = dataList.Count,
                         RecordsStored = 0,
-                        ProgressPercentage = 0
+                        ProgressPercentage = 0,
+                        SubmittingUser = User.Identity.Name
                     };
                     _workUnit.SubmissionRepository.InsertEntity(submission);
                     _workUnit.SaveChanges();//save initiated submission

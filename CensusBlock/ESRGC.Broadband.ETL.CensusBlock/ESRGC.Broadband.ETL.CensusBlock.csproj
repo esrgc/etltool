@@ -52,6 +52,12 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.15.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.2.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqToExcel_x64.1.7.0\lib\Remotion.dll</HintPath>
     </Reference>
@@ -184,6 +190,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DataProcessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -209,6 +216,14 @@
     <Compile Include="Migrations\201305011951564_SpeedPerSecondAdded.Designer.cs">
       <DependentUpon>201305011951564_SpeedPerSecondAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201305171901140_submittingUser.cs" />
+    <Compile Include="Migrations\201305171901140_submittingUser.Designer.cs">
+      <DependentUpon>201305171901140_submittingUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305201829018_TicketTable.cs" />
+    <Compile Include="Migrations\201305201829018_TicketTable.Designer.cs">
+      <DependentUpon>201305201829018_TicketTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CsvDataRow.cs" />
@@ -228,12 +243,14 @@
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\error.jpg" />
     <Content Include="Content\images\esrgclogo.jpg" />
+    <Content Include="Content\images\MDBC.png" />
     <Content Include="Content\images\SuLogo.jpg" />
     <Content Include="Content\images\towson.gif" />
     <Content Include="Content\images\MDBC.jpg" />
     <Content Include="Content\images\MDlogo.gif" />
     <Content Include="Content\images\ntia_logo.png" />
     <Content Include="Content\images\recoveryGov.jpg" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\images\valid.png" />
     <Content Include="Content\stickyFooter.css" />
@@ -392,6 +409,8 @@
     <Content Include="Views\Shared\LoginForm.cshtml" />
     <Content Include="Views\Shared\HomeHeader.cshtml" />
     <Content Include="Views\Shared\messagePartial.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\AdminTaskPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">
@@ -408,6 +427,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201305011951564_SpeedPerSecondAdded.resx">
       <DependentUpon>201305011951564_SpeedPerSecondAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305171901140_submittingUser.resx">
+      <DependentUpon>201305171901140_submittingUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305201829018_TicketTable.resx">
+      <DependentUpon>201305201829018_TicketTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

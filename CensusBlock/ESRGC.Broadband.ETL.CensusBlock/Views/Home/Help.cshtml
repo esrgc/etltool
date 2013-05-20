@@ -1,12 +1,15 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Help";
 }
-
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>@ViewBag.Message</h2>
-</hgroup>
-
+@section header {
+    <h3>@ViewBag.Title <i class="icon-question-sign"></i></h3>
+    <ul class="breadcrumb">
+        <li>
+            <a href="@Url.Action("index", "Home")">
+                Home</a><span class="divider">/</span></li>
+        <li class="active">@ViewBag.Title</li>
+    </ul>
+}
 <article>
     <p>
         Use this area to provide additional information.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 {
@@ -22,7 +23,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         public int DataCount { get; set; }
         public int ProgressPercentage { get; set; }
         public int SpeedPerSecond { get; set; }
+        public string SubmittingUser { get; set; }
         public virtual List<ServiceCensusBlock> ServiceCensusBlocks { get; set; }
-
+        
+        [ForeignKey("Ticket")]
+        public int? TicketID { get; set; }
+        public virtual Ticket Ticket { get; set; }
     }
 }
