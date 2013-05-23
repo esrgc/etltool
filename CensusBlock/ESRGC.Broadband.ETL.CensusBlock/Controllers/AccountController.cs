@@ -23,6 +23,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;
+            
             return View();
         }
 
@@ -34,6 +35,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl) {
             if (ModelState.IsValid && Membership.ValidateUser(model.UserName, model.Password)) {
+                
                 FormsAuthentication.SetAuthCookie(model.UserName, false);
                 return RedirectToLocal(returnUrl);
             }

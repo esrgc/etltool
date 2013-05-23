@@ -1,0 +1,24 @@
+﻿@model ESRGC.Broadband.ETL.CensusBlock.Domain.Model.Ticket
+
+@{
+    ViewBag.Title = "Create ticket";
+}
+
+@section header{
+    <h3>@ViewBag.Title <i class="icon-plus"></i></h3>
+    <ul class="breadcrumb">
+        <li><a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
+        <li><a href="@Url.Action("index", "Admin")">Dashboard</a><span class="divider">/</span></li>
+        <li class="active">@ViewBag.Title</li>
+    </ul>
+}
+
+<div class="row-fluid">
+    <div class="span3">
+        @Html.Partial("AdminTaskPanel")
+    </div>
+    <div class="span9">
+        <h5>Create new submission ticket</h5>
+
+    </div>
+</div>

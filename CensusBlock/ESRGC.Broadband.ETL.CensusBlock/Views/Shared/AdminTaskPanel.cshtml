@@ -1,13 +1,15 @@
 ﻿<!--Partial view for admin task-->
 @*<div class="panel">
-    <h4 class="panel-title">Admin</h4>
-    <div class="panel-content">
-        
-    </div>
-</div>
-*@
-<ul class="nav nav-list">
-    <li class="nav-header">Tasks</li>
-    <li class=""><a href="#">List</a></li>
-    <li><a href="#">Extract Data</a></li>
-</ul>
+    <h4 class="panel-title">Admin tasks</h4>
+    <div class="panel-content">*@
+        <ul class="nav nav-list">
+            <li class="nav-header">Submission</li>
+            <li><a href="@Url.Action("CreateTicket")"><i class="icon-plus"></i> Create a new ticket</a></li>
+            <li class=""><a href="#"><i class="icon-list"></i> Manage tickets</a></li>                        
+            <li class=""><a href="@Url.Action("Submission", "Admin")"><i class="icon-folder-close"></i> Manage submissions</a></li>
+            <li class="nav-header">Application</li>
+            <li class=""><a href="#"><i class="icon-plus"></i> Create an account</a></li>
+            <li class=""><a href="#"><i class="icon-user"></i> Manage users</a></li>                        
+        </ul>  
+   @* </div>
+</div>*@

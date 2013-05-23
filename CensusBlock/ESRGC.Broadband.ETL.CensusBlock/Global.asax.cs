@@ -22,6 +22,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock
         protected void Application_Start() {
             AreaRegistration.RegisterAllAreas();
 
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -29,7 +31,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             AuthConfig.RegisterAuth();
 
             //set ninject controller factory
-            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+            //ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DomainDataContext, Configuration>());
 
             ServicePointManager.DefaultConnectionLimit = int.MaxValue;

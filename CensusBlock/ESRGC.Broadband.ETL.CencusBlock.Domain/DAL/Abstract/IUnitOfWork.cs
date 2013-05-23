@@ -10,6 +10,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract
     {
         IRepository<Submission> SubmissionRepository { get; }
         IRepository<ServiceCensusBlock> ServiceCensusRepository { get; }
+        IRepository<Ticket> TicketRepository { get; }
         void SaveChanges();
         void RenewContext();
     }

@@ -1,0 +1,51 @@
+﻿@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
+@model IEnumerable<Submission>
+
+<div class="panel" id="activeSubmission">
+    <h3 class="panel-title">Submission in progress</h3>
+    <div class="panel-content">   
+    @if (Model.Count() > 0) {    
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Ticket</th>
+                    <th>Provider/User</th>
+                    <th>Data count (rows)</th>
+                    <th>Started</th>
+                    <th>Progress %</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var submission in Model) { 
+                    <tr>
+                        <td>
+                            @if (submission.Ticket != null) {  
+                                @submission.Ticket.Name 
+                            }
+                        </td>
+                        <td>@submission.SubmittingUser</td>
+                        <td>@submission.DataCount.ToString("#,#")</td>
+                        <td>@submission.SubmissionTimeStarted</td>
+                        <td>
+                            <div class="progress">
+                                <span class="progress-label">@submission.ProgressPercentage %</span>
+                                <div class="bar" style="width: @submission.ProgressPercentage%;">
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            @if (submission.Status == "Submitted") {
+                                <a class="btn btn-primary btn-mini">Extract</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>       
+    }
+    else { 
+        <p>No submission is currently in progress.</p>
+    }
+    </div>
+</div>

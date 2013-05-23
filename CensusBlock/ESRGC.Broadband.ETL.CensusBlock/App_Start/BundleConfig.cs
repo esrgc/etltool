@@ -14,9 +14,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock
                         "~/Scripts/jqueryPlugins/jquery-ui-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        //"~/Scripts/jqueryPlugins/jquery.unobtrusive*",
+                //"~/Scripts/jqueryPlugins/jquery.unobtrusive*",
                         "~/Scripts/jqueryPlugins/jquery.validate.js"));
-            
+
             //App base Bundle
             bundles.Add(new ScriptBundle("~/bundles/appBase").Include(
                 "~/Scripts/ESRGC/Script.js",
@@ -50,6 +50,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock
                 "~/Scripts/Applications/CommitData/app/store/commitData.js",
                 "~/Scripts/Applications/CommitData/app/store/commitProgress.js"
 
+            ));
+            bundles.Add(new ScriptBundle("~/bundles/dashboardApp").Include(
+                "~/Scripts/Applications/Dashboard/app.js",
+                "~/Scripts/Applications/Dashboard/app/controller/dashboard.js",
+                "~/Scripts/Applications/Dashboard/app/store/submission.js"
             ));
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

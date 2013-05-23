@@ -12,7 +12,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
     {
         DomainDataContext _context;
         IRepository<ServiceCensusBlock> _serviceCensusRepo;
-        IRepository<Submission> _submissionRepo; 
+        IRepository<Submission> _submissionRepo;
+        IRepository<Ticket> _ticketRepo;
+
         public DomainWorkUnit(DomainDataContext context) {
             _context = context;
         }
@@ -23,8 +25,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
         public void RenewContext() {
             _context.Dispose();
             _context = new DomainDataContext();
+
             _serviceCensusRepo = null;
             _submissionRepo = null;
+            _ticketRepo = null;
         }
         public IRepository<Model.ServiceCensusBlock> ServiceCensusRepository {
             get {
@@ -34,15 +38,18 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
         public IRepository<Submission> SubmissionRepository {
             get { return _submissionRepo ?? (_submissionRepo = new Repository<Submission>(_context)); }
         }
+        public IRepository<Ticket> TicketRepository {
+            get { return _ticketRepo ?? (_ticketRepo = new Repository<Ticket>(_context)); }
+        }
         public void SaveChanges() {
             //try {
-                _context.SaveChanges();
+            _context.SaveChanges();
             //}
             //catch (DbUpdateConcurrencyException ex) {
             //    ex.Entries.Single().Reload();
             //    _context.SaveChanges();
             //}
-            
+
         }
 
 

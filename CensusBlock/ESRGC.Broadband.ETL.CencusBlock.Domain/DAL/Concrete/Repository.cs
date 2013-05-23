@@ -11,9 +11,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        internal DbContext _context = null;
+        internal DomainDataContext _context = null;
         internal IDbSet<TEntity> _dbSet;
-        public Repository(DbContext context) {
+        public Repository(DomainDataContext context) {
             _context = context;
             _dbSet = _context.Set<TEntity>();
         }

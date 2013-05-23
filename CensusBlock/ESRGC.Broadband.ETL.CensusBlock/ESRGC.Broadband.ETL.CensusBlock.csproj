@@ -49,7 +49,7 @@
       <HintPath>..\packages\LinqToExcel_x64.1.7.0\lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Ninject">
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="PagedList">
@@ -187,6 +187,7 @@
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -199,31 +200,13 @@
     <Compile Include="Extension\Helpers.cs" />
     <Compile Include="Extension\ListToJson.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Filters\SessionExpiredFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
+    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\Services.cs" />
-    <Compile Include="Migrations\201304302122183_submission.cs" />
-    <Compile Include="Migrations\201304302122183_submission.Designer.cs">
-      <DependentUpon>201304302122183_submission.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304302300034_renamedSubmissionTimeStarted.cs" />
-    <Compile Include="Migrations\201304302300034_renamedSubmissionTimeStarted.Designer.cs">
-      <DependentUpon>201304302300034_renamedSubmissionTimeStarted.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201305011951564_SpeedPerSecondAdded.cs" />
-    <Compile Include="Migrations\201305011951564_SpeedPerSecondAdded.Designer.cs">
-      <DependentUpon>201305011951564_SpeedPerSecondAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201305171901140_submittingUser.cs" />
-    <Compile Include="Migrations\201305171901140_submittingUser.Designer.cs">
-      <DependentUpon>201305171901140_submittingUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201305201829018_TicketTable.cs" />
-    <Compile Include="Migrations\201305201829018_TicketTable.Designer.cs">
-      <DependentUpon>201305201829018_TicketTable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CsvDataRow.cs" />
@@ -311,6 +294,9 @@
     <Content Include="Documentation.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\Applications\Dashboard\app.js" />
+    <Content Include="Scripts\Applications\Dashboard\app\controller\dashboard.js" />
+    <Content Include="Scripts\Applications\Dashboard\app\store\submission.js" />
     <Content Include="Scripts\Applications\Home\app.js" />
     <Content Include="Scripts\Applications\Home\app\controller\security.js" />
     <Content Include="Scripts\Applications\Home\app\store\login.js" />
@@ -391,6 +377,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\Applications\CommitData\app\view\" />
+    <Folder Include="Scripts\Applications\Dashboard\app\view\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -411,29 +398,18 @@
     <Content Include="Views\Shared\messagePartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\AdminTaskPanel.cshtml" />
+    <Content Include="Views\Admin\Submission.cshtml" />
+    <Content Include="Views\Admin\TicketOverview.cshtml" />
+    <Content Include="Views\Admin\SubmissionOverview.cshtml" />
+    <Content Include="Views\Admin\UserOverview.cshtml" />
+    <Content Include="Views\Admin\SubmissionInProgress.cshtml" />
+    <Content Include="Views\Admin\CreateTicket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">
       <Project>{6DF8FE5F-3672-4040-A2E4-4EBB9EA01AE8}</Project>
       <Name>ESRGC.Broadband.ETL.CensusBlock.Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201304302122183_submission.resx">
-      <DependentUpon>201304302122183_submission.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304302300034_renamedSubmissionTimeStarted.resx">
-      <DependentUpon>201304302300034_renamedSubmissionTimeStarted.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201305011951564_SpeedPerSecondAdded.resx">
-      <DependentUpon>201305011951564_SpeedPerSecondAdded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201305171901140_submittingUser.resx">
-      <DependentUpon>201305171901140_submittingUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201305201829018_TicketTable.resx">
-      <DependentUpon>201305201829018_TicketTable.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

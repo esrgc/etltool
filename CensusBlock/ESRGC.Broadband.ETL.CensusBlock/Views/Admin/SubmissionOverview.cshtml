@@ -1,0 +1,11 @@
+﻿<div class="panel">
+    <h3 class="panel-title">Submission</h3>
+    <div class="panel-content">
+        <ul class="overview-list">
+            <li><a href="@Url.Action("Submission")">Total</a> <span class="pull-right">@ViewBag.Total</span></li>
+            <li><a href="@Url.Action("Submission", new { status = "Initiated"})">Initiated</a> <span class="pull-right">@ViewBag.Initiated</span></li>
+            <li><a href="@Url.Action("Submission", new { status = "Processing"})">In progress</a> <span class="pull-right">@ViewBag.InProgress</span></li>
+            <li><a href="@Url.Action("Submission", new { status = "Submitted"})">Completed</a> <span class="pull-right">@ViewBag.Completed</span></li>
+        </ul>
+    </div>
+</div>

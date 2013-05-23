@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using Ninject;
 using System.Web.Routing;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Infrastructure
 {
