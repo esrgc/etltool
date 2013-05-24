@@ -36,22 +36,47 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             return PartialView();
         }
         public ActionResult CreateTicket() {
-
             return View(new Ticket());
         }
         [HttpPost]
         public ActionResult CreateTicket(Ticket ticket) {
             if (ModelState.IsValid) {
+                _workUnit.TicketRepository.InsertEntity(ticket);
+                _workUnit.SaveChanges();
+
+                updateStatusMessage("A new ticket has been created.");
                 return RedirectToAction("Ticket");
             }
             //error
             return View(ticket);
         }
         //ticket manager
-        public ActionResult Ticket() {
-            return View();
+        public ActionResult Ticket(int? page, int? pageSize) {
+            var tickets = _workUnit.TicketRepository
+                .Entities
+                .OrderBy(x=>x.IssuedDate)
+                .ToList();
+            //pagedlist
+            var pageIndex = page ?? 1;
+            var pSize = pageSize ?? 10;
+            var pagedList = tickets.ToPagedList(pageIndex, pSize);
+            return View(pagedList);
         }
         public ActionResult TicketDetail(int id) {
+            var ticket = _workUnit.TicketRepository.GetEntityByID(id);
+            return View(ticket);
+        }
+        public ActionResult EditTicket(int id) {
+            var ticket = _workUnit.TicketRepository.GetEntityByID(id);
+            return View(ticket);
+        }
+        [HttpPost]
+        public ActionResult EditTicket(int id, FormCollection values) {
+            var ticket = _workUnit.TicketRepository.GetEntityByID(id);
+            TryUpdateModel(ticket);
+            if (ModelState.IsValid) {
+                return RedirectToAction("Ticket");
+            }
             return View();
         }
         public ActionResult SubmissionOverview() {

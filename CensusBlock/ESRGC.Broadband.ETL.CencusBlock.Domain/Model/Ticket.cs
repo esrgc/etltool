@@ -18,8 +18,16 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime IssuedDate { get; set; }
+
+        DateTime _expirationDate;
         [Display(Name = "Expired on")]
-        public DateTime ExpirationDate { get; set; }
+        public DateTime ExpirationDate {
+            get { return _expirationDate; }
+            set {
+                _expirationDate = value;
+                Active = _expirationDate > DateTime.Now;
+            }
+        }
         public bool Active { get; set; }
         public virtual IEnumerable<Submission> Submissions { get; set; }
     }

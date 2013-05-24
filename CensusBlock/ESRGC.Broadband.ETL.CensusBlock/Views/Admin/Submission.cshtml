@@ -5,20 +5,20 @@
 @{
     ViewBag.Title = "Submission";
 }
-
 @section header{
     <h3>@ViewBag.Title <i class="icon-folder-close"></i></h3>
     <ul class="breadcrumb">
-        <li><a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
-        <li><a href="@Url.Action("index", "Admin")">Dashboard</a><span class="divider">/</span></li>
+        <li>
+            <a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
+        <li>
+            <a href="@Url.Action("index", "Admin")">Dashboard</a><span class="divider">/</span></li>
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
-
 <!--Body content-->
 <div class="row-fluid">
     <div class="span3">
-        @Html.Partial("AdminTaskPanel")  
+        @Html.Partial("AdminTaskPanel")
     </div>
     <div class="span9">
         <h4>Sumbmission manager</h4>
@@ -26,62 +26,66 @@
             @{ var panelTitle = ViewBag.status ?? "All submissions"; }
             <h3 class="panel-title">@panelTitle</h3>
             <div class="panel-content">
-            
-            @if(Model.Count() > 0){
-                @Html.PagedListPager(
+                <div>
+                    @if (Model.Count() > 0) {
+                        @Html.PagedListPager(
                     Model as IPagedList,
                     page => Url.Action("Submission", new { page }),
-                    PagedListRenderOptions.ClassicPlusFirstAndLast
+                    PagedListRenderOptions.OnlyShowFivePagesAtATime
                 )
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Ticket</th>
-                            <th>Provider/User</th>
-                            <th>Status</th>
-                            <th>Started</th>
-                            <th>Progress %</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                                                                                                                        <tbody>
-                    @foreach (var submission in Model) { 
-                        <tr>
-                            <td>
-                                @if (submission.Ticket != null) {  
-                                    @submission.Ticket.Name 
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Ticket</th>
+                                    <th>Provider/User</th>
+                                    <th>Status</th>
+                                    <th>Started</th>
+                                    <th>Progress %</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var submission in Model) { 
+                                    <tr>
+                                        <td>
+                                            @if (submission.Ticket != null) {  
+                                                @submission.Ticket.Name 
+                                            }
+                                        </td>
+                                        <td>@submission.SubmittingUser</td>
+                                        <td>@submission.Status</td>
+                                        <td>@submission.SubmissionTimeStarted</td>
+                                        <td>
+                                            <div class="progress">
+                                                <span class="progress-label">@submission.ProgressPercentage %</span>
+                                                <div class="bar" style="width: @submission.ProgressPercentage%;">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @if (submission.Status == "Submitted") {
+                                                <a class="btn btn-mini" title="Detail"><i class="icon-"></i>
+                                                </a>
+                                                <a class="btn btn-mini" title="Data"><i class="icon-eye-open"></i>
+                                                </a>
+                                                <a class="btn btn-mini" title="Download data"><i class="icon-download-alt">
+                                                </i></a>
+                                            }
+                                        </td>
+                                    </tr>
                                 }
-                            </td>
-                            <td>@submission.SubmittingUser</td>
-                            <td>@submission.Status</td>
-                            <td>@submission.SubmissionTimeStarted</td>
-                            <td>
-                                <div class="progress">
-                                    <span class="progress-label">@submission.ProgressPercentage %</span>
-                                    <div class="bar" style="width: @submission.ProgressPercentage%;">
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                @if (submission.Status == "Submitted") {
-                                    <a class="btn btn-mini" title="View data"><i class="icon-eye-open"></i></a>
-                                    <a class="btn btn-mini" title="Download data"><i class="icon-download-alt"></i></a>
-                                }
-                            </td>
-                        </tr>
+                            </tbody>
+                        </table>
+                        @Html.PagedListPager(
+                    Model as IPagedList,
+                    page => Url.Action("Submission", new { page }),
+                    PagedListRenderOptions.OnlyShowFivePagesAtATime
+                )
                     }
-                </tbody>
-                </table>
-                @Html.PagedListPager(
-                    Model as IPagedList,
-                    page => Url.Action("Submission", new { page }),
-                    PagedListRenderOptions.ClassicPlusFirstAndLast
-                )
-            }
-            else {
-                <p>There's currently no submission in status <span class="label label-important">@ViewBag.status</span></p>
-            }
-            
+                    else {
+                        <p>There's currently no submission in status <span class="label label-important">@ViewBag.status</span></p>
+                    }
+                </div>
             </div>
         </div>
     </div>
