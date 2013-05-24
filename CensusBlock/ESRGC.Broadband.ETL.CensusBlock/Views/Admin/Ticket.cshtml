@@ -1,0 +1,30 @@
+﻿@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
+@model IEnumerator<Ticket>
+@{
+    ViewBag.Title = "Ticket";
+}
+@section header{
+    <h3>@ViewBag.Title <i class="icon-list-alt"></i></h3>
+    <ul class="breadcrumb">
+        <li>
+            <a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
+        <li>
+            <a href="@Url.Action("index", "Admin")">Dashboard</a><span class="divider">/</span></li>
+        <li class="active">@ViewBag.Title</li>
+    </ul>
+}
+
+<div class="row-fluid">
+    <div class="span3">
+        @Html.Partial("AdminTaskPanel")
+    </div>
+    <div class="span9">
+        <h4>Ticket manager</h4>
+        <div class="panel">
+            <h3 class="panel-title">All tickets</h3>
+            <div class="panel-content">
+                No ticket
+            </div>
+        </div>
+    </div>
+</div>

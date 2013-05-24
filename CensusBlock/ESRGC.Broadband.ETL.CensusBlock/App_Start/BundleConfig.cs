@@ -16,7 +16,10 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                 //"~/Scripts/jqueryPlugins/jquery.unobtrusive*",
                         "~/Scripts/jqueryPlugins/jquery.validate.js"));
-
+            //bootstrap bundles
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                "~/Scripts/bootstrap/bootstrap*"
+            ));
             //App base Bundle
             bundles.Add(new ScriptBundle("~/bundles/appBase").Include(
                 "~/Scripts/ESRGC/Script.js",
@@ -65,7 +68,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock
                 "~/Content/site.css",
                 "~/Content/stickyFooter.css"
             ));
-
+                        
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                 "~/Content/themes/base/jquery.ui.core.css",
                 "~/Content/themes/base/jquery.ui.resizable.css",
@@ -83,7 +86,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock
 
             bundles.Add(new StyleBundle("~/Content/bootstrap/css/style").Include(
                 "~/Content/bootstrap/css/bootstrap.css",
-                "~/Content/bootstrap/css/bootstrap-responsive.css"));
+                "~/Content/bootstrap/css/bootstrap-responsive.css",
+                "~/Content/bootstrap/css/datepicker.css"));
             //BundleTable.EnableOptimizations = true;
         }
     }

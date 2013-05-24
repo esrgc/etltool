@@ -37,10 +37,21 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         }
         public ActionResult CreateTicket() {
 
-            return View();
+            return View(new Ticket());
         }
         [HttpPost]
         public ActionResult CreateTicket(Ticket ticket) {
+            if (ModelState.IsValid) {
+                return RedirectToAction("Ticket");
+            }
+            //error
+            return View(ticket);
+        }
+        //ticket manager
+        public ActionResult Ticket() {
+            return View();
+        }
+        public ActionResult TicketDetail(int id) {
             return View();
         }
         public ActionResult SubmissionOverview() {
@@ -95,6 +106,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var pagedList = submissions.ToPagedList(pageIndex, pSize);
 
             return View(pagedList);
+        }
+        public ActionResult SubmissionDetail(int id) {
+            return View();
         }
         public ActionResult SubmissionInProgress() {
             var submissionInProgress = _workUnit.SubmissionRepository

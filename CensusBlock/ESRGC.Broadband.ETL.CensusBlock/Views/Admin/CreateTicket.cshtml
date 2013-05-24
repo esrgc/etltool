@@ -1,24 +1,117 @@
 ﻿@model ESRGC.Broadband.ETL.CensusBlock.Domain.Model.Ticket
-
 @{
     ViewBag.Title = "Create ticket";
 }
-
 @section header{
     <h3>@ViewBag.Title <i class="icon-plus"></i></h3>
     <ul class="breadcrumb">
-        <li><a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
-        <li><a href="@Url.Action("index", "Admin")">Dashboard</a><span class="divider">/</span></li>
+        <li>
+            <a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
+        <li>
+            <a href="@Url.Action("index", "Admin")">Dashboard</a><span class="divider">/</span></li>
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $('form').validate({
+            debug: true,
+            highlight: function (label) {
+                $(label).closest('.control-group').addClass('error');
+                $(label).closest('.control-group').removeClass('success');
+            },
+            success: function (label) {
+                $(label).text('OK!').addClass('valid')
+                    .closest('.control-group').addClass('success');
+            },
+            submitHandler: function (form) {
+                if ($(form).valid()) {
+                    form.submit();
+                }
+                return false; // prevent normal form posting
+            }
+        });
+        var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
+        var checkin = $('#dpd1').datepicker({
+            onRender: function (date) {
+                return date.valueOf() < now.valueOf() ? 'disabled' : '';
+            }
+        }).on('changeDate', function (ev) {
+            if (ev.date.valueOf() > checkout.date.valueOf()) {
+                var newDate = new Date(ev.date)
+                newDate.setDate(newDate.getDate() + 1);
+                checkout.setValue(newDate);
+            }
+            checkin.hide();
+            $('#dpd2')[0].focus();
+        }).data('datepicker');
+        var checkout = $('#dpd2').datepicker({
+            onRender: function (date) {
+                return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+            }
+        }).on('changeDate', function (ev) {
+            checkout.hide();
+        }).data('datepicker');
+    </script>
+}
 <div class="row-fluid">
     <div class="span3">
         @Html.Partial("AdminTaskPanel")
     </div>
     <div class="span9">
-        <h5>Create new submission ticket</h5>
-
+        <div class="well">
+            <h4>Instruction</h4>
+            <p>Create a new submission ticket using the form below. Once the
+                ticket is created, all users/providers can upload and submit
+                their data based on it. </p>
+        </div>
+        <fieldset>
+            <legend>Create new submission ticket</legend>
+            <form class="form-horizontal" method="post" action="@Url.Action("CreateTicket")">
+            @Html.ValidationSummary()
+            <div class="control-group">
+                <label class="control-label" for="#name">Name</label>
+                <div class="controls">
+                    <input type="text" id="name" name="name" value="@Model.Name"
+                        class="required input-medium" placeholder="Ticket name" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="#description">Description</label>
+                <div class="controls">
+                    <textarea id="description" name="description" rows="3" cols="6"
+                        class="required" placeholder="Ticket description"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="#issuedDate">Start date</label>
+                <div class="controls">
+                    <div class="input-append date" id="dpd1" data-date="@DateTime.Now.ToShortDateString()">
+                        <input type="text" id="issuedDate" name="issuedDate" 
+                            value="@Model.IssuedDate.ToShortDateString()" readonly/>
+                        <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="#expirationDate">Expired on</label>
+                <div class="controls">
+                    <div class="input-append date" data-date="" id="dpd2">
+                        <input type="text" id="expirationDate" name="expirationDate" 
+                            value="@Model.ExpirationDate.ToShortDateString()" 
+                            placeholder="Expiration date" readonly/>
+                        <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <input type="reset" class="btn" value="Clear" />
+                <input type="submit" class="btn btn-primary" value="Create" />
+            </div>
+            </form>
+        </fieldset>
     </div>
 </div>

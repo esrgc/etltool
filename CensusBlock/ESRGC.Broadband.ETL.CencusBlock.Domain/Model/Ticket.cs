@@ -8,6 +8,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 {
     public class Ticket
     {
+        public Ticket() {
+            IssuedDate = DateTime.Now;
+            ExpirationDate = DateTime.Now.AddDays(3);
+            Description = string.Empty;
+        }
         [Key]
         public int TicketID { get; set; }
         public string Name { get; set; }
