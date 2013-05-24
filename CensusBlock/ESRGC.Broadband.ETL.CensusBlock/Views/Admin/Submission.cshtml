@@ -64,12 +64,16 @@
                                         </td>
                                         <td>
                                             @if (submission.Status == "Submitted") {
-                                                <a class="btn btn-mini" title="Detail"><i class="icon-"></i>
-                                                </a>
-                                                <a class="btn btn-mini" title="Data"><i class="icon-eye-open"></i>
-                                                </a>
-                                                <a class="btn btn-mini" title="Download data"><i class="icon-download-alt">
-                                                </i></a>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i></a>
+                                                    <a class="btn btn-mini" title="Download data"><i class="icon-download-alt"></i></a>
+                                                </div>
+                                            }
+                                            else if(submission.Status == "Initiated"){ 
+                                                <div class="btn-group">
+                                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i></a>
+                                                    <a class="btn btn-mini btn-danger" title="Delete"><i class="icon-trash icon-white"></i></a>
+                                                </div>
                                             }
                                         </td>
                                     </tr>

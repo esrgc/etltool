@@ -135,6 +135,16 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public ActionResult SubmissionDetail(int id) {
             return View();
         }
+        public ActionResult RecentSubmission() {
+            var recentSubmissions = _workUnit.SubmissionRepository
+                .Entities.Where(x => (x.Status == "Submitted"))
+                .OrderByDescending(x => x.SubmissionTimeCompleted)               
+                .ToList();
+            recentSubmissions = recentSubmissions.Where(x => x.SubmissionTimeCompleted > DateTime.Now.AddDays(-3)).ToList();
+            ViewBag.total = recentSubmissions.Count;
+            return PartialView(recentSubmissions);
+
+        }
         public ActionResult SubmissionInProgress() {
             var submissionInProgress = _workUnit.SubmissionRepository
                 .Entities.Where(x => x.Status == "Processing")

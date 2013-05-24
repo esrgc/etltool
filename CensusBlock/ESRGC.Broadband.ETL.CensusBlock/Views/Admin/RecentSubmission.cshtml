@@ -1,8 +1,8 @@
 ﻿@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 @model IEnumerable<Submission>
 
-<div class="panel" id="activeSubmission">
-    <h3 class="panel-title">Submission in progress</h3>
+<div class="panel">
+    <h3 class="panel-title">Recently submitted <span class="label label-info">(@ViewBag.total)</span></h3>
     <div class="panel-content">   
     @if (Model.Count() > 0) {    
         <table class="table table-hover">
@@ -46,9 +46,11 @@
                 }
             </tbody>
         </table>       
+        <div>...</div>
+        <div><a class="" href="@Url.Action("Submission")">More</a></div>
     }
     else { 
-        <p>No submission is currently in progress.</p>
+        <p>No recent submission found.</p>
     }
     </div>
 </div>

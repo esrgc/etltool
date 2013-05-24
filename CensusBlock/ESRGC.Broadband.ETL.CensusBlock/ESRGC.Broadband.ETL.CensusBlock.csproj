@@ -415,6 +415,7 @@
     <Content Include="Views\Admin\SubmissionInProgress.cshtml" />
     <Content Include="Views\Admin\CreateTicket.cshtml" />
     <Content Include="Views\Admin\Ticket.cshtml" />
+    <Content Include="Views\Admin\RecentSubmission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">
