@@ -1,0 +1,43 @@
+﻿@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
+@model IEnumerable<Ticket>
+@{
+    ViewBag.Title = "Submission";
+}
+@section header{
+    <h3>@ViewBag.Title <i class="icon-folder-close"></i></h3>
+    <ul class="breadcrumb">
+        <li>
+            <a href="@Url.Action("index", "Home")">Home</a><span class="divider">/</span></li>
+        <li class="active">@ViewBag.Title</li>
+    </ul>
+}
+<!--Instructions-->
+<div class="row-fluid">
+    <div class="well span12">
+        <h4>Instructions</h4>
+        <ol>
+            <li>
+                Select available submission ticket to start uploading and submit
+                your data.
+            </li>
+            <li>
+                <strong>Note! </strong>If no ticket is available there is no
+                call for submission. Please, check back later.
+            </li>
+        </ol>
+    </div>
+</div>
+
+<!--Content-->
+<div class="row-fluid">
+    <div class="well span12">
+        <h4>Available submission ticket(s)</h4>
+        <ul class="unstyled">
+            @foreach (var ticket in Model) {
+            <li>
+               <p>@ticket.Name <small>@ticket.Description</small></p> 
+            </li>
+            }
+        </ul>
+    </div>
+</div>

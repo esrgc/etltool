@@ -11,6 +11,8 @@ using System.Data.Entity;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL;
 using ESRGC.Broadband.ETL.CensusBlock.Migrations;
 using System.Net;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
+using ESRGC.Broadband.ETL.CensusBlock.Binders;
 
 namespace ESRGC.Broadband.ETL.CensusBlock
 {
@@ -22,6 +24,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock
         protected void Application_Start() {
             AreaRegistration.RegisterAllAreas();
 
+            //Dependency Injection
             DependencyResolver.SetResolver(new NinjectDependencyResolver());
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -34,7 +37,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             //ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DomainDataContext, Configuration>());
 
-            ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+            //add model binder
+            ModelBinders.Binders.Add(typeof(Ticket), new TicketModelBinder());
+            //ServicePointManager.DefaultConnectionLimit = int.MaxValue;
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿@using ESRGC.Broadband.ETL.CensusBlock.Extension
+@{ 
+    var routeDict = ViewBag.filters as IDictionary<string, object>;
+    //var searchFilters = new RouteValueDictionary(routeDict); 
+}
+@if (routeDict.Count > 0) { 
+    <div class="filter">
+        <span class="label label-info">Submissions filtered by</span>
+        @foreach (var filter in routeDict) {
+            <span class="label">@filter.Key "@filter.Value"
+                <a class="label-close" href="@Url.clearSearchFilter("Submission", routeDict, filter.Key)">
+                    &times;
+                </a>
+                @*<button type="button" class="close">&times;</button>*@
+            </span>
+            
+        }
+        <span class="label label-important">clear all
+           @* <button type="button" class="close">&times;</button>*@
+            <a class="label-close" href="@Url.Action("Submission")">&times;</a>
+        </span>
+    </div>
+}

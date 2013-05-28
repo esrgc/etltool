@@ -190,14 +190,17 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Binders\TicketModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DataProcessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
+    <Compile Include="Controllers\SubmissionController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Extension\Helpers.cs" />
+    <Compile Include="Extension\HtmlHelperExt.cs" />
     <Compile Include="Extension\ListToJson.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Filters\SessionExpiredFilter.cs" />
@@ -416,6 +419,8 @@
     <Content Include="Views\Admin\CreateTicket.cshtml" />
     <Content Include="Views\Admin\Ticket.cshtml" />
     <Content Include="Views\Admin\RecentSubmission.cshtml" />
+    <Content Include="Views\Shared\searchFilterPartial.cshtml" />
+    <Content Include="Views\Submission\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">

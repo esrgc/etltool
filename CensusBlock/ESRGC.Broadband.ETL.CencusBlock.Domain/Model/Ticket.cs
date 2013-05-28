@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 {
@@ -25,10 +26,14 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
             get { return _expirationDate; }
             set {
                 _expirationDate = value;
-                Active = _expirationDate > DateTime.Now;
             }
         }
-        public bool Active { get; set; }
+        [NotMapped]
+        public bool Active {
+            get {
+                return _expirationDate >= DateTime.Now;
+            }
+        }
         public virtual IEnumerable<Submission> Submissions { get; set; }
     }
 }

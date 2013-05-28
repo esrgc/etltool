@@ -4,7 +4,9 @@
 html, body {
     height: 100%;
 }
-
+caption {
+    margin-bottom: 10px;
+}
 #previewPanel input {
     margin-bottom: 0;
 }
@@ -65,13 +67,7 @@ html, body {
     border-radius: 5px;
     -webkit-background-clip: padding-box;
     -moz-background-clip: padding;
-    background-clip: padding-box;
-    /*background: #F5F5F5;
-    background-image: -webkit-gradient(linear,left bottom,left top,from(#f5f5f5),to(#f9f9f9));
-    background-image: -webkit-linear-gradient(bottom,#f5f5f5,#f9f9f9);
-    background-image: -moz-linear-gradient(bottom,#f5f5f5,#f9f9f9);
-    background-image: -o-linear-gradient(bottom,#f5f5f5,#f9f9f9);
-    background-image: linear-gradient(to top,#f5f5f5,#f9f9f9);*/
+    background-clip: padding-box; /*background: #F5F5F5;     background-image: -webkit-gradient(linear,left bottom,left top,from(#f5f5f5),to(#f9f9f9));     background-image: -webkit-linear-gradient(bottom,#f5f5f5,#f9f9f9);     background-image: -moz-linear-gradient(bottom,#f5f5f5,#f9f9f9);     background-image: -o-linear-gradient(bottom,#f5f5f5,#f9f9f9);     background-image: linear-gradient(to top,#f5f5f5,#f9f9f9);*/
     -webkit-transition: (border,height) 0.35s ease;
     -moz-transition: (border,height) 0.35s ease;
     -o-transition: (border,height) 0.35s ease;
@@ -104,16 +100,34 @@ html, body {
     padding: 9px 14px;
     font-size: 13px;
 }
-.panel-content > div {
-    text-align: center;   
- }
+.panel-content > div.content {
+    text-align: center;
+}
 .panel-inner {
+}
+.panel .label { padding: 5px !important;}
+.panel .label-close {
+    /*font-size: 20px;     font-weight: bold;     line-height: 20px;*/
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    border-left: 1px solid white;
+    padding-left: 5px;
+    margin-left: 5px;
+}
+.panel .label-close:hover {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
 }
 
 .overview-list {
     list-style: none;
-    margin: 0;   
- }
+    margin: 0;
+}
 
 /*validation*/
 label.valid {

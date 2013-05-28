@@ -48,7 +48,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             }
         }
         [HttpPost]
-        public ActionResult MapData(DataMappingModel mappingModel, int? submissionID) {
+        public ActionResult MapData(DataMappingModel mappingModel, int? submissionID, Ticket ticket) {
             if (Session["data"] == null) {
                 updateStatusMessage("Your session has expired. Please upload a new file.");
                 return RedirectToAction("Index", "Home");
@@ -171,7 +171,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         DataCount = dataList.Count,
                         RecordsStored = 0,
                         ProgressPercentage = 0,
-                        SubmittingUser = User.Identity.Name
+                        SubmittingUser = User.Identity.Name,
+                        TicketID = ticket.TicketID
                     };
                     _workUnit.SubmissionRepository.InsertEntity(submission);
                     _workUnit.SaveChanges();//save initiated submission

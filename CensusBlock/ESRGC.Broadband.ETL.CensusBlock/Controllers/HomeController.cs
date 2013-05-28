@@ -8,10 +8,9 @@ using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        public ActionResult Index() {
-            
+        public ActionResult Index() {            
             return View();
         }
         [AllowAnonymous]

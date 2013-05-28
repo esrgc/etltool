@@ -1,4 +1,5 @@
-﻿@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
+﻿@using ESRGC.Broadband.ETL.CensusBlock.Extension
+@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 @using PagedList.Mvc
 @using PagedList
 @model IEnumerable<Submission>
@@ -15,31 +16,34 @@
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
+@{ 
+    var searchFilters = ViewBag.filters as IDictionary<string, object>;
+}
 <!--Body content-->
 <div class="row-fluid">
     <div class="span3">
         @Html.Partial("AdminTaskPanel")
     </div>
     <div class="span9">
-        <h4>Sumbmission manager</h4>
         <div class="panel">
-            @{ var panelTitle = ViewBag.status ?? "All submissions"; }
-            <h3 class="panel-title">@panelTitle</h3>
+            <h3 class="panel-title">Submission manager </h3>
             <div class="panel-content">
-                <div>
+                @Html.Partial("searchFilterPartial")
+                <div class="content">
                     @if (Model.Count() > 0) {
                         @Html.PagedListPager(
                     Model as IPagedList,
-                    page => Url.Action("Submission", new { page }),
+                    page => Url.SearchFilter("Submission", searchFilters, "page", page.ToString()),
                     PagedListRenderOptions.OnlyShowFivePagesAtATime
                 )
-                        <table class="table table-hover">
+                        <table class="table table-condensed">
                             <thead>
                                 <tr>
                                     <th>Ticket</th>
                                     <th>Provider/User</th>
                                     <th>Status</th>
-                                    <th>Started</th>
+                                    <th>Date</th>
+                                    <th>Time started</th>
                                     <th>Progress %</th>
                                     <th></th>
                                 </tr>
@@ -48,13 +52,28 @@
                                 @foreach (var submission in Model) { 
                                     <tr>
                                         <td>
-                                            @if (submission.Ticket != null) {  
-                                                @submission.Ticket.Name 
+                                            @if (submission.Ticket != null) {
+                                                <a href="@Url.SearchFilter("Submission", searchFilters, "ticket", submission.Ticket.Name)">
+                                                    @submission.Ticket.Name
+                                                </a>
                                             }
                                         </td>
-                                        <td>@submission.SubmittingUser</td>
-                                        <td>@submission.Status</td>
-                                        <td>@submission.SubmissionTimeStarted</td>
+                                        <td>
+                                            <a href="@Url.SearchFilter("Submission", searchFilters, "user", submission.SubmittingUser)">
+                                                @submission.SubmittingUser
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.SearchFilter("Submission", searchFilters, "status", submission.Status)">
+                                                @submission.Status
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.SearchFilter("Submission", searchFilters, "date", submission.SubmissionTimeStarted.Value.ToShortDateString())">
+                                                @submission.SubmissionTimeStarted.Value.ToShortDateString()
+                                            </a>
+                                        </td>
+                                        <td>@submission.SubmissionTimeStarted.Value.ToShortTimeString()</td>
                                         <td>
                                             <div class="progress">
                                                 <span class="progress-label">@submission.ProgressPercentage %</span>
@@ -65,14 +84,20 @@
                                         <td>
                                             @if (submission.Status == "Submitted") {
                                                 <div class="btn-group">
-                                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i></a>
-                                                    <a class="btn btn-mini" title="Download data"><i class="icon-download-alt"></i></a>
+                                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i>
+                                                    </a>
+                                                    <a class="btn btn-mini" title="Download data"><i class="icon-download-alt">
+                                                    </i></a>
+                                                    <a class="btn btn-mini btn-danger" title="Delete"><i class="icon-trash icon-white">
+                                                    </i></a>
                                                 </div>
                                             }
-                                            else if(submission.Status == "Initiated"){ 
+                                            else if (submission.Status == "Initiated") { 
                                                 <div class="btn-group">
-                                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i></a>
-                                                    <a class="btn btn-mini btn-danger" title="Delete"><i class="icon-trash icon-white"></i></a>
+                                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i>
+                                                    </a>
+                                                    <a class="btn btn-mini btn-danger" title="Delete"><i class="icon-trash icon-white">
+                                                    </i></a>
                                                 </div>
                                             }
                                         </td>
@@ -82,7 +107,7 @@
                         </table>
                         @Html.PagedListPager(
                     Model as IPagedList,
-                    page => Url.Action("Submission", new { page }),
+                    page => Url.SearchFilter("Submission", searchFilters, "page", page.ToString()),
                     PagedListRenderOptions.OnlyShowFivePagesAtATime
                 )
                     }

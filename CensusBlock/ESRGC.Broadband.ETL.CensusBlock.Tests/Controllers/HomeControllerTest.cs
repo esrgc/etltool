@@ -15,7 +15,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Tests.Controllers
         [TestMethod]
         public void Index() {
             // Arrange
-            HomeController controller = new HomeController();
+            HomeController controller = null;//new HomeController();
 
             // Act
             ViewResult result = controller.Index() as ViewResult;
@@ -27,7 +27,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Tests.Controllers
         [TestMethod]
         public void About() {
             // Arrange
-            HomeController controller = new HomeController();
+            HomeController controller = null;//new HomeController();
 
             // Act
             ViewResult result = controller.Help() as ViewResult;
@@ -39,7 +39,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Tests.Controllers
         [TestMethod]
         public void Contact() {
             // Arrange
-            HomeController controller = new HomeController();
+            HomeController controller = null;//  new HomeController();
 
             // Act
             ViewResult result = controller.Contact() as ViewResult;

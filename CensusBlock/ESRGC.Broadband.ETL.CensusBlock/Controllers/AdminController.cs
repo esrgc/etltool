@@ -7,6 +7,7 @@ using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
 using PagedList;
 using System.Web.Security;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
+using System.Web.Routing;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
@@ -20,7 +21,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         //
         // GET: /Admin/
         public ActionResult Index() {
-            
+
             ViewBag.lastUpdate = DateTime.Now;
             return View();
         }
@@ -30,7 +31,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         /// <returns></returns>
         public ActionResult TicketOverview() {
             ViewBag.NumberOfTicket = _workUnit.TicketRepository.Entities.Count();
-            ViewBag.ActiveTickets = _workUnit.TicketRepository.Entities.Where(x => x.Active).Count();
+            ViewBag.ActiveTickets = _workUnit.TicketRepository.Entities.ToList().Where(x => x.Active).Count();
             ViewBag.ExpiredTickets = _workUnit.TicketRepository.Entities.Where(x => x.ExpirationDate < DateTime.Now).Count();
 
             return PartialView();
@@ -54,7 +55,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public ActionResult Ticket(int? page, int? pageSize) {
             var tickets = _workUnit.TicketRepository
                 .Entities
-                .OrderBy(x=>x.IssuedDate)
+                .OrderBy(x => x.IssuedDate)
                 .ToList();
             //pagedlist
             var pageIndex = page ?? 1;
@@ -105,26 +106,51 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             ViewBag.Online = Membership.GetNumberOfUsersOnline();
             return PartialView();
         }
-        
+
         public ActionResult Submission(
             int? page,
             int? pageSize,
             string status,
             string ticket,
             string user,
-            DateTime? date) 
-        {
+            DateTime? date) {
+            IDictionary<string, object> filters = new Dictionary<string, object>();
             //get submission ordered by date submitted
             var submissions = _workUnit.SubmissionRepository
                 .Entities
-                .OrderBy(x => x.SubmissionTimeStarted)                
+                .OrderBy(x => x.SubmissionTimeStarted)
                 .ToList();
+            //filter
             if (!string.IsNullOrEmpty(status)) {
                 submissions = submissions
                     .Where(x => x.Status.ToUpper() == status.ToUpper())
                     .ToList();
-                ViewBag.status = status;
+                filters.Add("status", status);
             }
+            if (!string.IsNullOrEmpty(ticket)) {
+                submissions = submissions
+                    .Where(x => x.Ticket.Name.ToUpper() == ticket.ToUpper())
+                    .ToList();
+                filters.Add("ticket", ticket);
+            }
+            if (!string.IsNullOrEmpty(user)) {
+                submissions = submissions
+                    .Where(x => x.SubmittingUser.ToUpper() == user.ToUpper())
+                    .ToList();
+                filters.Add("user", user);
+            }
+            if (date != null) {
+                submissions = submissions
+                    .Where(x => {
+                        if (x.SubmissionTimeStarted != null) {
+                            return (x.SubmissionTimeStarted.Value.Date == date.Value.Date);
+                        }
+                        return false;
+                    })
+                    .ToList();
+                filters.Add("date", date.Value.Date);
+            }
+            ViewBag.filters = filters;
             //pagedlist
             var pageIndex = page ?? 1;
             var pSize = pageSize ?? 10;
@@ -138,9 +164,15 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public ActionResult RecentSubmission() {
             var recentSubmissions = _workUnit.SubmissionRepository
                 .Entities.Where(x => (x.Status == "Submitted"))
-                .OrderByDescending(x => x.SubmissionTimeCompleted)               
+                .OrderByDescending(x => x.SubmissionTimeCompleted)
                 .ToList();
-            recentSubmissions = recentSubmissions.Where(x => x.SubmissionTimeCompleted > DateTime.Now.AddDays(-3)).ToList();
+            recentSubmissions = recentSubmissions.Where(x => {
+                if (x.SubmissionTimeCompleted.HasValue) {
+                    var mostRecent = x.SubmissionTimeCompleted.Value;
+                    return mostRecent > mostRecent.AddDays(-3);
+                }
+                return false;
+            }).ToList();
             ViewBag.total = recentSubmissions.Count;
             return PartialView(recentSubmissions);
 
@@ -152,7 +184,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 
             return PartialView(submissionInProgress);
         }
-        
+
         public ActionResult DownloadData(int id) {
             return View();
         }
