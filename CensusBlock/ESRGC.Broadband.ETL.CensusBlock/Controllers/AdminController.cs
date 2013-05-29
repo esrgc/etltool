@@ -87,6 +87,18 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 .Entities
                 .Where(x => x.Status == "Initiated")
                 .Count();
+            ViewBag.Uploading = _workUnit.SubmissionRepository
+               .Entities
+               .Where(x => x.Status == "Uploading")
+               .Count();
+            ViewBag.Uploaded = _workUnit.SubmissionRepository
+                .Entities
+                .Where(x => x.Status == "Uploaded")
+                .Count();
+            ViewBag.Ready = _workUnit.SubmissionRepository
+                .Entities
+                .Where(x => x.Status == "Ready")
+                .Count();
             ViewBag.InProgress = _workUnit.SubmissionRepository
                 .Entities
                 .Where(x => x.Status == "Processing")

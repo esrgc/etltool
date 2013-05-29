@@ -38,7 +38,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DomainDataContext, Configuration>());
 
             //add model binder
-            ModelBinders.Binders.Add(typeof(Ticket), new TicketModelBinder());
+            ModelBinders.Binders.Add(typeof(Submission), new SubmissionModelBinder());
             //ServicePointManager.DefaultConnectionLimit = int.MaxValue;
         }
     }

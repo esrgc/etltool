@@ -16,6 +16,10 @@ ESRGC.Controller.Dashboard = ESRGC.Class({
     control: {
     },
     init: function () {
+        $.ajaxSetup({
+            // Disable caching of AJAX responses
+            cache: false
+        });
         var scope = this;
         var store = ESRGC.getStore('Submission');
         if (typeof store != 'undefined') {
@@ -23,7 +27,7 @@ ESRGC.Controller.Dashboard = ESRGC.Class({
 
             setInterval(function () {
                 store.loadContent();
-            }, 30000); //load every 30seconds
+            }, 30000); //load every 30 seconds
         }
     },
     onSubmissionLoad: function (store, data) {

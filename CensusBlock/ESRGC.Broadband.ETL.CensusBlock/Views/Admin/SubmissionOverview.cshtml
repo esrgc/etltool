@@ -4,8 +4,17 @@
         <ul class="overview-list">
             <li><a href="@Url.Action("Submission")">Total</a> <span class="pull-right">@ViewBag.Total</span></li>
             <li><a href="@Url.Action("Submission", new { status = "Initiated"})">Initiated</a> <span class="pull-right">@ViewBag.Initiated</span></li>
+            <li><a href="@Url.Action("Submission", new { status = "Uploaded"})">Uploaded</a> <span class="pull-right">@ViewBag.Uploaded</span></li>
+            <li><a href="@Url.Action("Submission", new { status = "Ready"})">Ready</a> <span class="pull-right">@ViewBag.Ready</span></li>
             <li><a href="@Url.Action("Submission", new { status = "Processing"})">In progress</a> <span class="pull-right">@ViewBag.InProgress</span></li>
             <li><a href="@Url.Action("Submission", new { status = "Submitted"})">Completed</a> <span class="pull-right">@ViewBag.Completed</span></li>
         </ul>
+        @*<hr />
+        <div>
+            <ul class="unstyled">
+                <li>Delete unfinished submissions</li>
+                <li></li>
+            </ul>
+        </div>*@
     </div>
 </div>

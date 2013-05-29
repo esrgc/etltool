@@ -34,6 +34,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
                 return _expirationDate >= DateTime.Now;
             }
         }
-        public virtual IEnumerable<Submission> Submissions { get; set; }
+
+        public virtual List<Submission> Submissions { get; set; }
     }
 }

@@ -59,6 +59,7 @@ caption {
 }
 /*Panel*/
 .panel {
+    min-height: 180px;
     margin-bottom: 20px;
     border: 1px solid #dfdfdf;
     border: 1px solid #dfdfdf;
@@ -128,7 +129,18 @@ caption {
     list-style: none;
     margin: 0;
 }
-
+.post {
+    margin: 0 0 10px 0;
+    padding: 5px 20px 10px 20px;
+    border: 1px solid #D2D2D2;
+    border-radius: 5px;
+    text-shadow: 1px 1px 1px #E1E1E1;
+    background: #FFFFFF;
+    position: relative;
+ }
+.post > p {
+    margin: 10px 0;    
+}
 /*validation*/
 label.valid {
     width: 24px;

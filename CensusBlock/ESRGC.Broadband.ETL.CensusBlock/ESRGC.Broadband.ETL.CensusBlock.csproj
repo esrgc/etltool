@@ -190,6 +190,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Binders\SubmissionModelBinder.cs" />
     <Compile Include="Binders\TicketModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -403,14 +404,14 @@
     <Content Include="Views\DataProcess\ReviewMapping.cshtml" />
     <Content Include="Views\DataProcess\Error.cshtml" />
     <Content Include="Views\DataProcess\CommitData.cshtml" />
-    <Content Include="Views\Shared\TechOfTrans.cshtml" />
-    <Content Include="Views\Shared\SpeedTierCodes.cshtml" />
-    <Content Include="Views\Shared\ProviderTypes.cshtml" />
-    <Content Include="Views\Shared\LoginForm.cshtml" />
+    <Content Include="Views\DataProcess\TechOfTrans.cshtml" />
+    <Content Include="Views\DataProcess\SpeedTierCodes.cshtml" />
+    <Content Include="Views\DataProcess\ProviderTypes.cshtml" />
+    <Content Include="Views\Account\LoginForm.cshtml" />
     <Content Include="Views\Shared\HomeHeader.cshtml" />
     <Content Include="Views\Shared\messagePartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Shared\AdminTaskPanel.cshtml" />
+    <Content Include="Views\Admin\AdminTaskPanel.cshtml" />
     <Content Include="Views\Admin\Submission.cshtml" />
     <Content Include="Views\Admin\TicketOverview.cshtml" />
     <Content Include="Views\Admin\SubmissionOverview.cshtml" />
@@ -421,6 +422,7 @@
     <Content Include="Views\Admin\RecentSubmission.cshtml" />
     <Content Include="Views\Shared\searchFilterPartial.cshtml" />
     <Content Include="Views\Submission\Index.cshtml" />
+    <Content Include="Views\Submission\TicketPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">

@@ -44,7 +44,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Concrete
         #region IRepository<TEntity> Members
 
         public IQueryable<TEntity> Entities {
-            get { return _dbSet.AsQueryable(); }
+            get { return _dbSet; }
         }
 
         public TEntity GetEntityByID(object ID) {

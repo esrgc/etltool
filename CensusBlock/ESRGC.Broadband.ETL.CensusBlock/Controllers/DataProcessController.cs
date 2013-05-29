@@ -18,8 +18,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 
         public ActionResult MapData(int? submissionID) {
 
-            if (Session["data"] != null) {
-                var obj = Session["data"] as dynamic;
+            if (Session[uploadKey] != null) {
+                var obj = Session[uploadKey] as dynamic;
                 var data = obj.data as IEnumerable<IDictionary<string, object>>;
                 DataMappingModel model = new DataMappingModel();
                 List<string> uploadedColumns = data.First().Keys.ToList();
@@ -27,8 +27,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 uploadedColumns.Add("Use default");
                 model.UploadDataColumns = uploadedColumns;
                 //check for existing mapping object
-                if (Session["mappingData"] != null) {
-                    var dynObj = Session["mappingData"] as dynamic;
+                if (Session[mappingKey] != null) {
+                    var dynObj = Session[mappingKey] as dynamic;
                     var mappingObject = dynObj.mappingObject as ColumnMapping;
                     model.MappingObject = mappingObject;
                     model.DefaultData = dynObj.defaultData as ServiceCensusBlock;
@@ -48,16 +48,17 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             }
         }
         [HttpPost]
-        public ActionResult MapData(DataMappingModel mappingModel, int? submissionID, Ticket ticket) {
-            if (Session["data"] == null) {
+        public ActionResult MapData(DataMappingModel mappingModel, Submission submission) {
+            if (Session[uploadKey] == null) {
                 updateStatusMessage("Your session has expired. Please upload a new file.");
                 return RedirectToAction("Index", "Home");
             }
+            
             //get mappnig columns
             var columns = mappingModel.MappingObject;
             var defaultData = mappingModel.DefaultData;
             //get upload data
-            var obj = Session["data"] as dynamic;
+            var obj = Session[uploadKey] as dynamic;
             var data = obj.data as IEnumerable<IDictionary<string, object>>;
             //data to be stored
             IList<ServiceCensusBlock> dataList = new List<ServiceCensusBlock>();
@@ -80,7 +81,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         var dataEntry = new ServiceCensusBlock();
                         //PROVIDER NAME
                         key = columns.PROVNAMEColumn;
-                        tempValue = key == useDefault? defaultData.PROVNAME :  entry[key];                        
+                        tempValue = key == useDefault ? defaultData.PROVNAME : entry[key];
                         dataEntry.PROVNAME = tempValue != null ? tempValue.ToString() : string.Empty;
 
                         key = columns.DBANAMEColumn;
@@ -104,7 +105,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 
                         key = columns.TRANSTECHColumn;
                         tempValue = key == useDefault ? defaultData.TRANSTECH : entry[key];
-                        str = tempValue != null? tempValue.ToString(): "";
+                        str = tempValue != null ? tempValue.ToString() : "";
                         dataEntry.TRANSTECH =
                             short.TryParse(str, out tempShort) ?
                             tempShort : dataEntry.TRANSTECH;
@@ -153,29 +154,20 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     }
                     count++;//increase count
                 }
-                //Session["data"] = null;//discard session data
+                //Session[uploadKey] = null;//discard session data
                 //store data to be committed to session
-                Session["mappingData"] = new {
+                Session[mappingKey] = new {
                     mappingObject = columns,
                     validData = dataList,
                     defaultData = defaultData
                 };
                 //initiate submission if there's no error
-                Submission submission;
-                if (submissionID.HasValue) {
-                    submission = _workUnit.SubmissionRepository.GetEntityByID(submissionID);
-                }
-                else {
-                    submission = new Submission() {
-                        Status = "Initiated",
-                        DataCount = dataList.Count,
-                        RecordsStored = 0,
-                        ProgressPercentage = 0,
-                        SubmittingUser = User.Identity.Name,
-                        TicketID = ticket.TicketID
-                    };
-                    _workUnit.SubmissionRepository.InsertEntity(submission);
-                    _workUnit.SaveChanges();//save initiated submission
+                if (submission != null) {
+                    submission.Status = "Ready";
+                    submission.DataCount = dataList.Count;
+                    submission.RecordsStored = 0;
+                    submission.ProgressPercentage = 0;
+                    updateSubmission(submission);
                 }
                 //prepare view model
                 var previewData = new PreviewMappingModel();
@@ -199,15 +191,15 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         }
 
         [HttpPost]
-        [NoAsyncTimeout]  
+        [NoAsyncTimeout]
         public void CommitDataAsync(int submissionID) {
             //discard uploaded file
-            Session["data"] = null;
+            Session[uploadKey] = null;
             //check for mapped data
-            if (Session["mappingData"] == null)
+            if (Session[mappingKey] == null)
                 return;
 
-            var dynObj = Session["mappingData"] as dynamic;
+            var dynObj = Session[mappingKey] as dynamic;
             var data = dynObj.validData as List<ServiceCensusBlock>;
 
             AsyncManager.OutstandingOperations.Increment();//notify async operation
@@ -216,19 +208,19 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             //BackgroundWorker worker = new BackgroundWorker();
             //status report handler
             //service.DataCommitProgressChanged += (e) => {
-                //AsyncManager.Sync(() => {
-                //    var eventArg = e as OperationProgressChangedEventArgs;
-                //    var message = 
-                //        "Progress: " +
-                //        eventArg.ProgressPercentage +
-                //        "%. " + 
-                //        eventArg.Status ;
+            //AsyncManager.Sync(() => {
+            //    var eventArg = e as OperationProgressChangedEventArgs;
+            //    var message = 
+            //        "Progress: " +
+            //        eventArg.ProgressPercentage +
+            //        "%. " + 
+            //        eventArg.Status ;
 
-                //    Session["status"] = new {
-                //        message = message,
-                //        progress = eventArg.ProgressPercentage
-                //    };
-                //});
+            //    Session["status"] = new {
+            //        message = message,
+            //        progress = eventArg.ProgressPercentage
+            //    };
+            //});
             //};
             //completed handler
             service.DataCommitCompleted += (o, e) => {
@@ -239,9 +231,9 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                         Session.Clear();
                     }
                     catch (Exception ex) {
-                        AsyncManager.Parameters["data"] = null;
+                        AsyncManager.Parameters[uploadKey] = null;
                         AsyncManager.Parameters["status"] = ex.ToString();
-                        Session.Clear();                        
+                        Session.Clear();
                     }
                     AsyncManager.OutstandingOperations.Decrement();
                 });
@@ -258,6 +250,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 return View("Error");
             }
         }
-        
+
     }
 }

@@ -6,20 +6,30 @@ using System.Web.Mvc;
 using LinqToExcel;
 using System.IO;
 using ESRGC.Broadband.ETL.CensusBlock.Extension;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
+using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
     [Authorize]
-    public class UploadController : Controller
+    public class UploadController : BaseController
     {
+        public UploadController(IUnitOfWork workUnit)
+            : base(workUnit) {
+
+        }
+
         /// <summary>
         /// provides upload form
         /// </summary>
         /// <returns></returns>
-        public ActionResult UploadFile(bool? newUpload) {
+        public ActionResult UploadFile(bool? newUpload, Submission submission) {
             bool discard = newUpload.HasValue ? newUpload.Value : false;
-            if (Session["data"] == null || discard) {
-                Session.Clear();
+            if (Session[uploadKey] == null || discard) {
+                Session[uploadKey] = null;//new session
+                submission.Status = "Uploading";//data has been discarded
+                submission.DataCount = 0;                
+                updateSubmission(submission);
                 return View();
             }
             else {
@@ -34,7 +44,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         /// <param name="previewCount">Number of rows for previewing</param>
         /// <returns>View that allows user to preview their uploaded data</returns>
         [HttpPost]
-        public ActionResult UploadFile(HttpPostedFileBase dataInput, int? previewCount) {
+        public ActionResult UploadFile(HttpPostedFileBase dataInput, int? previewCount, Submission submission) {
             if (dataInput == null) {
                 ModelState.AddModelError("", "No data input. Please select a file to upload");
                 return View();
@@ -69,7 +79,13 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 if (data == null)
                     throw new Exception("An error occured processing the upload file.");
                 var rowCount = previewCount.HasValue ? previewCount.Value : 10;
-                Session["data"] = new { data = data, rows = rowCount };//store in session
+                Session[uploadKey] = new { data = data, rows = rowCount };//store in session
+                //update submission status
+                if (submission != null) {
+                    submission.Status = "Uploaded";
+                    submission.DataCount = data.Count;
+                    updateSubmission(submission);
+                }
                 return RedirectToAction("PreviewData", new { rows = rowCount });
             }
             catch (Exception ex) {
@@ -79,8 +95,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         }
         public ActionResult PreviewData(int? rows) {
             int rowNum = rows.HasValue ? rows.Value : 10;
-            if (Session["data"] != null) {
-                var obj = Session["data"] as dynamic;
+            if (Session[uploadKey] != null) {
+                var obj = Session[uploadKey] as dynamic;
                 var data = obj.data as IEnumerable<IDictionary<string, object>>;
                 rowNum = (rowNum == -1 ? data.Count() : rowNum);
                 var result = data.Take(rowNum);
@@ -91,7 +107,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             else
                 return RedirectToAction("UploadFile");
         }
-        
+
 
         #region Private function
 
@@ -126,7 +142,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         //    return jsonResult;
         //}
 
-        
+
         #endregion
     }
 }

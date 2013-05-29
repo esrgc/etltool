@@ -7,15 +7,18 @@
     @Scripts.Render("~/bundles/appBase")
     <!--Custom app code-->
     @Scripts.Render("~/bundles/uploadApp")
-
 }
 @section header{
-    <h3>@ViewBag.Title <i class="icon-upload"></i>
-    </h3>
+    <h3>@ViewBag.Title <i class="icon-upload"></i></h3>
     <ul class="breadcrumb">
         <li>
             <a href="@Url.Action("index", "Home")">
-                Home</a><span class="divider">/</span></li>
+                Home</a><span class="divider">/</span>
+        </li>
+        <li>
+            <a href="@Url.Action("index", "Submission")">
+                Sumission</a><span class="divider">/</span>
+        </li>
         <li class="active">@ViewBag.Title</li>
     </ul>
 }
@@ -25,11 +28,14 @@
         <h4>Instructions</h4>
         <ol>
             <li>
-                Click "Browse" to attach a file on your local storage for upload. 
-                Note that you have to select an <strong>Excel or CSV/Text</strong> file (.xls,.xlsx, or.csv/.txt).
-                You can not proceed to the next step if the file format is not Excel or CSV/text format.
+                Click "Browse" to attach a file on your local storage for upload.
+                Note that you have to select an <strong>Excel or CSV/Text</strong>
+                file (.xls,.xlsx, or.csv/.txt). You can not proceed to the next
+                step if the file format is not Excel or CSV/text format.
             </li>
-            <li>Verify the file name shown in green box. If not correct go back to step 1.</li>
+            <li>
+                Verify the file name shown in green box. If not correct go back
+                to step 1.</li>
             <li>
                 Click "Upload" to upload the file to server.
             </li>
@@ -41,24 +47,21 @@
         <h4>Upload data</h4>
         <form action="@Url.Action("UploadFile")" method="post" class="form-horizontal" enctype="multipart/form-data">
         @Html.ValidationSummary(true)
-        
         <div class="control-group">
-            <label class="control-label">
-                Data file</label>
+            <label class="control-label">Data file</label>
             <div class="controls">
                 <div id="uploadBrowse" class="btn btn-success upload-container">
-                    <div><i class="icon-white icon-folder-open"></i> Browse</div>
-                    <input type="file" name="dataInput" id="dataInput" class="file-input"/>
+                    <div>
+                        <i class="icon-white icon-folder-open"></i>Browse</div>
+                    <input type="file" name="dataInput" id="dataInput" class="file-input" />
                 </div>
-                
-                <label class="label label-important">Excel or CSV/text file formats only (.xlsx, .xls, or .csv/.txt)</label>
+                <label class="label label-important">Excel or CSV/text file formats
+                    only (.xlsx, .xls, or .csv/.txt)</label>
             </div>
         </div>
-        
         <div class="control-group">
             <div class="controls">
-                <span class="alert alert-success" id="fileName">
-                    No file selected.
+                <span class="alert alert-success" id="fileName">No file selected.
                 </span>
             </div>
         </div>
@@ -77,6 +80,7 @@
         </div>
         <div class="form-actions">
             <input title="Upload" value="Upload" type="submit" class="btn btn-primary" />
+            <a class="btn" href="@Url.Action("Delete", "Submission")">Cancel</a>
         </div>
         </form>
     </div>

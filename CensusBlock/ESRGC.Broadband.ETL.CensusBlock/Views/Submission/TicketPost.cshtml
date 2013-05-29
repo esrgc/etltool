@@ -1,0 +1,37 @@
+﻿@model ESRGC.Broadband.ETL.CensusBlock.Domain.Model.Ticket
+<div class="post">
+    <h4>Ticket @Model.Name</h4>
+    <div>
+        <div class="btn-group pull-right">
+            @{ 
+                //count submission for current user
+                int submissionCount = Model
+                   .Submissions
+                   .Where(x=>x.SubmittingUser.ToUpper() == User.Identity.Name)
+                   .Count();
+            }
+            @if (submissionCount > 0) { 
+                <a href="@Url.Action("")" class="btn">
+                    View submissions <i class="icon icon-search"></i>
+                </a>
+            }
+            <a href="@Url.Action("Create", new { Model.TicketID })" class="btn btn-success">
+                Upload <i class="icon-white icon-share-alt"></i>
+            </a>
+        </div>
+    </div>
+    <ul class="unstyled inline">
+        <li>
+            <span class="label">ID</span> <span>@Model.TicketID</span>
+        </li>
+        <li>
+            <span class="label">Issued date</span> <span>@Model.IssuedDate.ToShortDateString()</span>
+        </li>
+        <li>
+            <span class="label">Expired on</span> <span>@Model.ExpirationDate.ToShortDateString()</span>
+        </li>
+    </ul>
+    <p>
+        @Model.Description
+    </p>
+</div>
