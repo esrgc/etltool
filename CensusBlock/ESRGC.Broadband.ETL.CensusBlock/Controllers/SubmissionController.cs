@@ -16,6 +16,15 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         // GET: /Submission/
 
         public ActionResult Index() {
+            ////delete all unfinished submission
+            //deleteSubmission(x =>
+            //    (
+            //        x.Status.ToLower() == "uploading" ||
+            //        x.Status.ToLower() == "uploaded"
+            //    )
+            //    &&
+            //    x.SubmittingUser.ToUpper() == User.Identity.Name.ToUpper()
+            //);
             var tickets = _workUnit.TicketRepository
                 .Entities
                 .Include(x => x.Submissions)
@@ -37,10 +46,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         // GET: /Submission/Create
         //create submission
         public ActionResult Create(int ticketId, Submission submission) {
-            //submission is auto created in model binder            
             submission.TicketID = ticketId;
-            if (submission.Status == "Initiated")
-                insertSubmission(submission);//store to database
             return RedirectToAction("UploadFile", "Upload");
         }
 
@@ -84,7 +90,8 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         //
         // GET: /Submission/Delete/5
         //cancel and delete current submission
-        public ActionResult Delete(Submission submission) {
+        public ActionResult Delete(int submissionId) {
+            var submission = getSubmission(submissionId);
             if (submission != null) {
                 _workUnit.SubmissionRepository.DeleteEntity(submission);
                 _workUnit.SaveChanges();

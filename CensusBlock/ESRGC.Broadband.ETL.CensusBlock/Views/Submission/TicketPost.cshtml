@@ -1,23 +1,23 @@
 ﻿@model ESRGC.Broadband.ETL.CensusBlock.Domain.Model.Ticket
+@{ 
+    //count submission for current user
+    int submissionCount = 0;
+    if (Model.Submissions.Count() > 0) {
+       submissionCount = Model
+       .Submissions
+       .Where(x => x.SubmittingUser.ToUpper() == User.Identity.Name.ToUpper())
+       .Count();
+    }
+}
 <div class="post">
-    <h4>Ticket @Model.Name</h4>
+    <h4><small>Ticket</small> @Model.Name</h4>
     <div>
         <div class="btn-group pull-right">
-            @{ 
-                //count submission for current user
-                int submissionCount = Model
-                   .Submissions
-                   .Where(x=>x.SubmittingUser.ToUpper() == User.Identity.Name)
-                   .Count();
-            }
-            @if (submissionCount > 0) { 
-                <a href="@Url.Action("")" class="btn">
-                    View submissions <i class="icon icon-search"></i>
+            @if (Model.Active) { 
+                <a href="@Url.Action("Create", new { Model.TicketID })" class="btn btn-success">
+                    Upload <i class="icon-white icon-share-alt"></i>
                 </a>
             }
-            <a href="@Url.Action("Create", new { Model.TicketID })" class="btn btn-success">
-                Upload <i class="icon-white icon-share-alt"></i>
-            </a>
         </div>
     </div>
     <ul class="unstyled inline">
@@ -31,7 +31,20 @@
             <span class="label">Expired on</span> <span>@Model.ExpirationDate.ToShortDateString()</span>
         </li>
     </ul>
-    <p>
-        @Model.Description
+    <p><strong>Description</strong> <small>@Model.Description</small>
     </p>
+    @if (submissionCount > 0) { 
+        
+        <button class="btn btn-mini" title="View submissions" data-toggle="collapse" data-target="#@Model.TicketID">
+            <i class="icon icon-th"></i></button>
+        
+    }
+    <div class="collapse" id="@Model.TicketID">
+        <div class="panel">
+            <h4 class="panel-title">Submissions</h4>
+            <div class="panel-content">
+                <p class="text-right">Submitted by @User.Identity.Name</p>
+            </div>
+        </div>
+    </div>
 </div>

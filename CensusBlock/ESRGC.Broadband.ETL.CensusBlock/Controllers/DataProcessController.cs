@@ -161,13 +161,16 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     validData = dataList,
                     defaultData = defaultData
                 };
-                //initiate submission if there's no error
+                
+                //get submission
                 if (submission != null) {
-                    submission.Status = "Ready";
                     submission.DataCount = dataList.Count;
                     submission.RecordsStored = 0;
                     submission.ProgressPercentage = 0;
-                    updateSubmission(submission);
+                    
+                    //check if the entry is already in the database
+                    if (submission.SubmissionID == 0)
+                        insertSubmission(submission);
                 }
                 //prepare view model
                 var previewData = new PreviewMappingModel();

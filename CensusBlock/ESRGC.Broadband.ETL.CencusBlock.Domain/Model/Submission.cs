@@ -11,6 +11,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Domain.Model
     {
         public Submission() {
             SubmissionTimeStarted = DateTime.Now;
+            SubmissionID = 0;
         }
         [Key]
         public int SubmissionID { get; set; }

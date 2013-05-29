@@ -394,7 +394,7 @@
                 <!--Form actions-->
                 <div class="form-actions">
                     <a class="btn" title="Back to data preview" 
-                        href="@Url.Action("PreviewData", "Upload")">Back</a>
+                        href="@Url.Action("PreviewData", "Upload", new { ViewBag.submissionId })">Back</a>
                     <input type="submit" value="Map Data" class="btn btn-primary" />                                  
                 </div>
             </form>

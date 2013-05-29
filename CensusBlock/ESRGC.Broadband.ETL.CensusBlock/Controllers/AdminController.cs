@@ -8,6 +8,7 @@ using PagedList;
 using System.Web.Security;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
 using System.Web.Routing;
+using System.Linq.Expressions;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
@@ -87,18 +88,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 .Entities
                 .Where(x => x.Status == "Initiated")
                 .Count();
-            ViewBag.Uploading = _workUnit.SubmissionRepository
-               .Entities
-               .Where(x => x.Status == "Uploading")
-               .Count();
-            ViewBag.Uploaded = _workUnit.SubmissionRepository
-                .Entities
-                .Where(x => x.Status == "Uploaded")
-                .Count();
-            ViewBag.Ready = _workUnit.SubmissionRepository
-                .Entities
-                .Where(x => x.Status == "Ready")
-                .Count();
             ViewBag.InProgress = _workUnit.SubmissionRepository
                 .Entities
                 .Where(x => x.Status == "Processing")
@@ -134,9 +123,20 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 .ToList();
             //filter
             if (!string.IsNullOrEmpty(status)) {
-                submissions = submissions
-                    .Where(x => x.Status.ToUpper() == status.ToUpper())
-                    .ToList();
+                if (status == "Incompleted") {
+                    submissions = submissions
+                        .Where(x => (
+                             x.Status == "Initiated" ||
+                             x.Status == "Uploaded" ||
+                             x.Status == "Uploading" ||
+                             x.Status == "Ready"
+                         )).ToList();
+                }
+                else {
+                    submissions = submissions
+                        .Where(x => x.Status.ToUpper() == status.ToUpper())
+                        .ToList();
+                }
                 filters.Add("status", status);
             }
             if (!string.IsNullOrEmpty(ticket)) {

@@ -23,13 +23,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         /// provides upload form
         /// </summary>
         /// <returns></returns>
-        public ActionResult UploadFile(bool? newUpload, Submission submission) {
+        public ActionResult UploadFile(bool? newUpload) {
             bool discard = newUpload.HasValue ? newUpload.Value : false;
             if (Session[uploadKey] == null || discard) {
-                Session[uploadKey] = null;//new session
-                submission.Status = "Uploading";//data has been discarded
-                submission.DataCount = 0;                
-                updateSubmission(submission);
+                Session[uploadKey] = null;
+
                 return View();
             }
             else {
@@ -44,7 +42,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         /// <param name="previewCount">Number of rows for previewing</param>
         /// <returns>View that allows user to preview their uploaded data</returns>
         [HttpPost]
-        public ActionResult UploadFile(HttpPostedFileBase dataInput, int? previewCount, Submission submission) {
+        public ActionResult UploadFile(HttpPostedFileBase dataInput, int? previewCount) {
             if (dataInput == null) {
                 ModelState.AddModelError("", "No data input. Please select a file to upload");
                 return View();
@@ -53,7 +51,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             var binaryData = new byte[dataInput.ContentLength];
             //read the data
             dataInput.InputStream.Read(binaryData, 0, dataInput.ContentLength);
-                        
+
             try {
                 List<IDictionary<string, object>> data = null;
                 if (dataInput.FileName.Contains(".xls") || dataInput.FileName.Contains(".xlsx")) {
@@ -66,7 +64,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                     using (var fileStream = f.Open(FileMode.CreateNew, FileAccess.Write, FileShare.None)) {
                         fileStream.Write(binaryData, 0, dataInput.ContentLength);
                         fileStream.Close();
-                    } 
+                    }
                     //read excel content
                     data = Helpers.parseToDictionary(filePath);
                 }
@@ -81,11 +79,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
                 var rowCount = previewCount.HasValue ? previewCount.Value : 10;
                 Session[uploadKey] = new { data = data, rows = rowCount };//store in session
                 //update submission status
-                if (submission != null) {
-                    submission.Status = "Uploaded";
-                    submission.DataCount = data.Count;
-                    updateSubmission(submission);
-                }
+
                 return RedirectToAction("PreviewData", new { rows = rowCount });
             }
             catch (Exception ex) {
@@ -110,38 +104,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 
 
         #region Private function
-
-        /*----------------Private functions-----------------*/
-        //private string parseToJson(string filePath) {
-        //    var excel = new ExcelQueryFactory(filePath);
-        //    var worksheets = excel.GetWorksheetNames();
-
-        //    var allRows = from c in excel.Worksheet(worksheets.First())
-        //                  select c;
-
-        //    string jsonResult = "";
-        //    var columnNames = allRows.First().ColumnNames;
-        //    //convert to objects
-        //    List<string> rowData = new List<string>();
-        //    jsonResult += '[';
-
-        //    foreach (var row in allRows) {
-        //        var str = "{";
-        //        List<string> valuePairs = new List<string>();
-        //        foreach (var name in columnNames) {
-        //            var value = row[name];
-        //            valuePairs.Add('"' + name + "\" : \"" + value + '"');
-        //        }
-        //        str += string.Join(",", valuePairs);
-        //        str += '}';
-        //        rowData.Add(str);
-        //    }
-        //    jsonResult += string.Join(",", rowData);
-        //    jsonResult += ']';
-        //    //return Json
-        //    return jsonResult;
-        //}
-
 
         #endregion
     }
