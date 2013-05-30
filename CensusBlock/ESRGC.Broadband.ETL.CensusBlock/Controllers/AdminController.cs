@@ -176,7 +176,11 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public ActionResult SubmissionDetail(int id) {
             var submission = _workUnit
                 .SubmissionRepository
-                .GetEntityByID(id);
+                .Entities
+                .Where(x => x.SubmissionID == id)
+                .Include(x => x.ServiceCensusBlocks)
+                .First();
+
             return View(submission);
         }
         public ActionResult DeleteSubmission(int id) {

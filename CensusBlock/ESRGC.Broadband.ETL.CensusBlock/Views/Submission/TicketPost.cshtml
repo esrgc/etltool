@@ -51,7 +51,7 @@
                                 <th>Progress (%)</th>
                                 <th>Started</th>
                                 <th>Last updated</th>
-                                <th></th>
+                                @*<th></th>*@
                             </tr>
                         </thead>
                         <tbody>
@@ -62,14 +62,14 @@
                                 <td>@s.ProgressPercentage</td>
                                 <td>@s.SubmissionTimeStarted</td>
                                 <td>@Html.TimeSpan(s.LastStatusUpdate)</td>
-                                <td>
+                                @*<td>
                                     <div class="btn-group">
                                         <a class="btn btn-mini btn-danger" title="Delete"
                                             href="@Url.Action("Delete", new { s.SubmissionID })">
                                             <i class="icon-white icon-trash"></i>
                                         </a>
                                     </div>
-                                </td>
+                                </td>*@
                             </tr>   
                             }
                         </tbody>

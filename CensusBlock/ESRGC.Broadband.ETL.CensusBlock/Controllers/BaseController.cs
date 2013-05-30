@@ -29,13 +29,13 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         }
         protected void deleteSubmission(int id) {
             var submission = _workUnit.SubmissionRepository.GetEntityByID(id);
-            var data = submission.ServiceCensusBlocks.ToList();
+            var data = submission.ServiceCensusBlocks;
             if (submission != null) {
-                _workUnit.SubmissionRepository.DeleteEntity(submission);
                 //delete its data
                 foreach (var d in data) {
                     _workUnit.ServiceCensusRepository.DeleteEntity(d);
                 }
+                _workUnit.SubmissionRepository.DeleteEntity(submission);
                 _workUnit.SaveChanges();
             }
         }

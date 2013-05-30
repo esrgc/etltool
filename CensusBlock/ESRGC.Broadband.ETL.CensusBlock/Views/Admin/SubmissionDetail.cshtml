@@ -46,51 +46,57 @@
                     </div>
                 </li>
             </ul>
-            <div class="row-fluid">
-                <div class="span12">
-                    <table class="table table-condensed">                
-                        <caption><h5>Data<small> (showing 20)</small></h5></caption>
-                        <thead>
-                            <tr>
-                                <th>Provider Name</th>
-                                <th>DBA Name</th>
-                                <th>Provider Type</th>
-                               @* <th>FCC Registration Number (FRN)</th>
-                                <th>State FIPS</th>
-                                <th>County FIPS</th>
-                                <th>Census Tract</th>
-                                <th>Census Block ID</th>
-                                <th>Full Block ID</th>
-                                <th>Technology of Transmission</th>*@
-                                <th>Max Ad. Download</th>
-                                <th>Max Ad. Upload</th>
-                                <th>Typical Download</th>
-                                <th>Typical Upload</th>
-                            </tr>
-                        </thead>
-                        <tbody>                    
-                            @foreach (var x in Model.ServiceCensusBlocks.Take(20)) { 
-                                <tr>
-                                    <td>@x.PROVNAME</td>
-                                    <td>@x.DBANAME</td>
-                                    <td>@x.Provider_Type</td>
-                                   @* <td>@x.FRN</td>
-                                    <td>@x.STATEFIPS</td>
-                                    <td>@x.COUNTYFIPS</td>
-                                    <td>@x.TRACT</td>
-                                    <td>@x.BLOCKID</td>
-                                    <td>@x.FULLFIPSID</td>
-                                    <td>@x.TRANSTECH</td>*@
-                                    <td>@x.MAXADDOWN</td>
-                                    <td>@x.MAXADUP</td>
-                                    <td>@x.TYPICDOWN</td>
-                                    <td>@x.TYPICUP</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @{ 
+                if(Model.ServiceCensusBlocks != null){
+                   var services = Model.ServiceCensusBlocks.Take(20).ToList();
+                   <div class="row-fluid">
+                        <div class="span12">
+                            <table class="table table-condensed">                
+                                <caption><h5>Data<small> (showing 20)</small></h5></caption>
+                                <thead>
+                                    <tr>
+                                        <th>Provider Name</th>
+                                        <th>DBA Name</th>
+                                        <th>Provider Type</th>
+                                       @* <th>FCC Registration Number (FRN)</th>
+                                        <th>State FIPS</th>
+                                        <th>County FIPS</th>
+                                        <th>Census Tract</th>
+                                        <th>Census Block ID</th>
+                                        <th>Full Block ID</th>
+                                        <th>Technology of Transmission</th>*@
+                                        <th>Max Ad. Download</th>
+                                        <th>Max Ad. Upload</th>
+                                        <th>Typical Download</th>
+                                        <th>Typical Upload</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                               
+                                    @foreach (var x in services) { 
+                                        <tr>
+                                            <td>@x.PROVNAME</td>
+                                            <td>@x.DBANAME</td>
+                                            <td>@x.Provider_Type</td>
+                                           @* <td>@x.FRN</td>
+                                            <td>@x.STATEFIPS</td>
+                                            <td>@x.COUNTYFIPS</td>
+                                            <td>@x.TRACT</td>
+                                            <td>@x.BLOCKID</td>
+                                            <td>@x.FULLFIPSID</td>
+                                            <td>@x.TRANSTECH</td>*@
+                                            <td>@x.MAXADDOWN</td>
+                                            <td>@x.MAXADUP</td>
+                                            <td>@x.TYPICDOWN</td>
+                                            <td>@x.TYPICUP</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>
