@@ -11,7 +11,7 @@
                     <th>Ticket</th>
                     <th>Provider/User</th>
                     <th>Data count (rows)</th>
-                    <th>Started</th>
+                    <th>Submitted</th>
                     <th>Progress %</th>
                     <th></th>
                 </tr>
@@ -26,7 +26,7 @@
                         </td>
                         <td>@submission.SubmittingUser</td>
                         <td>@submission.DataCount.ToString("#,#")</td>
-                        <td>@submission.SubmissionTimeStarted</td>
+                        <td>@Html.TimeSpan(submission.SubmissionTimeCompleted)</td>
                         <td>
                             <div class="progress">
                                 <span class="progress-label">@submission.ProgressPercentage %</span>
@@ -37,8 +37,12 @@
                         <td>
                             @if (submission.Status == "Submitted") {
                                  <div class="btn-group">
-                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i></a>
-                                    <a class="btn btn-mini" title="Download data"><i class="icon-download-alt"></i></a>
+                                     <a class="btn btn-mini" title="Detail" href="@Url.Action("SubmissionDetail", new { id = submission.SubmissionID })">
+                                         <i class="icon-file"></i>
+                                     </a>
+                                     <a class="btn btn-mini" title="Download data" href="@Url.Action("DownloadData", new { id = submission.SubmissionID })">
+                                         <i class="icon-download-alt"></i>
+                                     </a>
                                 </div>
                             }
                         </td>

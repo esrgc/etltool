@@ -31,20 +31,54 @@
             <span class="label">Expired on</span> <span>@Model.ExpirationDate.ToShortDateString()</span>
         </li>
     </ul>
-    <p><strong>Description</strong> <small>@Model.Description</small>
+    <p>
+        <strong>Description</strong> <small>@Model.Description</small>
     </p>
+
     @if (submissionCount > 0) { 
-        
-        <button class="btn btn-mini" title="View submissions" data-toggle="collapse" data-target="#@Model.TicketID">
+        <button class="btn btn-mini" title="View submissions" style="margin-bottom: 5px;"
+                data-toggle="collapse" data-target="#@Model.TicketID">
             <i class="icon icon-th"></i></button>
-        
-    }
-    <div class="collapse" id="@Model.TicketID">
-        <div class="panel">
-            <h4 class="panel-title">Submissions</h4>
-            <div class="panel-content">
-                <p class="text-right">Submitted by @User.Identity.Name</p>
+        <div class="collapse" id="@Model.TicketID">
+            <div class="panel">
+                <h4 class="panel-title">Submissions</h4>
+                <div class="panel-content">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Data (rows)</th>
+                                <th>Progress (%)</th>
+                                <th>Started</th>
+                                <th>Last updated</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in Model.Submissions) { 
+                            <tr>
+                                <td>@s.Status</td>
+                                <td>@s.DataCount</td>
+                                <td>@s.ProgressPercentage</td>
+                                <td>@s.SubmissionTimeStarted</td>
+                                <td>@Html.TimeSpan(s.LastStatusUpdate)</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a class="btn btn-mini btn-danger" title="Delete"
+                                            href="@Url.Action("Delete", new { s.SubmissionID })">
+                                            <i class="icon-white icon-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>   
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    }
+    else { 
+        <p>You have no submission for this ticket. Please click upload to start your submission.</p>
+    }
 </div>

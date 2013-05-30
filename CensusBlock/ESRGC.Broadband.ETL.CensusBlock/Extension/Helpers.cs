@@ -68,6 +68,20 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Extension
 
                 return result;
             }
-        }        
+        }
+
+        public static Stream writeToCsv<TEntity>(IEnumerable<TEntity> list) {
+            //file descriptor
+            CsvFileDescription fd = new CsvFileDescription() { 
+                SeparatorChar = ',',
+                FirstLineHasColumnNames = true,
+                EnforceCsvColumnAttribute = true
+            };
+            var stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            CsvContext context = new CsvContext();
+            context.Write<TEntity>(list, writer, fd);
+            return stream;
+        }
     }
 }

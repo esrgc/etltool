@@ -27,6 +27,18 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         public void updateStatusMessage(string message) {
             TempData["message"] = message;
         }
+        protected void deleteSubmission(int id) {
+            var submission = _workUnit.SubmissionRepository.GetEntityByID(id);
+            var data = submission.ServiceCensusBlocks.ToList();
+            if (submission != null) {
+                _workUnit.SubmissionRepository.DeleteEntity(submission);
+                //delete its data
+                foreach (var d in data) {
+                    _workUnit.ServiceCensusRepository.DeleteEntity(d);
+                }
+                _workUnit.SaveChanges();
+            }
+        }
         protected Submission getSubmission(int id) {
             return _workUnit.SubmissionRepository.GetEntityByID(id);
         }

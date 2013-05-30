@@ -1,5 +1,4 @@
-﻿@using ESRGC.Broadband.ETL.CensusBlock.Extension
-@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
+﻿@using ESRGC.Broadband.ETL.CensusBlock.Domain.Model
 @using PagedList.Mvc
 @using PagedList
 @model IEnumerable<Submission>
@@ -43,7 +42,7 @@
                                     <th>Provider/User</th>
                                     <th>Status</th>
                                     <th>Date</th>
-                                    <th>Time started</th>
+                                    <th>Last updated</th>
                                     <th>Progress %</th>
                                     <th></th>
                                 </tr>
@@ -73,7 +72,7 @@
                                                 @submission.SubmissionTimeStarted.Value.ToShortDateString()
                                             </a>
                                         </td>
-                                        <td>@submission.SubmissionTimeStarted.Value.ToShortTimeString()</td>
+                                        <td>@Html.TimeSpan(submission.LastStatusUpdate)</td>
                                         <td>
                                             <div class="progress">
                                                 <span class="progress-label">@submission.ProgressPercentage %</span>
@@ -84,20 +83,13 @@
                                         <td>
                                             @if (submission.Status == "Submitted") {
                                                 <div class="btn-group">
-                                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i>
+                                                    <a class="btn btn-mini" title="Detail" href="@Url.Action("SubmissionDetail", new { id = submission.SubmissionID })">
+                                                        <i class="icon-file"></i>
                                                     </a>
-                                                    <a class="btn btn-mini" title="Download data"><i class="icon-download-alt">
+                                                    @*<a class="btn btn-mini" title="Download data"><i class="icon-download-alt">
                                                     </i></a>
                                                     <a class="btn btn-mini btn-danger" title="Delete"><i class="icon-trash icon-white">
-                                                    </i></a>
-                                                </div>
-                                            }
-                                            else if (submission.Status == "Initiated") { 
-                                                <div class="btn-group">
-                                                    <a class="btn btn-mini" title="Detail"><i class="icon-file"></i>
-                                                    </a>
-                                                    <a class="btn btn-mini btn-danger" title="Delete"><i class="icon-trash icon-white">
-                                                    </i></a>
+                                                    </i></a>*@
                                                 </div>
                                             }
                                         </td>

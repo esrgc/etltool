@@ -32,7 +32,7 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Extension
             return helper.Action(actionName, routeValues);
         }
 
-        public static string clearSearchFilter(
+        public static string ClearSearchFilter(
             this UrlHelper helper,
             string actionName,
             IDictionary<string, object> routeDict,
@@ -43,6 +43,31 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Extension
             routeValues.Remove(removeKey);
             //generate url
             return helper.Action(actionName, routeValues);
+        }
+
+        public static string TimeSpan(this HtmlHelper helper, DateTime? timeInPast) {
+            if (timeInPast == null)
+                return "";
+            var timeSpan = DateTime.Now - timeInPast.Value;
+            if (timeSpan.Days == 0) {
+                if (timeSpan.Hours == 0) {
+                    if (timeSpan.Minutes == 0)
+                        return "Less than a minute ago";
+                    if (timeSpan.Minutes == 1)
+                        return timeSpan.Minutes + " minute ago";
+                    else
+                        return timeSpan.Minutes + " minutes ago";
+                }
+                if (timeSpan.Hours == 1)
+                    return timeSpan.Hours + " hour ago";
+                else
+                    return timeSpan.Hours + " hours ago";
+            }
+            if (timeSpan.Days == 1)
+                return timeSpan.Days + " day ago";
+            else
+                return timeSpan.Days + " days ago";
+            
         }
     }
 }

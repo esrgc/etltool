@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.DAL.Abstract;
@@ -9,6 +10,8 @@ using System.Web.Security;
 using ESRGC.Broadband.ETL.CensusBlock.Domain.Model;
 using System.Web.Routing;
 using System.Linq.Expressions;
+using ESRGC.Broadband.ETL.CensusBlock.Extension;
+using System.IO;
 
 namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
 {
@@ -171,14 +174,21 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
             return View(pagedList);
         }
         public ActionResult SubmissionDetail(int id) {
-            return View();
+            var submission = _workUnit
+                .SubmissionRepository
+                .GetEntityByID(id);
+            return View(submission);
+        }
+        public ActionResult DeleteSubmission(int id) {
+            deleteSubmission(id);
+            return RedirectToAction("Submission");
         }
         public ActionResult RecentSubmission() {
-            var recentSubmissions = _workUnit.SubmissionRepository
+            var completedSubmissions = _workUnit.SubmissionRepository
                 .Entities.Where(x => (x.Status == "Submitted"))
-                .OrderByDescending(x => x.SubmissionTimeCompleted)
-                .ToList();
-            recentSubmissions = recentSubmissions.Where(x => {
+                .OrderByDescending(x => x.SubmissionTimeCompleted).ToList();
+                
+            var recentSubmissions = completedSubmissions.Where(x => {
                 if (x.SubmissionTimeCompleted.HasValue) {
                     var mostRecent = x.SubmissionTimeCompleted.Value;
                     return mostRecent > mostRecent.AddDays(-3);
@@ -191,14 +201,18 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         }
         public ActionResult SubmissionInProgress() {
             var submissionInProgress = _workUnit.SubmissionRepository
-                .Entities.Where(x => x.Status == "Processing")
-                .ToList();
+                .Entities.Where(x => x.Status == "Processing");
+                
 
             return PartialView(submissionInProgress);
         }
 
         public ActionResult DownloadData(int id) {
-            return View();
+            var submission = getSubmission(id);
+            var serviceData = submission.ServiceCensusBlocks.ToList();
+            var csvStream = (MemoryStream)Helpers.writeToCsv<ServiceCensusBlock>(serviceData);
+            byte[] result = csvStream.GetBuffer();
+            return File(result,"text/csv", submission.SubmissionID + ".csv");
         }
     }
 }

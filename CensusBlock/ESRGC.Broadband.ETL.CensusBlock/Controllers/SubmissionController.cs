@@ -16,15 +16,6 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         // GET: /Submission/
 
         public ActionResult Index() {
-            ////delete all unfinished submission
-            //deleteSubmission(x =>
-            //    (
-            //        x.Status.ToLower() == "uploading" ||
-            //        x.Status.ToLower() == "uploaded"
-            //    )
-            //    &&
-            //    x.SubmittingUser.ToUpper() == User.Identity.Name.ToUpper()
-            //);
             var tickets = _workUnit.TicketRepository
                 .Entities
                 .Include(x => x.Submissions)
@@ -51,68 +42,12 @@ namespace ESRGC.Broadband.ETL.CensusBlock.Controllers
         }
 
         //
-        // POST: /Submission/Create
-
-        [HttpPost]
-        public ActionResult Create(FormCollection collection) {
-            try {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Submission/Edit/5
-
-        public ActionResult Edit(int id) {
-            return View();
-        }
-
-        //
-        // POST: /Submission/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection) {
-            try {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch {
-                return View();
-            }
-        }
-
-        //
         // GET: /Submission/Delete/5
         //cancel and delete current submission
         public ActionResult Delete(int submissionId) {
-            var submission = getSubmission(submissionId);
-            if (submission != null) {
-                _workUnit.SubmissionRepository.DeleteEntity(submission);
-                _workUnit.SaveChanges();
-                Session.Clear();
-            }
+            deleteSubmission(submissionId);
             return RedirectToAction("Index");
         }
 
-        //
-        // POST: /Submission/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection) {
-            try {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch {
-                return View();
-            }
-        }
     }
 }

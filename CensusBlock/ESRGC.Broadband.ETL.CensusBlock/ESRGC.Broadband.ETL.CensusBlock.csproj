@@ -423,6 +423,7 @@
     <Content Include="Views\Shared\searchFilterPartial.cshtml" />
     <Content Include="Views\Submission\Index.cshtml" />
     <Content Include="Views\Submission\TicketPost.cshtml" />
+    <Content Include="Views\Admin\SubmissionDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESRGC.Broadband.ETL.CencusBlock.Domain\ESRGC.Broadband.ETL.CensusBlock.Domain.csproj">
